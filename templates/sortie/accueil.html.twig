@@ -1,0 +1,3 @@
+{% extends 'base.html.twig' %}
+{% block title %}Sortir | Accueil{% endblock %}
+{% block body %}<h1>Bienvenue à l'accueil {%if(app.user) %} {{ app.user.username }} {% endif %}!</h1>{% endblock %}

@@ -1,12 +1,46 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Sortir{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="icon" href="{{ asset('img/favicon.png') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+<header>
+    <div>
+        <a href="{{path('accueil') }}" title="Sortir | Accueil">
+            <img src="{{ asset('img/logo.png') }}" alt="logo_sortir">
+            <p>Sortir</p>
+        </a>
+    </div>
+
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <nav >
+            <ul>
+                <li><a href="{{path('#') }}" title="Sortir | Accueil">Accueil</a></li>
+                <li><a href="{{path('#') }}" title="Sortir | Mon profil">Mon profil</a></li>
+                <li><a href="{{path('#') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
+            </ul>
+        </nav>
+    {% else %}
+    {% endif %}
+
+</header>
+
+
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+
+<footer>
+    <p>©J.Ducourneau & P.Thomas - Application web d'organisation de sorties - {{ "now" | date('Y') }}</p>
+</footer>
+
+
+</body>
+
+
 </html>
