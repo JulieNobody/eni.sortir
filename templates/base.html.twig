@@ -21,9 +21,9 @@
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <nav >
             <ul>
-                <li><a href="{{path('#') }}" title="Sortir | Accueil">Accueil</a></li>
-                <li><a href="{{path('#') }}" title="Sortir | Mon profil">Mon profil</a></li>
-                <li><a href="{{path('#') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
+                <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
+                <li><a href="{{path('accueil') }}" title="Sortir | Mon profil">Mon profil</a></li>
+                <li><a href="{{path('user_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
             </ul>
         </nav>
     {% else %}

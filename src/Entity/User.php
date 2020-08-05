@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository", repositoryClass=UserRepository::class)
  */
 class User implements UserInterface
 {
@@ -68,17 +68,22 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    /**
+     * @return mixed
+     */
+    public function getUsername()
     {
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username): void
     {
         $this->username = $username;
-
-        return $this;
     }
+
 
     public function getNom(): ?string
     {
@@ -178,7 +183,7 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return $this->role;
+        return ["ROLE_USER"];
     }
 
     //Inutile pour nous
@@ -186,4 +191,5 @@ class User implements UserInterface
 
     //Inutile pour nous
     public function eraseCredentials(){}
+
 }
