@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,8 +60,47 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("modifierProfil/{id}", name="user_modifierProfil", requirements={"id":"\d+"})
+     */
+    public function modifierProfil(User $user, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
+    {
+        //création instance du formulaire
+        $userForm = $this->createForm(UserType::class, $user);
 
+        //association du formulaire avec la request
+        $userForm->handleRequest($request);
 
+        if ($userForm->isSubmitted() && $userForm->isValid())
+        {
+            $usernameIsUnique = $repository->findOneBy(["username" => $user->getUsername()]);
 
+            if($usernameIsUnique === null)
+            {
+                $hashed = $encoder->encodePassword($user, $user->getPassword());
+                $user->setPassword($hashed);
+
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash('success', 'Le profil a bien été mis à jour');
+
+            }else{
+                $this->addFlash('error', 'Désolé, le pseudo est déja utilisé');
+            }
+
+        }
+
+        return $this->render("user/modifierProfil.html.twig", ['userForm' => $userForm->createView()]);
+    }
+
+    /**
+     * @Route("detailProfil", name="user_detailProfil")
+     */
+    public function detailProfil()
+    {
+
+        return $this->render("user/detailProfil.html.twig");
+    }
 
 }

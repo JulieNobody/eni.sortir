@@ -6,18 +6,18 @@
 
     <div id="register_form">
 
-        {{ form_start(registerForm) }}
-        {{ form_row(registerForm.username) }}
-        {{ form_row(registerForm.nom) }}
-        {{ form_row(registerForm.prenom) }}
-        {{ form_row(registerForm.telephone) }}
-        {{ form_row(registerForm.email) }}
-        {{ form_row(registerForm.password) }}
-        {{ form_row(registerForm.photo) }}
+        {{ form_start(userForm) }}
+        {{ form_row(userForm.username) }}
+        {{ form_row(userForm.nom) }}
+        {{ form_row(userForm.prenom) }}
+        {{ form_row(userForm.telephone) }}
+        {{ form_row(userForm.email) }}
+        {{ form_row(userForm.password) }}
+        {{ form_row(userForm.photo) }}
 
         <button type="submit">S'inscrire</button>
 
-        {{ form_end(registerForm) }}
+        {{ form_end(userForm) }}
 
     </div>
 

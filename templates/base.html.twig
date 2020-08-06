@@ -30,9 +30,21 @@
     {% endif %}
 
 </header>
+<main>
+    <div>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div {{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
 
+    {% block body %}{% endblock %}
 
-{% block body %}{% endblock %}
+</main>
+
 {% block javascripts %}{% endblock %}
 
 <footer>
