@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}Sortir | Ajout utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un utilisateur :</h1>
+    <div id="register_form">
+        {{ form_start(registerForm) }}
+        {{ form_row(registerForm.username) }}
+        {{ form_row(registerForm.nom) }}
+        {{ form_row(registerForm.prenom) }}
+        {{ form_row(registerForm.telephone) }}
+        {{ form_row(registerForm.email) }}
+        {{ form_row(registerForm.password) }}
+        {{ form_row(registerForm.photo) }}
+        <button type="submit">S'inscrire</button>
+        {{ form_end(registerForm) }}
+    </div>
+
+{% endblock %}
