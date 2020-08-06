@@ -14,7 +14,7 @@ class SortieController extends AbstractController
 {
 
     /**
-     * @Route("accueil", name="accueil")
+     * @Route("accueil", name="sortie_accueil")
      */
     public function accueil(){
         return $this->render("sortie/accueil.html.twig");
