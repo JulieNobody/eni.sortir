@@ -63,6 +63,13 @@ class User implements UserInterface
      */
     private $photo;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="participants")
+     */
+    private $campus;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -191,5 +198,23 @@ class User implements UserInterface
 
     //Inutile pour nous
     public function eraseCredentials(){}
+
+    /**
+     * @return mixed
+     */
+    public function getCampus()
+    {
+        return $this->campus;
+    }
+
+    /**
+     * @param mixed $campus
+     */
+    public function setCampus($campus): void
+    {
+        $this->campus = $campus;
+    }
+
+
 
 }
