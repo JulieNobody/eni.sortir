@@ -29,7 +29,7 @@ class Sortie
     private $dateHeureDebut;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="integer")
      */
     private $duree;
 
@@ -106,17 +106,23 @@ class Sortie
         return $this;
     }
 
-    public function getDuree(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getDuree()
     {
         return $this->duree;
     }
 
-    public function setDuree(\DateTimeInterface $duree): self
+    /**
+     * @param mixed $duree
+     */
+    public function setDuree($duree): void
     {
         $this->duree = $duree;
-
-        return $this;
     }
+
+
 
     public function getDateLimiteInscription(): ?\DateTimeInterface
     {

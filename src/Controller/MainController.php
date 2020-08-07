@@ -13,6 +13,6 @@ class MainController extends AbstractController
     public function index()
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        return $this->render('sortie/accueil.html.twig');
+        return $this->redirectToRoute('sortie_accueil');
     }
 }
