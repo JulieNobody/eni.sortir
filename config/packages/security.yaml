@@ -12,11 +12,22 @@ security:
             provider: our_db_provider
             anonymous: ~
             form_login:
-                login_path: user_login
-                check_path: user_login
+                login_path: app_login
+                check_path: app_login
             logout:
-                path: user_logout
+                path: app_logout
                 target: accueil
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            remember_me:
+                #encodage qui se trouve dans .env > APP_SECRET
+                secret:   '991077d9f590b7c34a68b021869372ee'
+                # 1 an
+                lifetime: 31536000
+                path:     /
+                #nom du cookie : REMEMBERME
+                always_remember_me: true
 
     encoders:
         App\Entity\User:

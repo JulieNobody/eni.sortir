@@ -17,23 +17,27 @@ class UserController extends AbstractController
     /**
      * @Route("/login", name="user_login")
      */
-    public function login()
+    /*public function login()
     {
 
          if ($this -> isGranted('IS_AUTHENTICATED_FULLY') ){
-             return $this->redirectToRoute('accueil');
+             return $this->redirectToRoute('sortie_accueil');
          } else{
              return $this->render('user/login.html.twig');
         }
 
 
-    }
+    }*/
+
+
+    //FIXME : A supprimer si ok
 
     /**
      * Symfony gère entièrement cette route
      * @Route("/logout", name="user_logout")
-     */
-    public function logout() {}
+     *
+    //public function logout() {}
+
 
     /**
      * @Route("/register", name="user_register")
