@@ -1,3 +1,66 @@
 {% extends 'base.html.twig' %}
 {% block title %}Sortir | Accueil{% endblock %}
-{% block body %}<h1>Bienvenue à l'accueil {%if(app.user) %} {{ app.user.username }} {% endif %}!</h1>{% endblock %}
+{% block body %}
+    <h1>Bienvenue à l'accueil {%if(app.user) %} {{ app.user.username }} {% endif %}!</h1>
+
+    <h2>Filtres</h2>
+
+    <form action="" method="POST">
+        <fieldset  class="fieldset-filtres">
+            <legend><strong>Filtres</strong></legend>
+
+            <div class="flexbox-filtres">
+                <input type="text" class="element-filtre" id="filter-input" name="motCle" placeholder="articles contenant...">
+                <label class="element-filtre" id="categories-label" for="">Catégories</label>
+
+                <select class="element-filtre" id="categories-select" name="categorie">
+                    <option selected value="0">Toutes</option>
+                    <option name="categorie" value="1">Informatique</option>
+                    <option name="categorie" value="2">Ameublement</option>
+                    <option name="categorie" value="3">Vêtement</option>
+                    <option name="categorie" value="4">Sport & Loisirs</option>
+                </select>
+
+                <button
+                        class="bouton"
+                        type="submit"
+                        title="rechercher">
+                    Rechercher
+                </button>
+            </div>
+
+        </fieldset>
+    </form>
+
+
+
+    <h2>Liste des sorties</h2>
+
+
+
+
+
+    <!-- fabrique une box article pour chaque article de la liste -->
+
+    <ul>
+        {% for sortie in listeSorties %}
+            <li>
+                <fieldset class="accueil-sortie">
+                <legend><strong>{{ sortie.nom }}</strong></legend>
+
+                <ul>
+                    <li> <p>Informations sur la sortie : {{ sortie.infosSortie}}</p></li>
+                    <li> <p>Nombre max de participant : {{ sortie.nbInscriptionsMax }}</p></li>
+                </ul>
+
+                </fieldset>
+        {% else %}
+                    <p>Désolé, aucune sortie ne correspond à votre recherche</p>
+            </li>
+        {% endfor %}
+
+    </ul>
+
+
+
+{% endblock %}

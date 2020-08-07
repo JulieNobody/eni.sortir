@@ -17,12 +17,13 @@ class UserController extends AbstractController
     /**
      * @Route("/login", name="user_login")
      */
-    public function login() {
+    public function login()
+    {
 
          if ($this -> isGranted('IS_AUTHENTICATED_FULLY') ){
              return $this->redirectToRoute('accueil');
          } else{
-            return $this->render('user/login.html.twig');
+             return $this->render('user/login.html.twig');
         }
 
 
