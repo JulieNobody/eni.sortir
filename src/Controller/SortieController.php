@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Form\SortieType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,7 +49,19 @@ class SortieController extends AbstractController
         ]);
     }
 
-    //fonction à déplacer dans le UserController
+    /**
+     * @Route("creerSortie", name="sortie_creerSortie")
+     */
+    public function creerSortie()
+    {
+        $sortie = new Sortie();
+
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+
+
+
+        return $this->render("sortie/creerSortie.html.twig",['sortieForm'=> $sortieForm->createView()]);
+    }
 
 
 

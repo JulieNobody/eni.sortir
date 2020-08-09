@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Sortir | Accueil{% endblock %}
+{% block body %}
+    <h1>Creer une sortie</h1>
+
+    {{ form(sortieForm) }}
+    <button type="submit">Valider</button>
+
+    <a href="{{path('main_aVenir') }}" title="Sortir | Créer un lieu">créer un lieu</a>
+{% endblock %}

@@ -21,8 +21,14 @@
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <nav >
             <ul>
+                <li>
+                    {%if(app.user) %}
+                        <strong>{{ app.user.username }}</strong>, le
+                        {{ "now"|date("m/d/Y") }}
+                    {% endif %}
+                </li>
                 <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
-                <li><a href="{{path('accueil') }}" title="Sortir | Mon profil">Mon profil</a></li>
+                <li><a href="{{path('main_aVenir') }}" title="Sortir | Mon profil">Mon profil</a></li>
                 <li><a href="{{path('user_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
             </ul>
         </nav>

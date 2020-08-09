@@ -15,4 +15,14 @@ class MainController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->redirectToRoute('sortie_accueil');
     }
+
+    /**
+     * @Route("aVenir", name="main_aVenir")
+     */
+    public function aVenir()
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render("aVenir.html.twig",[]);
+    }
 }
