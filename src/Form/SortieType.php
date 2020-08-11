@@ -8,6 +8,7 @@ use App\Entity\Ville;
 use App\Repository\LieuRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,16 +28,24 @@ class SortieType extends AbstractType
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
             ])
-            ->add('lieu', EntityType::class,[
+            //->add('validerLieu', SubmitType::class, ['label'=> 'Valider le lieu'])
+            ->add('validerForm', SubmitType::class, ['label'=> 'Valider le formulaire']);
+
+            //, null, ['required'=>false]
+
+
+            // ------------ TEST 1 ------------
+
+           /* ->add('lieu', EntityType::class,[
                 'class' => Lieu::class,
                 'choice_label' => 'rue',
                 'mapped'=>false,
                 'attr' =>
                     ['disabled' => 'disabled']
 
-            ])
-        ;
+            ])*/
 
+            // ------------ TEST 2 (champs imbriqués, YT) ------------
         /*
         $builder ->get('lieu')->addEventListener(
             FormEvents::POST_SUBMIT,
@@ -49,8 +58,10 @@ class SortieType extends AbstractType
             }
         );*/
 
+        // ------------ champ non modifiable ------------
         //<input type="text" value="" disabled />
 
+        // ------------ TEST 3 ------------
             /*
             ->add('rue', EntityType::class,[
                 'class' => Lieu::class,
@@ -74,13 +85,6 @@ class SortieType extends AbstractType
 
 
 
-
-            //->add('')//lieu
-            //->add('')//latitude
-            //->add('')//longitude
-
-
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

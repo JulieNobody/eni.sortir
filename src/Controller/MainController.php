@@ -2,7 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Sortie;
+use App\Form\SortieType;
+use App\Repository\CampusRepository;
+use App\Repository\EtatRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
@@ -26,4 +32,8 @@ class MainController extends AbstractController
 
         return $this->render("aVenir.html.twig",[]);
     }
+
+
+
+
 }
