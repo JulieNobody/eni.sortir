@@ -54,6 +54,7 @@ class SortieController extends AbstractController
         //validation du lieu
         $validLieu = "lieu pas validé";
 
+        //TODO : tester if(isset($_POST('nomDuBouton'))
         if ($sortieForm->get('validerLieu')->isClicked())
         {
             // variables test pour bouton valider lieu -> marche pas

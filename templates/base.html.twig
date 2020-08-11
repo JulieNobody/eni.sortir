@@ -28,8 +28,8 @@
                     {% endif %}
                 </li>
                 <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
-                <li><a href="{{path('main_aVenir') }}" title="Sortir | Mon profil">Mon profil</a></li>
-                <li><a href="{{path('user_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
+                <li><a href="{{path('user_detailProfil', { id: app.user.id } ) }}" title="Sortir | Mon profil">Mon profil</a></li>
+                <li><a href="{{path('app_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
             </ul>
         </nav>
     {% else %}
