@@ -5,9 +5,19 @@
     <h1>Détail profil :</h1>
 
     <div>
+        <ul>
+            <li>Nom : {{ user.nom }}</li>
+            <li>Prénom : {{ user.prenom }}</li>
+            <li>Pseudo : {{ user.username }}</li>
+            <li>Campus : en cours</li>
+            <li>Téléphone : {{ user.telephone }}</li>
+            <li>Email : {{ user.email }}</li>
+            <li>Photo : en cours</li>
 
-        <p>Lorem lorem</p>
+        </ul>
+
 
     </div>
+    <a href="{{path('user_modifierProfil', { id : user.id } ) }}" title="Sortir | Mon profil">Modifier mon profil</a>
 
 {% endblock %}
