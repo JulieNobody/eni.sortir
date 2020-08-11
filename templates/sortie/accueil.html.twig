@@ -3,23 +3,57 @@
 {% block body %}
     <h1>Bienvenue à l'accueil {%if(app.user) %} {{ app.user.username }} {% endif %}!</h1>
 
-    <h2>Filtres</h2>
-
     <form action="" method="POST">
         <fieldset  class="fieldset-filtres">
-            <legend><strong>Filtres</strong></legend>
+            <legend><strong>Filtrer les sorties</strong></legend>
 
             <div class="flexbox-filtres">
-                <input type="text" class="element-filtre" id="filter-input" name="motCle" placeholder="articles contenant...">
-                <label class="element-filtre" id="categories-label" for="">Catégories</label>
+                <label class="element-filtre" id="campus-label" for="">Site :</label>
+                <select class="element-filtre" id="campus-select" name="campus">
+                    <option selected value="{{ app.user.campus.id }}">{{ app.user.campus.nom }}</option>
+                    {% if app.user.campus.id == 1 %}
+                    <option name="categorie" value="2">CHARTRES DE BRETAGNE</option>
+                    <option name="categorie" value="3">LA ROCHE SUR YON</option>
 
-                <select class="element-filtre" id="categories-select" name="categorie">
-                    <option selected value="0">Toutes</option>
-                    <option name="categorie" value="1">Informatique</option>
-                    <option name="categorie" value="2">Ameublement</option>
-                    <option name="categorie" value="3">Vêtement</option>
-                    <option name="categorie" value="4">Sport & Loisirs</option>
+                    {% elseif app.user.campus.id == 2 %}
+                        <option name="categorie" value="1">SAINT-HERBLAIN</option>
+                        <option name="categorie" value="3">LA ROCHE SUR YON</option>
+
+                    {% elseif app.user.campus.id == 3 %}
+                        <option name="categorie" value="1">SAINT-HERBLAIN</option>
+                        <option name="categorie" value="2">CHARTRES DE BRETAGNE</option>
+                    {% endif %}
                 </select>
+                <div id="filtre_contient">
+                    <label class="element-filtre" id="contient-label" for="">Le nom de la sortie contient :</label>
+                    <input type="text" class="element-filtre" id="filter-input" name="motCle" placeholder="chercher...">
+                </div>
+                <div id="filtre_dates">
+                    <label class="element-filtre" id="date-label" for="">Entre le :</label>
+                    <input type="date">
+                    <label class="element-filtre" id="date-label" for="">et le :</label>
+                    <input type="date">
+                </div>
+
+                <div id="filtre_cb_orga">
+                    <input type="checkbox" id="cb_orga" name="cb_orga">
+                    <label for="cb_orga">Sorties dont je suis l'organisateur/trice</label>
+                </div>
+
+                <div id="filtre_cb_inscrit">
+                    <input type="checkbox" id="cb_inscrit" name="cb_inscrit">
+                    <label for="cb_inscrit">Sorties auxquelles je suis inscrit/e</label>
+                </div>
+
+                <div id="filtre_cb_non_inscrit">
+                    <input type="checkbox" id="cb_non_inscrit" name="cb_non_inscrit">
+                    <label for="cb_non_inscrit">Sorties auxquelles je ne suis pas inscrit/e</label>
+                </div>
+
+                <div id="filtre_cb_passee">
+                    <input type="checkbox" id="cb_passee" name="cb_passee">
+                    <label for="cb_passee">Sorties passées</label>
+                </div>
 
                 <button
                         class="bouton"
@@ -42,24 +76,57 @@
 
     <!-- fabrique une box article pour chaque article de la liste -->
 
-    <ul>
+        <div id="header_tab">
+            <table>
+                <tr>
+                    <th class="enTete">Nom de la sortie</th>
+                    <th class="enTete">Date de la sortie</th>
+                    <th class="enTete">Clôture</th>
+                    <th class="enTete">Inscrits / Places</th>
+                    <th class="enTete">Etat</th>
+                    <th class="enTete">Inscrit</th>
+                    <th class="enTete">Organisateur</th>
+                    <th class="enTete">Actions</th>
+                </tr>
+            </table>
+        </div>
+
+
+    <div id="contenu_tab">
+        <table>
+
         {% for sortie in listeSorties %}
-            <li>
-                <fieldset class="accueil-sortie">
-                <legend><strong>{{ sortie.nom }}</strong></legend>
+            <tr>
+                <td class="col_contenu">{{ sortie.nom }}</td>
+                <td class="col_contenu">Le {{ sortie.dateHeureDebut | date('d/m/Y') }} à {{ sortie.dateHeureDebut | date('H') }}h{{ sortie.dateHeureDebut | date('i') }}</td>
+                <td class="col_contenu">Le {{ sortie.dateLimiteInscription | date('d/m/Y') }} à {{ sortie.dateLimiteInscription | date('H') }}h{{ sortie.dateLimiteInscription | date('i') }}</td>
+                <td class="col_contenu">{{ sortie.participants | length }} / {{ sortie.nbInscriptionsMax }}</td>
+                <td class="col_contenu">{{ sortie.etat.libelle }}</td>
+                <td class="col_contenu">
+                    {% if app.user in sortie.participants%}
+                        <input type="checkbox" id="tab_inscrit" name="tab_inscrit" checked disabled="disabled">
+                    {% else %}
+                        <input type="checkbox" id="tab_inscrit" name="tab_inscrit" disabled="disabled">
+                    {% endif %}
+                </td>
+                <td class="col_contenu"><a href="">{{ sortie.organisateur.username }}</a></td>
+                <td class="col_contenu">
+                    <a href="">Afficher</a>
+                    {% if sortie.organisateur.id == app.user.id and sortie.etat.id == 1%} <a href="">Publier</a> {% endif %}
+                    {% if sortie.organisateur.id == app.user.id and sortie.etat.id == 2%} <a href="">Annuler</a> {% endif %}
 
-                <ul>
-                    <li> <p>Informations sur la sortie : {{ sortie.infosSortie}}</p></li>
-                    <li> <p>Nombre max de participant : {{ sortie.nbInscriptionsMax }}</p></li>
-                </ul>
+                    {% if app.user in sortie.participants and sortie.organisateur.id != app.user.id%} <a href="">Se désister</a> {% endif %}
+                    {% if app.user in sortie.participants and sortie.etat.id == 2%} <a href="">S'inscrire</a> {% endif %}
 
-                </fieldset>
+                </td>
+            </tr>
+
         {% else %}
-                    <p>Désolé, aucune sortie ne correspond à votre recherche</p>
-            </li>
+                    <p>Désolé, aucune sortie ne correspond à vôtre recherche</p>
         {% endfor %}
+        </table>
+    </div>
 
-    </ul>
 
 <a href="{{path('sortie_creerSortie') }}">Créer une sortie</a>
 
