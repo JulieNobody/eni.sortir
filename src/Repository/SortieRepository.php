@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Data\SearchData;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,61 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function findSearch(SearchData $search): array
+    {
+        $query = $this
+            ->createQueryBuilder('p')
+            ->select('c', 'p')
+            ->join('p.campus', 'c');
+           // ->join('p.participants', 'u');
+
+        if(!empty($search->q)){
+            $query = $query
+                ->andWhere('p.nom LIKE :q')
+                ->setParameter('q', "%{$search->q}%" );
+        }
+
+        if(!empty($search->campus)){
+            $query = $query
+                ->andWhere('c.id IN (:campus)')
+                ->setParameter('campus', $search->campus);
+        }
+
+        if(!empty($search->min)){
+            $query = $query
+                ->andWhere('p.dateHeureDebut >= :min')
+                ->setParameter('min', $search->min );
+        }
+
+        if(!empty($search->max)){
+            $query = $query
+                ->andWhere('p.dateHeureDebut <= :max')
+                ->setParameter('max', $search->max );
+        }
+
+        if(!empty($search->isOrga)){
+            $query = $query
+                ->andWhere('p.organisateur.id = :user')
+                ->setParameter('user', app.user.id);
+        }
+
+        if(!empty($search->isInscrit)){
+            $query = $query
+                ->andWhere('p.isOrga <= 1');
+        }
+
+        if(!empty($search->isNotInscrit)){
+            $query = $query
+                ->andWhere('p.isOrga <= 1');
+        }
+
+        if(!empty($search->sortiesPassees)){
+            $query = $query
+                ->andWhere('p.etat = 5');
+        }
+
+        return $query->getQuery()->getResult();
+    }
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */
