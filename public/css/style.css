@@ -1,3 +1,7 @@
 h1 {
     color: hotpink;
 }
+
+#geocoder {
+    padding-bottom:10px;
+}

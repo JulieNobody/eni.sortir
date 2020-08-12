@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block title %}Sortir | à venir{% endblock %}
+{% block body %}
+    <h1> choisi ton lieu!</h1>
+
+    <div style="width: 63vw; height: 50vh" id="map"></div>
+    <div>
+        <title>Autocomplete search address form using google map and get data into form example </title>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+    </div>
+
+    <body>
+<input id="searchInput" class="input-controls" type="text" placeholder="Enter a location">
+<div class="map" id="map" style="width: 100%; height: 300px;"></div>
+
+
+
+    <script type="text/javascript">
+        initMap();
+
+        async function initMap(){
+            const map = new L.Map('map', {
+                center: new L.LatLng(52.6313102,1.292898),
+                zoom: 14,
+                maxZoom: 18
+            });
+            const template = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+            map.addLayer(template);
+            {#  let response = await fetch('https://ezplatform.com/misc/adams-apple-locations.json');
+            let geojsonFeatureCollection = await response.json();#}
+
+            let geojsonFeatureCollection = {
+                "type": "FeatureCollection",
+                "features": [
+                    {
+                        "type": "Feature",
+                        "properties": {
+                            "name": "Adam's Apple Bowthorpe",
+                            "amenity": "Fruit Store",
+                            "popupContent": `<h1>Adam's Apple Bowthorpe</h1>
+                        <p>53 Roker Terrace<br />
+                            LANGTON LONG BLANDFORD<br />
+                            DT11 8BU<br />
+                            tel: 070 8132 5179
+                        </p>`
+                        },
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [1.2173105,52.6372672]
+                        }
+                    }
+                ]
+            };
+
+            L.geoJSON(geojsonFeatureCollection, {
+                onEachFeature: onEachFeature,
+                pointToLayer: function(feature,latlng){
+                    let ratIcon;
+                    return L.marker(latlng, {
+                        icon:
+                            ratIcon = L.icon({
+                                iconUrl: 'http://maptimeboston.github.io/leaflet-intro/rat.gif',
+                                iconSize: [40, 30]
+                            })
+
+                    });
+                }
+            }).addTo(map);
+
+
+            function onEachFeature(feature, layer) {
+                if (feature.properties && feature.properties.popupContent) {
+                    layer.bindPopup(feature.properties.popupContent);
+                }
+            }
+        }
+    </script>
+
+
+
+
+{% endblock %}

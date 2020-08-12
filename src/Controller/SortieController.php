@@ -63,6 +63,19 @@ class SortieController extends AbstractController
         return $this->render("sortie/creerSortie.html.twig",['sortieForm'=> $sortieForm->createView()]);
     }
 
+    /**
+     * @Route("creerLieu", name="sortie_creerLieu")
+     */
+    public function creerLieu()
+    {
+$mapList=["France", "Allemagne", "suisse"];
+
+
+    return $this->render("sortie/creerLieu1.html.twig", [
+        "mapList" => $mapList
+    ]);
+    }
+
 
 
 
