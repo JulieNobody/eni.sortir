@@ -113,7 +113,10 @@
                         <input type="checkbox" id="tab_inscrit" name="tab_inscrit" disabled="disabled">
                     {% endif %}
                 </td>
-                <td class="col_contenu"><a href="">{{ sortie.organisateur.username }}</a></td>
+                <td class="col_contenu"><a href="{{path('user_detailProfil', { id: sortie.organisateur.id } ) }}" title="Profil de {{ sortie.organisateur.username }}">{{ sortie.organisateur.username }}</a></td>
+
+
+
                 <td class="col_contenu">
                     <a href="">Afficher</a>
                     {% if sortie.organisateur.id == app.user.id and sortie.etat.id == 1%} <a href="">Publier</a> {% endif %}
