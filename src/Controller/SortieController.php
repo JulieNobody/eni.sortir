@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Data\SearchData;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Form\SearchForm;
 use App\Form\SortieType;
 use App\Form\UserType;
 use App\Repository\EtatRepository;
@@ -25,15 +27,22 @@ class SortieController extends AbstractController
     /**
      * @Route("accueil", name="sortie_accueil")
      */
-    public function accueil(SortieRepository $repo)
+    public function accueil(SortieRepository $repo, Request $request)
     {
 
-        $listeSorties = $repo->findBy([], ['dateHeureDebut' => 'DESC']);
+        $data = new SearchData();
+        $form = $this->createForm(SearchForm::class, $data);
+        $form->handleRequest($request);
+        $listeSorties = $repo->findSearch($data);
+
+       // $listeSorties = $repo->findBy([], ['dateHeureDebut' => 'DESC']);
 
         return $this->render("sortie/accueil.html.twig",[
-            'listeSorties' => $listeSorties
+            'listeSorties' => $listeSorties,
+            'form' => $form->createView()
         ]);
     }
+
 
     /**
      * @Route("creerSortie", name="sortie_creerSortie")
