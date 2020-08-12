@@ -40,19 +40,22 @@ class MainController extends AbstractController
      */
     public function inscription(Sortie $sortie, EntityManagerInterface $manager)
     {
-        //--- insertion du user dans la table sortie ---
+        //--- insertion le user dans la table sortie ---
 
         //récupération du user connecté
         $user = $this->getUser();
+        dd($user);
 
         //récuperation tableau de participant de la sortie
-        $tableauParticipant[] = $sortie->getParticipants();
-
+        if($sortie->getParticipants() != null) {
+            $tableauParticipant[] = $sortie->getParticipants();
+        }
         //ajout du user au tableau de sortie
         array_push($tableauParticipant, $user);
 
         //renvoi du tableau completé dans la sortie
         $sortie->setParticipants($tableauParticipant);
+
 
         $manager->persist($sortie);
         $manager->flush();
@@ -94,9 +97,9 @@ class MainController extends AbstractController
 
 
     /**
-     * @Route("test", name="main_test")
+     * @Route("test/{id}", name="main_test")
      */
-    public function test()
+    public function test(Sortie $sortie)
     {
         //$tableau = array("orange", "banana");
         //array_push($tableau, "apple", "raspberry");
@@ -115,7 +118,14 @@ class MainController extends AbstractController
 
         unset($tableau2[array_search("Lorem4", $tableau2)]);
 
-        return $this->render("main/test.html.twig",['tableau'=> $tableau, 'tableau2'=> $tableau2]);
+        $tableauParticipant[] = $sortie->getParticipants();
+
+        return $this->render("main/test.html.twig",[
+            'tableau'=> $tableau,
+            'tableau2'=> $tableau2,
+            'tableauParticipant' => $tableauParticipant,
+            'sortie'=> $sortie
+        ]);
     }
 
 

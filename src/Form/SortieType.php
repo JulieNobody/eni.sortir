@@ -20,7 +20,7 @@ class SortieType extends AbstractType
         $builder
             ->add('nom')
             ->add('dateHeureDebut')
-            ->add('duree')
+            //->add('duree')
             ->add('dateLimiteInscription')
             ->add('nbInscriptionsMax')
             ->add('infosSortie')
@@ -29,7 +29,8 @@ class SortieType extends AbstractType
                 'choice_label' => 'nom',
             ])
             //->add('validerLieu', SubmitType::class, ['label'=> 'Valider le lieu'])
-            ->add('validerForm', SubmitType::class, ['label'=> 'Valider le formulaire']);
+            //->add('validerForm', SubmitType::class, ['label'=> 'Valider le formulaire'])
+            ;
 
             //, null, ['required'=>false]
 

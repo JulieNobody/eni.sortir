@@ -83,13 +83,29 @@ class SortieController extends AbstractController
                    - état : Créée
             */
 
+            //organisateur
             $sortie->setOrganisateur($this->getUser());
+
+            //campus
             $sortie->setCampus($this->getUser()->getCampus());
 
+            //etat
             $etatCreee = $etatRepository->findOneBy(array('libelle' => 'Créée'));
-
             $sortie->setEtat($etatCreee);
 
+            //durée
+            $heures = $request->request->get('heures');
+            $minutes = $request->get('minutes');
+            $duree = 0;
+
+            if ($heures > 1)
+            {
+                $duree = ($heures * 60);
+            }
+            $duree = $duree + $minutes;
+            $sortie->setDuree($duree);
+
+            //insertion en BDD
             $manager->persist($sortie);
             $manager->flush();
 
