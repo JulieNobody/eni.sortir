@@ -68,27 +68,6 @@ class User implements UserInterface
      */
     private $campus;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Sortie")
-     */
-    private $sorties;
-
-    /**
-     * @return mixed
-     */
-    public function getSorties()
-    {
-        return $this->sorties;
-    }
-
-    /**
-     * @param mixed $sorties
-     */
-    public function setSorties($sorties): void
-    {
-        $this->sorties = $sorties;
-    }
-
 
     public function getId(): ?int
     {

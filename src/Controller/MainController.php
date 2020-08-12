@@ -34,63 +34,6 @@ class MainController extends AbstractController
         return $this->render("aVenir.html.twig",[]);
     }
 
-    //FIXME déplacer dans sortieController
-    /**
-     * @Route("inscription/{id}", name="sortie_inscription", requirements={"id":"\d+"})
-     */
-    public function inscription(Sortie $sortie, EntityManagerInterface $manager)
-    {
-        //--- insertion du user dans la table sortie ---
-
-        //récupération du user connecté
-        $user = $this->getUser();
-
-        //récuperation tableau de participant de la sortie
-        $tableauParticipant[] = $sortie->getParticipants();
-
-        //ajout du user au tableau de sortie
-        array_push($tableauParticipant, $user);
-
-        //renvoi du tableau completé dans la sortie
-        $sortie->setParticipants($tableauParticipant);
-
-        $manager->persist($sortie);
-        $manager->flush();
-
-        $this->addFlash('success', "Vous êtes inscrits à la sortie");
-
-        return $this->redirectToRoute('accueil');
-
-
-    }
-
-    //FIXME déplacer dans sortieController
-    /**
-     * @Route("desinscription/{id}", name="sortie_desinscription", requirements={"id":"\d+"})
-     */
-    public function desinscription(Sortie $sortie, EntityManagerInterface $manager)
-    {
-        //--- suppression du user de la table sortie ---
-
-        //récupération du user connecté
-        $user = $this->getUser();
-
-        //récuperation tableau de participant de la sortie
-        $tableauParticipant[] = $sortie->getParticipants();
-
-        //recherche puis suppression du user dans le tableau de participants
-        unset($tableauParticipant[array_search($user, $tableauParticipant)]);
-
-        //renvoi du tableau completé dans la sortie
-        $sortie->setParticipants($tableauParticipant);
-
-        $manager->persist($sortie);
-        $manager->flush();
-
-        $this->addFlash('success', "Vous êtes désinscrit de la sortie");
-
-        return $this->redirectToRoute('accueil');
-    }
 
 
     /**

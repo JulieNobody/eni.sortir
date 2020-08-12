@@ -6,14 +6,18 @@ namespace App\Form;
 
 use App\Data\SearchData;
 use App\Entity\Campus;
+use App\Entity\Lieu;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\ChoiceList\ChoiceList;
 
 class SearchForm extends AbstractType implements FormTypeInterface
 {
@@ -22,26 +26,29 @@ class SearchForm extends AbstractType implements FormTypeInterface
     {
         $builder
             ->add('q', TextType::class, [
-                'label' => false,
+                'label' => 'Recherche par mot clé : ',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Rechercher'
                 ]
             ])
+
             ->add('campus', EntityType::class, [
-                'label' => false,
-                'required' => false,
+                'label' => 'Site de : ',
+                'required' => true,
                 'class' => Campus::class
             ])
+
+
             ->add('min', DateType::class,[
-                'label' => false,
+                'label' => 'Entre le : ',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Entre le...'
                 ]
             ])
             ->add('max', DateType::class,[
-                'label' => false,
+                'label' => 'Et le : ',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Et le...'
