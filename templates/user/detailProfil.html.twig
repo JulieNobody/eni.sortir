@@ -6,10 +6,10 @@
 
     <div>
         <ul>
+            <li>Pseudo : {{ user.username }}</li>
             <li>Nom : {{ user.nom }}</li>
             <li>Prénom : {{ user.prenom }}</li>
-            <li>Pseudo : {{ user.username }}</li>
-            <li>Campus : en cours</li>
+            <li>Campus : {{ user.campus.nom }}</li>
             <li>Téléphone : {{ user.telephone }}</li>
             <li>Email : {{ user.email }}</li>
             <li>Photo : en cours</li>
@@ -18,6 +18,13 @@
 
 
     </div>
-    <a href="{{path('user_modifierProfil', { id : user.id } ) }}" title="Sortir | Mon profil">Modifier mon profil</a>
+
+    {% if user is same as(app.user) %}
+
+        <a href="{{path('user_modifierProfil', { id : user.id } ) }}" title="Sortir | Mon profil">Modifier mon profil</a>
+
+    {% endif %}
+
+
 
 {% endblock %}
