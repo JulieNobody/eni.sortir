@@ -41,7 +41,10 @@
                 <td class="col_contenu">{{ sortie.nom }}</td>
                 <td class="col_contenu">Le {{ sortie.dateHeureDebut | date('d/m/Y') }} à {{ sortie.dateHeureDebut | date('H') }}h{{ sortie.dateHeureDebut | date('i') }}</td>
                 <td class="col_contenu">Le {{ sortie.dateLimiteInscription | date('d/m/Y') }} à {{ sortie.dateLimiteInscription | date('H') }}h{{ sortie.dateLimiteInscription | date('i') }}</td>
-                <td class="col_contenu">{{ sortie.participants | length }} / {{ sortie.nbInscriptionsMax }}</td>
+                <td class="col_contenu">
+                    {{ sortie.participants | length }} / {{ sortie.nbInscriptionsMax }}
+                    {% if sortie.participants | length >= sortie.nbInscriptionsMax%}Complet !{% endif %}
+                </td>
                 <td class="col_contenu">{{ sortie.etat.libelle }}</td>
                 <td class="col_contenu">
                     {% if app.user in sortie.participants%}
@@ -60,8 +63,8 @@
                     {% if sortie.organisateur.id == app.user.id and sortie.etat.id == 2%} <a href="">Annuler</a> {% endif %}
                     {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2)%} <a href="">Modifier</a> {% endif %}
 
-                    {% if app.user not in sortie.participants and sortie.etat.id == 2 %} <a href="{{path('sortie_inscription', { id: sortie.id } ) }}">S'inscrire</a> {% endif %}
-                    {% if app.user in sortie.participants %} <a href="">Se désister</a> {% endif %}
+                    {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%} <a href="{{path('sortie_inscription', { id: sortie.id } ) }}">S'inscrire</a> {% endif %}
+                    {% if app.user in sortie.participants %} <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}">Se désister</a> {% endif %}
                 </td>
             </tr>
         {% else %}

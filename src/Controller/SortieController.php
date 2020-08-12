@@ -129,17 +129,17 @@ class SortieController extends AbstractController
         //récupération du user connecté
         $user = $this->getUser();
 
-        $sortie->addParticipant($user);
+        $message = $sortie->addParticipant($user);
 
         $manager->persist($sortie);
         $manager->flush();
 
-        $this->addFlash('success', "Vous êtes inscrits à la sortie");
+        $this->addFlash('result', $message);
 
         return $this->redirectToRoute('accueil');
     }
 
-    //FIXME
+
     /**
      * @Route("desinscription/{id}", name="sortie_desinscription", requirements={"id":"\d+"})
      */
@@ -150,19 +150,12 @@ class SortieController extends AbstractController
         //récupération du user connecté
         $user = $this->getUser();
 
-        //récuperation tableau de participant de la sortie
-        $tableauParticipant[] = $sortie->getParticipants();
-
-        //recherche puis suppression du user dans le tableau de participants
-        unset($tableauParticipant[array_search($user, $tableauParticipant)]);
-
-        //renvoi du tableau completé dans la sortie
-        $sortie->setParticipants($tableauParticipant);
+        $message = $sortie->removeParticipant($user);
 
         $manager->persist($sortie);
         $manager->flush();
 
-        $this->addFlash('success', "Vous êtes désinscrit de la sortie");
+        $this->addFlash('result', $message);
 
         return $this->redirectToRoute('accueil');
     }
