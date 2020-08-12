@@ -208,6 +208,13 @@ class Sortie
         $this->participants = $participants;
     }
 
+    public function addParticipant(User $user){
+        if($this->participants->contains($user)){
+            return ;
+        }
+        $this->participants[] = $user;
+    }
+
     /**
      * @return mixed
      */
