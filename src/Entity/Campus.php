@@ -88,4 +88,8 @@ class Campus
     }
 
 
+    public function __toString()
+    {
+        return $this->nom;
+    }
 }

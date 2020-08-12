@@ -146,7 +146,14 @@ class AppFixtures extends Fixture
             $user->setNom($faker->lastName);
             $user->setPrenom($faker->firstNameFemale);
             $user->setUsername($user->getPrenom().$faker->biasedNumberBetween($min = 10, $max = 20, $function = 'sqrt'));
-            $user->setEmail($user->getPrenom().".".$user->getNom()."@".$faker->freeEmailDomain);
+
+            $email = $user->getPrenom().".".$user->getNom()."@".$faker->freeEmailDomain;
+            $email = trim($email);
+
+            //FIXME : strtolower ne marche pas + enlever les accents
+            //$email = strtolower($email); passe les caractères en minuscule
+
+            $user->setEmail($email);
             $user->setTelephone($faker->e164PhoneNumber);
             $user->setPhoto('/img.pp.png');
             $user->setActif(true);
