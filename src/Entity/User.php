@@ -69,7 +69,7 @@ class User implements UserInterface
     private $campus;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Sortie", mappedBy="participants")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Sortie")
      */
     private $sorties;
 

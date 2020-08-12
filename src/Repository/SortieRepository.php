@@ -67,16 +67,10 @@ class SortieRepository extends ServiceEntityRepository
         }
         if(!empty($search->isNotInscrit)){
             $query = $query
-                ->andWhere('participants not IN (:user)')
+                ->andWhere('participants not IN (:user) OR participants is null')
                 ->setParameter('user', $user);
         }
-/*
-        if(!empty($search->isNotInscrit)){
-            $query = $query
-                ->innerJoin('participants.sorties', 'sortiesUser')
-                ->andWhere('sortiesUser.id = 20');
-        }
-*/
+
         if(!empty($search->sortiesPassees)){
             $query = $query
                 ->andWhere('p.etat = 5');

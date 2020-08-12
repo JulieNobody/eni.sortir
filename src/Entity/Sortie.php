@@ -59,7 +59,7 @@ class Sortie
     private $campus;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="sorties")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User")
      */
     private $participants;
 
