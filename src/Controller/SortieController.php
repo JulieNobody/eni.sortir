@@ -33,7 +33,8 @@ class SortieController extends AbstractController
         $data = new SearchData();
         $form = $this->createForm(SearchForm::class, $data);
         $form->handleRequest($request);
-        $listeSorties = $repo->findSearch($data);
+        $user = $this->getUser();
+        $listeSorties = $repo->findSearch($data, $user);
 
        // $listeSorties = $repo->findBy([], ['dateHeureDebut' => 'DESC']);
 
