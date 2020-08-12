@@ -46,6 +46,9 @@ class UserController extends AbstractController
      */
     public function modifierProfil(User $user, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
     {
+        //récupération du pseudo du user
+        $oldUsername = $user->getUsername();
+
         //création instance du formulaire
         $userForm = $this->createForm(UserType::class, $user);
 
@@ -56,8 +59,7 @@ class UserController extends AbstractController
         {
             $usernameIsUnique = $repository->findOneBy(["username" => $user->getUsername()]);
 
-            //FIXME : pose prb si on ne modifie pas le pseudo : il existe déja en BDD donc refus
-            if($usernameIsUnique === null)
+            if($usernameIsUnique === null || $user->getUsername() === $oldUsername)
             {
                 $hashed = $encoder->encodePassword($user, $user->getPassword());
                 $user->setPassword($hashed);
