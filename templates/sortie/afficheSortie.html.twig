@@ -10,23 +10,16 @@
                 <li><p>Nom de la sortie : {{ sortie.nom }} </p></li>
                 <li><p>Date et heure de la sortie : {{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</p></li>
                 <li><p>Nombre de place maximum : {{ sortie.nbInscriptionsMax }} </p></li>
-                <li><p>Nombre de place maximum : {{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }} </p></li>
-                <li><p>Durée de la sortie : {{ sortie.duree }} </p></li>
-
-
-                 <li><p> Durée de la sortie :
-                         {% if sortie.duree > 60 %}
-
-                     {% set heures = sortie.duree//60 %}
-                     {% set minutes = sortie.duree%60 %}
-                         {{ heures }} heure(s) et {{ minutes }} minute(s) (soit {{ sortie.duree }} minutes)
-                 {% else %}
-                    {{ sortie.duree }} minute(s)
-                 {% endif %}
-
-                     </p></li>
-
-
+                <li><p>Date Limite d'inscription : {{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }} </p></li>
+                <li><p> Durée de la sortie :
+                     {% if sortie.duree > 60 %}
+                         {% set heures = sortie.duree//60 %}
+                         {% set minutes = sortie.duree%60 %}
+                         {{ heures }} heure(s) et {{ minutes }} minute(s)
+                     {% else %}
+                        {{ sortie.duree }} minute(s)
+                     {% endif %}
+                </p></li>
                 <li><p>Description et infos : {{ sortie.infosSortie }} </p></li>
              </ul>
          </div>
