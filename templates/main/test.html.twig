@@ -17,15 +17,18 @@
         <p>tableau vide</p>
     {% endfor %}
 
+    <form method="POST">
+        <label for="heures">heure(s) :</label>
+        <input type="number" id="heures" name="heures">
 
-{# {% for user in tableauParticipant %}
-        <p> {{ user }}</p>
-    {% else %}
-        <p>tableau vide</p>
-    {% endfor %} #}
+        <label for="minutes">minute(s) :</label>
+        <input type="number" id="minutes" name="minutes" required>
+    </form>
 
 
-    <p>Ma sortie : {{ sortie.nom }}</p>
+    <button>Valider</button>
+
+
 
 
 

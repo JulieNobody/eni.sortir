@@ -96,7 +96,7 @@ class SortieController extends AbstractController
             //etat
             $etatCreee = $etatRepository->findOneBy(array('libelle' => 'Créée'));
             $sortie->setEtat($etatCreee);
-
+/*
             //durée
             $heures = $request->request->get('heures');
             $minutes = $request->get('minutes');
@@ -107,7 +107,7 @@ class SortieController extends AbstractController
                 $duree = ($heures * 60);
             }
             $duree = $duree + $minutes;
-            $sortie->setDuree($duree);
+            $sortie->setDuree($duree);*/
 
             //insertion en BDD
             $manager->persist($sortie);
