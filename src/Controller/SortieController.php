@@ -155,7 +155,8 @@ class SortieController extends AbstractController
         $particpants = $sortieRepo->findOneBySomeParticipants($id);
 
             return $this->render('sortie/afficheSortie.html.twig', [
-                "sortie" => $sortie, "particpants" => $particpants]);
+                "sortie" => $sortie, "particpants" => $particpants
+            ]);
         }
 
 
@@ -179,5 +180,21 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('accueil');
     }
 
+    /**
+     * @param Sortie $sortie
+     * @param EntityManagerInterface $manager
+     * @Route("annulation/{id}", name="sortie_annulation", requirements={"id":"\d+"})
+     */
+    public function annulerSortie(Sortie $sortie, EntityManagerInterface $manager, EtatRepository $repoEtat)
+    {
+            $etat = $repoEtat->find(6);
+            $message = $sortie->annulerSortie($this->getUser(), $etat);
+            $manager->persist($sortie);
+            $manager->flush();
 
+
+
+        $this->addFlash('result', $message);
+        return $this->redirectToRoute('accueil');
+    }
 }

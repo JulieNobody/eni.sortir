@@ -242,7 +242,15 @@ class Sortie
         }else {
             return $message = 'La désinscription est impossible à réaliser sur cette sortie !';
         }
+    }
 
+    public function annulerSortie(User $user, Etat $etat){
+        if($user == $this->getOrganisateur()){
+            $this->etat = $etat;
+            return $message = 'Votre sortie '.$this->getNom().' a bien été annulée !';
+        }else {
+            return $message = 'Vous n\'avez pas les droits pour annuler cette sortie';
+        }
     }
 
     /**
