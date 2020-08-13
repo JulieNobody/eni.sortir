@@ -152,10 +152,12 @@ class SortieController extends AbstractController
     public function sortie(SortieRepository $sortieRepo, $id)
     {
         $sortie = $sortieRepo->find($id);
+        $particpants = $sortieRepo->findOneBySomeParticipants($id);
 
-        return $this->render('sortie/afficheSortie.html.twig', [
-            "sortie" => $sortie]);
-    }
+            return $this->render('sortie/afficheSortie.html.twig', [
+                "sortie" => $sortie, "particpants" => $particpants]);
+        }
+
 
     /**
      * @Route("desinscription/{id}", name="sortie_desinscription", requirements={"id":"\d+"})

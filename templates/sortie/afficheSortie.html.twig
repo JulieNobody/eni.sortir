@@ -45,6 +45,7 @@
             <table>
                 <h4>Liste des particpants</h4>
                     <tr><td>Pseudo</td><td>Nom</td></tr>
+
                         {% for participant in sortie.participants %}
                             <div class ="listParticipant">
                                 <tr>
@@ -64,6 +65,7 @@
                             </div>
                      {% endfor %}
             </table>
+            {% if particpants| length == 0 %}<p>Pas de participants !</p>{% endif %}
         </div>
 <br>
 {% endblock %}

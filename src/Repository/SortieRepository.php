@@ -28,7 +28,11 @@ class SortieRepository extends ServiceEntityRepository
             ->createQueryBuilder('p')
             ->select('c', 'p')
             ->leftJoin('p.campus', 'c')
-            ->leftJoin('p.participants', 'participants');
+            ->leftJoin('p.participants', 'participants')
+            ->leftJoin('p.etat', 'e')
+            ->andWhere('e.id != 1')
+            ->orderBy('e.id','ASC');
+
 
 
         if(!empty($search->q)){
@@ -109,13 +113,13 @@ class SortieRepository extends ServiceEntityRepository
     */
 
 
-
+    //Jointure pour récupérer participants dans sortie_user dans la base de données
     public function findOneBySomeParticipants($id): paginator
     {
-        $qb = $this->createQueryBuilder('s')
-            ->join('s.participants', 'p')
-            ->andWhere('s. = c.id s')
-           ->setParameter('val', $id);
+        $qb = $this->createQueryBuilder('s') //Parametre alias de sortie
+            ->join('s.participants', 'p') //
+            ->andWhere('s.id = :val')
+            ->setParameter('val', $id);
         $rs = $qb->getQuery();
         return new paginator($rs);
     }
