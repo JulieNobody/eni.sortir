@@ -30,7 +30,6 @@ class SortieRepository extends ServiceEntityRepository
             ->leftJoin('p.campus', 'c')
             ->leftJoin('p.participants', 'participants')
             ->leftJoin('p.etat', 'e')
-            ->andWhere('e.id != 1')
             ->orderBy('e.id','ASC');
 
 

@@ -188,11 +188,13 @@ class SortieController extends AbstractController
     public function annulerSortie(Sortie $sortie, EntityManagerInterface $manager, EtatRepository $repoEtat)
     {
             $etat = $repoEtat->find(6);
+            if($sortie->getEtat()->getId() == 5){
+                $this->addFlash('result', 'Vous ne pouvez pas annuler une sortie passée !');
+                return $this->redirectToRoute('accueil');
+            }
             $message = $sortie->annulerSortie($this->getUser(), $etat);
             $manager->persist($sortie);
             $manager->flush();
-
-
 
         $this->addFlash('result', $message);
         return $this->redirectToRoute('accueil');
