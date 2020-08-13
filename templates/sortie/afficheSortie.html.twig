@@ -10,7 +10,7 @@
                 <li><p>Nom de la sortie : {{ sortie.nom }} </p></li>
                 <li><p>Date et heure de la sortie : {{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</p></li>
                 <li><p>Nombre de place maximum : {{ sortie.nbInscriptionsMax }} </p></li>
-                <li><p>Nombre de place maximum : {{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }} </p></li>
+                <li><p>Date limite de l'inscription : {{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }} </p></li>
                 <li><p>Durée de la sortie : {{ sortie.duree }} </p></li>
 
 
@@ -45,7 +45,6 @@
             <table>
                 <h4>Liste des particpants</h4>
                     <tr><td>Pseudo</td><td>Nom</td></tr>
-
                         {% for participant in sortie.participants %}
                             <div class ="listParticipant">
                                 <tr>

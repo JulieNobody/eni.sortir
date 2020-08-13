@@ -30,6 +30,7 @@ class UserType extends AbstractType
             //->add('role')
             //->add('actif')
             ->add('photo')
+
         ;
     }
 
