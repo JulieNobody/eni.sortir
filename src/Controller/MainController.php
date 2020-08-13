@@ -39,7 +39,7 @@ class MainController extends AbstractController
     /**
      * @Route("test", name="main_test")
      */
-    public function test()
+    public function test(Request $request)
     {
         //$tableau = array("orange", "banana");
         //array_push($tableau, "apple", "raspberry");
@@ -57,6 +57,22 @@ class MainController extends AbstractController
         $tableau2 = array("Lorem1", "Lorem2", "Lorem3", "Lorem4", "Lorem5", "Lorem6", "Lorem7");
 
         unset($tableau2[array_search("Lorem4", $tableau2)]);
+
+
+        //DUREE
+
+
+            $heures = $request->request->get('heures');
+            $minutes = $request->get('minutes');
+            $duree = 0;
+
+            if ($heures > 1) {
+                $duree = ($heures * 60);
+            }
+            $duree = $duree + $minutes;
+
+
+
 
         return $this->render("main/test.html.twig",['tableau'=> $tableau, 'tableau2'=> $tableau2]);
     }

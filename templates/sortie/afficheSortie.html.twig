@@ -12,6 +12,21 @@
                 <li><p>Nombre de place maximum : {{ sortie.nbInscriptionsMax }} </p></li>
                 <li><p>Nombre de place maximum : {{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }} </p></li>
                 <li><p>Durée de la sortie : {{ sortie.duree }} </p></li>
+
+
+                 <li><p> Durée de la sortie :
+                         {% if sortie.duree > 60 %}
+
+                     {% set heures = sortie.duree//60 %}
+                     {% set minutes = sortie.duree%60 %}
+                         {{ heures }} heure(s) et {{ minutes }} minute(s) (soit {{ sortie.duree }} minutes)
+                 {% else %}
+                    {{ sortie.duree }} minute(s)
+                 {% endif %}
+
+                     </p></li>
+
+
                 <li><p>Description et infos : {{ sortie.infosSortie }} </p></li>
              </ul>
          </div>
@@ -33,7 +48,20 @@
 
                         {% for participant in sortie.participants %}
                             <div class ="listParticipant">
-                                <tr><td>{{ participant.username }}</td><td> {{ participant.nom }} </td></tr>
+                                <tr>
+                                    <td>
+                                        <a
+                                            href="{{path('user_detailProfil', { id: participant.id } ) }}"
+                                            title="Profil de {{ participant.username }}"
+                                        >
+                                                {{ participant.username }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ participant.nom }}
+                                    </td>
+                                </tr>
+
                             </div>
                      {% endfor %}
             </table>

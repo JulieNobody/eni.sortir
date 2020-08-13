@@ -8,7 +8,9 @@ use App\Entity\Ville;
 use App\Repository\LieuRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,7 +22,7 @@ class SortieType extends AbstractType
         $builder
             ->add('nom')
             ->add('dateHeureDebut')
-            //->add('duree')
+            ->add('duree')
             ->add('dateLimiteInscription')
             ->add('nbInscriptionsMax')
             ->add('infosSortie')
@@ -28,6 +30,7 @@ class SortieType extends AbstractType
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
             ])
+
             //->add('validerLieu', SubmitType::class, ['label'=> 'Valider le lieu'])
             //->add('validerForm', SubmitType::class, ['label'=> 'Valider le formulaire'])
             ;
