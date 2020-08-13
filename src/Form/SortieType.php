@@ -27,15 +27,36 @@ class SortieType extends AbstractType
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
             ])
-            ->add('lieu', EntityType::class,[
-                'class' => Lieu::class,
-                'choice_label' => 'rue',
-                'mapped'=>false,
-                'attr' =>
-                    ['disabled' => 'disabled']
-
-            ])
         ;
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvents $event)
+            {
+                $form = $event->getForm();
+
+                $data = $event->getLieu();
+                $rue = null === $lieu ? [] : $lieu->getRue();
+
+                $form->add('position', EntityType::class, [
+                    'class'=>'app\Entity\position',
+                    'placeholder'=> '',
+                    'choices'=>$rue
+                ]);
+            }
+        )
+
+
+
+
+        /*->add('lieu', EntityType::class,[
+            'class' => Lieu::class,
+            'choice_label' => 'rue',
+            'mapped'=>false,
+            'attr' =>
+                ['disabled' => 'disabled']
+
+        ])*/
 
         /*
         $builder ->get('lieu')->addEventListener(
