@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block title %}Sotie ENI{% endblock %}
+{% block body %}
+        <h2>Affiche une sortie</h2>
+
+    <!-- Boucle dans la classe sorties -->
+    <hr>
+         <div>      <!--affichage des propriétés de la table sortie de la BDD-->
+             <ul>
+                <li><p>Nom de la sortie : {{ sortie.nom }} </p></li>
+                <li><p>Date et heure de la sortie : {{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</p></li>
+                <li><p>Nombre de place maximum : {{ sortie.nbInscriptionsMax }} </p></li>
+                <li><p>Nombre de place maximum : {{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }} </p></li>
+                <li><p>Durée de la sortie : {{ sortie.duree }} </p></li>
+                <li><p>Description et infos : {{ sortie.infosSortie }} </p></li>
+             </ul>
+         </div>
+    <hr>
+        <div>       <!--affichage des propriétés de la table campus de la BDD-->
+            <ul>
+                <li><p>Campus : {{ sortie.campus.nom }}</p></li>
+                <li><p>Lieu : {{ sortie.lieu.ville.nom }} </p></li>
+                <li><p>Code Postal : {{ sortie.lieu.ville.codePostal }}</p></li>
+                <li><p>Latitude : {{ sortie.lieu.latitude }}</p></li>
+                <li><p>Longitude : {{ sortie.lieu.longitude }}</p></li>
+            </ul>
+        </div>
+    <hr>
+        <div>   <!--affichage du nombre de participants table sortie de la BDD avec une boucle-->
+            <table>
+                <h4>Liste des particpants</h4>
+                    <tr><td>Pseudo</td><td>Nom</td></tr>
+                        {% for participant in sortie.participants %}
+                            <div class ="listParticipant">
+                                <tr><td>{{ participant.username }}</td><td> {{ participant.nom }} </td></tr>
+                            </div>
+                     {% endfor %}
+            </table>
+        </div>
+<br>
+{% endblock %}

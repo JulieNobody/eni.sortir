@@ -36,11 +36,15 @@ class UserController extends AbstractController
      * Symfony gère entièrement cette route
      * @Route("/logout", name="user_logout")
      *
-    //public function logout() {}
-
-
-    /**
+     * //public function logout() {}
+     *
+     *
+     * /**
      * @Route("/register", name="user_register")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param UserPasswordEncoderInterface $encoder
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function register(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
     {
@@ -67,6 +71,12 @@ class UserController extends AbstractController
 
     /**
      * @Route("modifierProfil/{id}", name="user_modifierProfil", requirements={"id":"\d+"})
+     * @param User $user
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param UserPasswordEncoderInterface $encoder
+     * @param UserRepository $repository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function modifierProfil(User $user, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
     {
