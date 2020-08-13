@@ -49,6 +49,11 @@ class Sortie
     private $infosSortie;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $motif;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="sorties")
      */
     private $lieu;
@@ -159,6 +164,23 @@ class Sortie
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMotif()
+    {
+        return $this->motif;
+    }
+
+    /**
+     * @param mixed $motif
+     */
+    public function setMotif($motif): void
+    {
+        $this->motif = $motif;
+    }
+
 
     /**
      * @return mixed

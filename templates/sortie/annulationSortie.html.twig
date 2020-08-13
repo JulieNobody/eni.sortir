@@ -15,7 +15,11 @@
         </ul>
     </div>
     {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6%}
-        <a href="{{path('sortie_annulation', { id: sortie.id } ) }}">Confirmer l'annulation de la sortie</a>
+        {{ form_start(form) }}
+        {{ form_row(form.motif) }}
+        <button class="bouton" type="submit" title="Confirmer">Confirmer l'annulation de la sortie</button>
         <a href="{{path('accueil') }}">Ne pas annuler la sortie et revenir à l'accueil</a>
+        {{ form_end(form) }}
+
     {% endif %}
 {% endblock %}

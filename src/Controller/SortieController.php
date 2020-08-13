@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Data\SearchData;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Form\MotifSortieType;
 use App\Form\SearchForm;
 use App\Form\SortieType;
 use App\Form\UserType;
@@ -143,10 +144,26 @@ class SortieController extends AbstractController
      * @Route("afficheAnnulationSortie/{id}", name="sortie_afficheAnnulationSortie", requirements={"id":"\d+"})
      * @return Response
      */
-    public function afficherAnnulationSortie(Sortie $sortie)
+    public function afficherAnnulationSortie(Sortie $sortie, Request $request, EntityManagerInterface $manager)
     {
+
+        $sortieMotifForm = $this->createForm(MotifSortieType::class, $sortie);
+        $sortieMotifForm->handleRequest($request);
+
+        if($sortieMotifForm->isSubmitted() and $sortieMotifForm->isValid()){
+
+            $manager->persist($sortie);
+            $manager->flush();
+
+            return $this->redirectToRoute('sortie_annulation',[
+                'sortie'=> $sortie,
+                'id' => $sortie->getId()
+            ]);
+        }
+
         return $this->render('sortie/annulationSortie.html.twig', [
-            "sortie" => $sortie
+            "sortie" => $sortie,
+            'form' => $sortieMotifForm->createView()
         ]);
     }
 

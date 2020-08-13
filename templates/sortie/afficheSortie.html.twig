@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block title %}Sortie {{ sortie.nom }}{% endblock %}
 {% block body %}
-        <h2>Affiche une sortie</h2>
-
+        <h1>{{ sortie.nom }}</h1>
+    {% if(sortie.etat.id == 6) %}
+        <div id="zone_annulation">
+            <h2 id="sortie_annulee">Sortie annulée !</h2>
+            <p>{{ sortie.motif }}</p>
+        </div>
+    {% endif %}
     <!-- Boucle dans la classe sorties -->
     <hr>
          <div>      <!--affichage des propriétés de la table sortie de la BDD-->
