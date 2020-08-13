@@ -28,7 +28,11 @@ class SortieRepository extends ServiceEntityRepository
             ->createQueryBuilder('p')
             ->select('c', 'p')
             ->leftJoin('p.campus', 'c')
-            ->leftJoin('p.participants', 'participants');
+            ->leftJoin('p.participants', 'participants')
+            ->leftJoin('p.etat', 'e')
+            ->andWhere('e.id != 1')
+            ->orderBy('e.id','ASC');
+
 
 
         if(!empty($search->q)){

@@ -213,15 +213,15 @@ class Sortie
             return $message = 'Vous ne pouvez plus vous inscrire à la sortie '.$this->getNom().' : L\'activité est complète !';
         }else if($this->participants->contains($user)){
             return $message = 'Vous êtes déjà inscrit à la sortie '.$this->getNom().'. Amusez-vous bien !';
-        }else if($this->etat == 'Créée'){
+        }else if($this->etat->getId() == 1){
             return $message = 'La sortie '.$this->getNom().' n\'est pas encore ouverte aux inscriptions !';
-        }else if($this->etat == 'Clôturée'){
+        }else if($this->etat->getId() == 3){
             return $message = 'Vous ne pouvez plus vous inscrire à la sortie '.$this->getNom().' : Les inscriptions sont clôturées !';
-        }else if($this->etat == 'Activité en cours'){
+        }else if($this->etat->getId() == 4){
             return $message = 'La sortie '.$this->getNom().' est en cours. Vous ne pouvez plus vous y inscrire !';
-        }else if($this->etat == 'passée'){
+        }else if($this->etat->getId() == 5){
             return $message = 'La sortie '.$this->getNom().' a déjà eu lieu. Vous ne pouvez pas vous inscrire à une sortie passée !';
-        }else if($this->etat == 'Annulée'){
+        }else if($this->etat->getId() == 6){
             return $message = 'La sortie '.$this->getNom().' a été annulée et n\'est plus ouverte aux inscriptions !';
         }else {
             $this->participants[] = $user;
@@ -230,11 +230,19 @@ class Sortie
     }
 
     public function removeParticipant(User $user){
-        if($this->participants->contains($user)){
+        if($this->participants->contains($user) and ($this->etat ->getId() == 2 or $this->etat->getId() == 3)){
             $this->participants->removeElement($user);
             return $message = 'Vôtre demande de désistement à la sortie '.$this->getNom().' a bien été prise en compte.';
+        }else if($this->etat ->getId() == 4){
+            return $message = 'La sortie '.$this->getNom().' est en cours. Vous ne pouvez plus vous désinscrire !';
+        }else if($this->etat ->getId() == 5){
+            return $message = 'La sortie '.$this->getNom().' a déjà eu lieu. Vous ne pouvez pas vous désinscrire d\'une sortie passée !';
+        }else if($this->etat ->getId() == 6){
+            return $message = 'La sortie '.$this->getNom().' a été annulée et n\'est plus sujette aux inscriptions/désinscriptions !';
+        }else {
+            return $message = 'La désinscription est impossible à réaliser sur cette sortie !';
         }
-        return ;
+
     }
 
     /**
