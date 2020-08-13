@@ -10,7 +10,6 @@ use App\Form\SortieType;
 use App\Form\UserType;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
-use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
