@@ -8,11 +8,13 @@ use App\Entity\User;
 use App\Form\SearchForm;
 use App\Form\SortieType;
 use App\Form\UserType;
+use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -141,7 +143,20 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('accueil');
     }
+    //Fonction permettant d'afficher une sortie
+    //Requirements permet de renseigner que un integer en id
+    /**
+     * @Route("afficheSortie/{id}", name="sortie_afficheSortie", requirements={"id":"\d+"})
+     * @param SortieRepository $sortieRepo
+     * @return Response
+     */
+    public function sortie(SortieRepository $sortieRepo, $id)
+    {
+        $sortie = $sortieRepo->find($id);
 
+        return $this->render('sortie/afficheSortie.html.twig', [
+            "sortie" => $sortie]);
+    }
 
     /**
      * @Route("desinscription/{id}", name="sortie_desinscription", requirements={"id":"\d+"})

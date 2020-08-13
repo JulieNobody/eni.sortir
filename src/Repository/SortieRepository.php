@@ -6,6 +6,7 @@ use App\Data\SearchData;
 use App\Entity\Sortie;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -106,4 +107,18 @@ class SortieRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+
+    public function findOneBySomeParticipants($id): paginator
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->join('s.participants', 'p')
+            ->andWhere('s. = c.id s')
+           ->setParameter('val', $id);
+        $rs = $qb->getQuery();
+        return new paginator($rs);
+    }
+
 }
+
