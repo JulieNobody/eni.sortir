@@ -64,7 +64,7 @@
                     {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2)%} <a href="">Modifier</a> {% endif %}
 
                     {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%} <a href="{{path('sortie_inscription', { id: sortie.id } ) }}">S'inscrire</a> {% endif %}
-                    {% if app.user in sortie.participants %} <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}">Se désister</a> {% endif %}
+                    {% if app.user in sortie.participants and (sortie.etat.id == 2 or sortie.etat.id == 3) %} <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}">Se désister</a> {% endif %}
                 </td>
             </tr>
         {% else %}
