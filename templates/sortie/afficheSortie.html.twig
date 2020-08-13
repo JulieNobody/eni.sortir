@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Sotie ENI{% endblock %}
+{% block title %}Sortie {{ sortie.nom }}{% endblock %}
 {% block body %}
         <h2>Affiche une sortie</h2>
 
@@ -65,7 +65,7 @@
                             </div>
                      {% endfor %}
             </table>
-            {% if particpants| length == 0 %}<p>Pas de participants !</p>{% endif %}
+            {% if sortie.participants| length == 0 %}<p>Pas de participants !</p>{% endif %}
         </div>
 <br>
 {% endblock %}
