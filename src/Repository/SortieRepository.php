@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Data\SearchData;
 use App\Entity\Sortie;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,6 +22,63 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    public function findSearch(SearchData $search, User $user): array
+    {
+        $query = $this
+            ->createQueryBuilder('p')
+            ->select('c', 'p')
+            ->leftJoin('p.campus', 'c')
+            ->leftJoin('p.participants', 'participants');
+
+
+        if(!empty($search->q)){
+            $query = $query
+                ->andWhere('p.nom LIKE :q')
+                ->setParameter('q', "%{$search->q}%" );
+        }
+
+        if(!empty($search->campus)){
+            $query = $query
+                ->andWhere('c.id IN (:campus)')
+                ->setParameter('campus', $search->campus);
+        }
+
+        if(!empty($search->min)){
+            $query = $query
+                ->andWhere('p.dateHeureDebut >= :min')
+                ->setParameter('min', $search->min );
+        }
+
+        if(!empty($search->max)){
+            $query = $query
+                ->andWhere('p.dateHeureDebut <= :max')
+                ->setParameter('max', $search->max );
+        }
+
+        if(!empty($search->isOrga)){
+            $query = $query
+                ->andWhere('p.organisateur = :user')
+                ->setParameter('user', $user);
+        }
+
+        if(!empty($search->isInscrit)){
+            $query = $query
+                ->andWhere('participants IN (:user)')
+                ->setParameter('user', $user);
+        }
+        if(!empty($search->isNotInscrit)){
+            $query = $query
+                ->andWhere('participants not IN (:user) OR participants is null')
+                ->setParameter('user', $user);
+        }
+
+        if(!empty($search->sortiesPassees)){
+            $query = $query
+                ->andWhere('p.etat = 5');
+        }
+
+        return $query->getQuery()->getResult();
+    }
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */

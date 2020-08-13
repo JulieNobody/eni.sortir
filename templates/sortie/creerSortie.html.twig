@@ -3,8 +3,43 @@
 {% block body %}
     <h1>Creer une sortie</h1>
 
-    {{ form(sortieForm) }}
+
+    <div id="sortie_form">
+        {{ form_start(sortieForm) }}
+
+            {{ form_row(sortieForm.nom) }}
+            {{ form_row(sortieForm.dateHeureDebut) }}
+                <!--
+            <form method="POST">-->
+                <label for="heures">heure(s) :</label>
+                <input type="number" id="heures" name="heures">
+
+                <label for="minutes">minute(s) :</label>
+                <input type="number" id="minutes" name="minutes" required>
+            <!-- </form>
+               -->
+            {#{{ form_row(sortieForm.duree) }}#}
+            {{ form_row(sortieForm.dateLimiteInscription) }}
+            {{ form_row(sortieForm.nbInscriptionsMax) }}
+            {{ form_row(sortieForm.infosSortie) }}
+            {{ form_row(sortieForm.lieu) }}
+
     <button type="submit">Valider</button>
+        {{ form_end(sortieForm) }}
+    </div>
+
+
+
+
+
+    <!-- DETAIL LIEU -->
+
+    <!-- <button type="submit">Choisir ce lieu</button> -->
+    <ul>
+        <li> rue :  </li>
+        <li> latitude :         </li>
+        <li> longitude :         </li>
+    </ul>
 
     <a href="{{path('main_aVenir') }}" title="Sortir | Créer un lieu">créer un lieu</a>
 {% endblock %}

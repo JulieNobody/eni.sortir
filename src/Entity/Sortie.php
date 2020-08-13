@@ -208,6 +208,35 @@ class Sortie
         $this->participants = $participants;
     }
 
+    public function addParticipant(User $user){
+        if(sizeof($this->participants) >= $this->nbInscriptionsMax){
+            return $message = 'Vous ne pouvez plus vous inscrire à la sortie '.$this->getNom().' : L\'activité est complète !';
+        }else if($this->participants->contains($user)){
+            return $message = 'Vous êtes déjà inscrit à la sortie '.$this->getNom().'. Amusez-vous bien !';
+        }else if($this->etat == 'Créée'){
+            return $message = 'La sortie '.$this->getNom().' n\'est pas encore ouverte aux inscriptions !';
+        }else if($this->etat == 'Clôturée'){
+            return $message = 'Vous ne pouvez plus vous inscrire à la sortie '.$this->getNom().' : Les inscriptions sont clôturées !';
+        }else if($this->etat == 'Activité en cours'){
+            return $message = 'La sortie '.$this->getNom().' est en cours. Vous ne pouvez plus vous y inscrire !';
+        }else if($this->etat == 'passée'){
+            return $message = 'La sortie '.$this->getNom().' a déjà eu lieu. Vous ne pouvez pas vous inscrire à une sortie passée !';
+        }else if($this->etat == 'Annulée'){
+            return $message = 'La sortie '.$this->getNom().' a été annulée et n\'est plus ouverte aux inscriptions !';
+        }else {
+            $this->participants[] = $user;
+            return $message = 'Vôtre demande d\'inscription à la sortie '.$this->getNom().' a bien été prise en compte. Amusez-vous bien !';
+        }
+    }
+
+    public function removeParticipant(User $user){
+        if($this->participants->contains($user)){
+            $this->participants->removeElement($user);
+            return $message = 'Vôtre demande de désistement à la sortie '.$this->getNom().' a bien été prise en compte.';
+        }
+        return ;
+    }
+
     /**
      * @return mixed
      */

@@ -2,10 +2,14 @@
 
 namespace App\Controller;
 
+use App\Data\SearchData;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Form\SearchForm;
 use App\Form\SortieType;
 use App\Form\UserType;
+use App\Repository\SortieRepository;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,44 +29,116 @@ class SortieController extends AbstractController
     /**
      * @Route("accueil", name="sortie_accueil")
      */
-    public function accueil()
+    public function accueil(SortieRepository $repo, Request $request)
     {
-        $sortie1 = new Sortie();
-        $sortie1->setNom('la mer');
-        $sortie1->setInfosSortie('Sortie à la mer');
-        $sortie1->setNbInscriptionsMax(6);
 
-        $sortie2 = new Sortie();
-        $sortie2->setNom('Escalade');
-        $sortie2->setInfosSortie('Sortie escalade');
-        $sortie2->setNbInscriptionsMax(10);
+        $data = new SearchData();
+        $form = $this->createForm(SearchForm::class, $data);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+        $listeSorties = $repo->findSearch($data, $user);
 
-        $sortie3 = new Sortie();
-        $sortie3->setNom('ciné');
-        $sortie3->setInfosSortie('Sortie ciné');
-        $sortie3->setNbInscriptionsMax(8);
-
-        //array_push($listeSorties, $sortie1, $sortie2, $sortie3);
-
-        $listeSorties = array($sortie1, $sortie2, $sortie3);
+       // $listeSorties = $repo->findBy([], ['dateHeureDebut' => 'DESC']);
 
         return $this->render("sortie/accueil.html.twig",[
-            'listeSorties' => $listeSorties
+            'listeSorties' => $listeSorties,
+            'form' => $form->createView()
         ]);
     }
+
 
     /**
      * @Route("creerSortie", name="sortie_creerSortie")
      */
-    public function creerSortie()
+    public function creerSortie(Request $request, EntityManagerInterface $manager, EtatRepository $etatRepository)
     {
+
         $sortie = new Sortie();
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
 
+        $sortieForm->handleRequest($request);
 
+        /*
+        // Test de bouton pour valider lieu et afficher détail du lieu -> marche pas
+        // https://symfony.com/doc/4.4/form/multiple_buttons.html
 
-        return $this->render("sortie/creerSortie.html.twig",['sortieForm'=> $sortieForm->createView()]);
+        //validation du lieu
+        $validLieu = "lieu pas validé";
+
+        //TODO : tester if(isset($_POST('nomDuBouton'))
+        if ($sortieForm->get('validerLieu')->isClicked())
+        {
+            // variables test pour bouton valider lieu -> marche pas
+            $this->addFlash('test', "lorem");
+            $validLieu = "lieu validé";
+            $lorem = "Lorem Lorem";
+        }
+        */
+
+        //récupération de la sortie crée
+        if($sortieForm->isSubmitted() && $sortieForm->isValid())
+        {
+            /* à la création d'une sortie
+                   - organisateur : user
+                   - campus : campus du user
+                   - état : Créée
+            */
+
+            //organisateur
+            $sortie->setOrganisateur($this->getUser());
+
+            //campus
+            $sortie->setCampus($this->getUser()->getCampus());
+
+            //etat
+            $etatCreee = $etatRepository->findOneBy(array('libelle' => 'Créée'));
+            $sortie->setEtat($etatCreee);
+
+            //durée
+            $heures = $request->request->get('heures');
+            $minutes = $request->get('minutes');
+            $duree = 0;
+
+            if ($heures > 1)
+            {
+                $duree = ($heures * 60);
+            }
+            $duree = $duree + $minutes;
+            $sortie->setDuree($duree);
+
+            //insertion en BDD
+            $manager->persist($sortie);
+            $manager->flush();
+
+            //s'affiche sur la page d'acceuil
+            $this->addFlash('success', "La sortie a été créée");
+
+            return $this->redirectToRoute('accueil');
+        }
+
+        return $this->render("sortie/creerSortie.html.twig",[
+            'sortieForm'=> $sortieForm->createView()
+        ]);}
+
+    /**
+     * @Route("inscription/{id}", name="sortie_inscription", requirements={"id":"\d+"})
+     */
+    public function inscription(Sortie $sortie, EntityManagerInterface $manager)
+    {
+        //--- insertion du user dans la table sortie ---
+
+        //récupération du user connecté
+        $user = $this->getUser();
+
+        $message = $sortie->addParticipant($user);
+
+        $manager->persist($sortie);
+        $manager->flush();
+
+        $this->addFlash('result', $message);
+
+        return $this->redirectToRoute('accueil');
     }
     //Fonction permettant d'afficher une sortie
     //Requirements permet de renseigner que un integer en id
@@ -77,6 +153,26 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/afficheSortie.html.twig', [
             "sortie" => $sortie]);
+    }
+
+    /**
+     * @Route("desinscription/{id}", name="sortie_desinscription", requirements={"id":"\d+"})
+     */
+    public function desinscription(Sortie $sortie, EntityManagerInterface $manager)
+    {
+        //--- suppression du user de la table sortie ---
+
+        //récupération du user connecté
+        $user = $this->getUser();
+
+        $message = $sortie->removeParticipant($user);
+
+        $manager->persist($sortie);
+        $manager->flush();
+
+        $this->addFlash('result', $message);
+
+        return $this->redirectToRoute('accueil');
     }
 
 

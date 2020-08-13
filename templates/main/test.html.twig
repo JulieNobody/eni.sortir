@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TEST{% endblock %}
+
+{% block body %}
+    <h1>TEST</h1>
+
+    {% for fruit in tableau %}
+        <p>{{ fruit }}</p>
+    {% else %}
+        <p>tableau vide</p>
+    {% endfor %}
+
+    {% for lorem in tableau2 %}
+        <p>{{ lorem }}</p>
+    {% else %}
+        <p>tableau vide</p>
+    {% endfor %}
+
+
+{# {% for user in tableauParticipant %}
+        <p> {{ user }}</p>
+    {% else %}
+        <p>tableau vide</p>
+    {% endfor %} #}
+
+
+    <p>Ma sortie : {{ sortie.nom }}</p>
+
+
+
+{% endblock %}
