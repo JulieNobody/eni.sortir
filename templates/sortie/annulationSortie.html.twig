@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}Sotie ENI{% endblock %}
+{% block body %}
+    <h2>Annuler sortie</h2>
+
+    <!-- Boucle dans la classe sorties -->
+    <hr>
+    <div>      <!--affichage des propriétés de la table sortie de la BDD-->
+        <ul>
+            <li><p>Nom de la sortie : {{ sortie.nom }} </p></li>
+            <li><p>Date et heure de la sortie : {{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</p></li>
+            <li><p>Campus : {{ sortie.campus.nom }}</p></li>
+            <li><p>Lieu : {{ sortie.lieu.ville.nom }} </p></li>
+            <li><p>Code Postal : {{ sortie.lieu.ville.codePostal }}</p></li>
+        </ul>
+    </div>
+    {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6%}
+        {{ form_start(form) }}
+        {{ form_row(form.motif) }}
+        <button class="bouton" type="submit" title="Confirmer">Confirmer l'annulation de la sortie</button>
+        <a href="{{path('accueil') }}">Ne pas annuler la sortie et revenir à l'accueil</a>
+        {{ form_end(form) }}
+
+    {% endif %}
+{% endblock %}

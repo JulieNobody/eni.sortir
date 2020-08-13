@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,31 +14,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
-
-    /**
-     * @Route("/login", name="user_login")
-     */
-    /*public function login()
-    {
-
-         if ($this -> isGranted('IS_AUTHENTICATED_FULLY') ){
-             return $this->redirectToRoute('sortie_accueil');
-         } else{
-             return $this->render('user/login.html.twig');
-        }
-
-
-    }*/
-
-
-    //FIXME : A supprimer si ok
-
-    /**
-     * Symfony gère entièrement cette route
-     * @Route("/logout", name="user_logout")
-     *
-    //public function logout() {}
-
 
     /**
      * @Route("/register", name="user_register")
@@ -70,6 +46,9 @@ class UserController extends AbstractController
      */
     public function modifierProfil(User $user, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
     {
+        //récupération du pseudo du user
+        $oldUsername = $user->getUsername();
+
         //création instance du formulaire
         $userForm = $this->createForm(UserType::class, $user);
 
@@ -80,7 +59,7 @@ class UserController extends AbstractController
         {
             $usernameIsUnique = $repository->findOneBy(["username" => $user->getUsername()]);
 
-            if($usernameIsUnique === null)
+            if($usernameIsUnique === null || $user->getUsername() === $oldUsername)
             {
                 $hashed = $encoder->encodePassword($user, $user->getPassword());
                 $user->setPassword($hashed);
@@ -89,6 +68,15 @@ class UserController extends AbstractController
                 $manager->flush();
 
                 $this->addFlash('success', 'Le profil a bien été mis à jour');
+
+
+                //$this->redirectToRoute('accueil' );
+
+
+                return $this->render("user/detailProfil.html.twig",['user'=>$user]);
+                //$this->redirectToRoute('user_detailProfil', array('id'=> $this->getUser()->getId() ) );
+
+                //$this->redirectToRoute('user_detailProfil', array('id' => 9));
 
             }else{
                 $this->addFlash('error', 'Désolé, le pseudo est déja utilisé');
@@ -100,12 +88,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("detailProfil", name="user_detailProfil")
+     * @Route("detailProfil/{id}", name="user_detailProfil", requirements={"id":"\d+"})
+     * @ParamConverter()
      */
-    public function detailProfil()
+    public function detailProfil(User $user)
     {
 
-        return $this->render("user/detailProfil.html.twig");
+
+        return $this->render("user/detailProfil.html.twig",['user'=>$user]);
     }
 
 }

@@ -3,64 +3,88 @@
 {% block body %}
     <h1>Bienvenue à l'accueil {%if(app.user) %} {{ app.user.username }} {% endif %}!</h1>
 
-    <h2>Filtres</h2>
-
-    <form action="" method="POST">
-        <fieldset  class="fieldset-filtres">
-            <legend><strong>Filtres</strong></legend>
-
-            <div class="flexbox-filtres">
-                <input type="text" class="element-filtre" id="filter-input" name="motCle" placeholder="articles contenant...">
-                <label class="element-filtre" id="categories-label" for="">Catégories</label>
-
-                <select class="element-filtre" id="categories-select" name="categorie">
-                    <option selected value="0">Toutes</option>
-                    <option name="categorie" value="1">Informatique</option>
-                    <option name="categorie" value="2">Ameublement</option>
-                    <option name="categorie" value="3">Vêtement</option>
-                    <option name="categorie" value="4">Sport & Loisirs</option>
-                </select>
-
-                <button
-                        class="bouton"
-                        type="submit"
-                        title="rechercher">
-                    Rechercher
-                </button>
-            </div>
-
-        </fieldset>
-    </form>
-
-
-
+    <fieldset  class="fieldset-filtres">
+    <legend><strong>Filtrer les sorties</strong></legend>
+        {{ form_start(form) }}
+        {{ form_row(form.q) }}
+        {{ form_row(form.campus) }}
+        {{ form_row(form.min) }}
+        {{ form_row(form.max) }}
+        {{ form_row(form.isOrga) }}
+        {{ form_row(form.isInscrit) }}
+        {{ form_row(form.isNotInscrit) }}
+        {{ form_row(form.sortiesPassees) }}
+        <button class="bouton" type="submit" title="rechercher">Rechercher</button>
+        {{ form_end(form) }}
+    </fieldset>
     <h2>Liste des sorties</h2>
 
+    <div id="header_tab">
+        <table>
+            <tr>
+                <th class="enTete">Nom de la sortie</th>
+                <th class="enTete">Date de la sortie</th>
+                <th class="enTete">Clôture</th>
+                <th class="enTete">Inscrits / Places</th>
+                <th class="enTete">Etat</th>
+                <th class="enTete">Inscrit</th>
+                <th class="enTete">Organisateur</th>
+                <th class="enTete">Actions</th>
+            </tr>
+        </table>
+    </div>
 
-
-
-
-    <!-- fabrique une box article pour chaque article de la liste -->
-
-    <ul>
+    <div id="contenu_tab">
+        <table>
+            {#AFFICHER LES SORTIE AVEC UN ETAT CREE QUE POUR L ORGANISATEUR#}
         {% for sortie in listeSorties %}
-            <li>
-                <fieldset class="accueil-sortie">
-                <legend><strong>{{ sortie.nom }}</strong></legend>
+            <tr>
+                <td class="col_contenu">{{ sortie.nom }}</td>
+                <td class="col_contenu">Le {{ sortie.dateHeureDebut | date('d/m/Y') }} à {{ sortie.dateHeureDebut | date('H') }}h{{ sortie.dateHeureDebut | date('i') }}</td>
+                <td class="col_contenu">Le {{ sortie.dateLimiteInscription | date('d/m/Y') }} à {{ sortie.dateLimiteInscription | date('H') }}h{{ sortie.dateLimiteInscription | date('i') }}</td>
+                <td class="col_contenu">
+                    {{ sortie.participants | length }} / {{ sortie.nbInscriptionsMax }}
+                    {% if sortie.participants | length >= sortie.nbInscriptionsMax%}Complet !{% endif %}
+                </td>
+                <td class="col_contenu">{{ sortie.etat.libelle }}</td>
+                <td class="col_contenu">
+                    {% if app.user in sortie.participants%}
+                        <input type="checkbox" id="tab_inscrit" name="tab_inscrit" checked disabled="disabled">
+                    {% else %}
+                        <input type="checkbox" id="tab_inscrit" name="tab_inscrit" disabled="disabled">
+                    {% endif %}
+                </td>
+                <td class="col_contenu"><a href="{{path('user_detailProfil', { id: sortie.organisateur.id } ) }}" title="Profil de {{ sortie.organisateur.username }}">{{ sortie.organisateur.username }}</a></td>
 
-                <ul>
-                    <li> <p>Informations sur la sortie : {{ sortie.infosSortie}}</p></li>
-                    <li> <p>Nombre max de participant : {{ sortie.nbInscriptionsMax }}</p></li>
-                </ul>
 
-                </fieldset>
+
+                <td class="col_contenu">
+                    <a href="{{path('sortie_afficheSortie', { id: sortie.id } ) }}">Afficher</a>
+                    {% if sortie.organisateur.id == app.user.id and sortie.etat.id == 1%}
+                        <a href="">Publier</a>
+                    {% endif %}
+
+                    {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6%}
+                        <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}">Annuler</a>
+                    {% endif %}
+
+                    {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
+                        <a href="">Modifier</a>
+                    {% endif %}
+
+                    {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%}
+                        <a href="{{path('sortie_inscription', { id: sortie.id } ) }}">S'inscrire</a>
+                    {% endif %}
+
+                    {% if app.user in sortie.participants and (sortie.etat.id == 2 or sortie.etat.id == 3) %}
+                        <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}">Se désister</a>
+                    {% endif %}
+                </td>
+            </tr>
         {% else %}
-                    <p>Désolé, aucune sortie ne correspond à votre recherche</p>
-            </li>
+            <p>Désolé, aucune sortie ne correspond à vôtre recherche</p>
         {% endfor %}
-
-    </ul>
-
-<a href="{{path('sortie_creerSortie') }}">Créer une sortie</a>
-
+        </table>
+    </div>
+    <a href="{{path('sortie_creerSortie') }}">Créer une sortie</a>
 {% endblock %}
