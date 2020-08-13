@@ -123,6 +123,33 @@ class SortieController extends AbstractController
             'sortieForm'=> $sortieForm->createView()
         ]);}
 
+
+    //Fonction permettant d'afficher une sortie
+    //Requirements permet de renseigner que un integer en id
+    /**
+     * @Route("afficheSortie/{id}", name="sortie_afficheSortie", requirements={"id":"\d+"})
+     * @return Response
+     */
+    public function sortie(Sortie $sortie)
+    {
+        return $this->render('sortie/afficheSortie.html.twig', [
+            "sortie" => $sortie
+        ]);
+    }
+
+    //Fonction permettant d'afficher la page d'annulation d'une sortie
+    //Requirements permet de renseigner que un integer en id
+    /**
+     * @Route("afficheAnnulationSortie/{id}", name="sortie_afficheAnnulationSortie", requirements={"id":"\d+"})
+     * @return Response
+     */
+    public function afficherAnnulationSortie(Sortie $sortie)
+    {
+        return $this->render('sortie/annulationSortie.html.twig', [
+            "sortie" => $sortie
+        ]);
+    }
+
     /**
      * @Route("inscription/{id}", name="sortie_inscription", requirements={"id":"\d+"})
      */
@@ -142,22 +169,7 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('accueil');
     }
-    //Fonction permettant d'afficher une sortie
-    //Requirements permet de renseigner que un integer en id
-    /**
-     * @Route("afficheSortie/{id}", name="sortie_afficheSortie", requirements={"id":"\d+"})
-     * @param SortieRepository $sortieRepo
-     * @return Response
-     */
-    public function sortie(SortieRepository $sortieRepo, $id)
-    {
-        $sortie = $sortieRepo->find($id);
-        $particpants = $sortieRepo->findOneBySomeParticipants($id);
 
-            return $this->render('sortie/afficheSortie.html.twig', [
-                "sortie" => $sortie, "particpants" => $particpants
-            ]);
-        }
 
 
     /**
@@ -188,7 +200,11 @@ class SortieController extends AbstractController
     public function annulerSortie(Sortie $sortie, EntityManagerInterface $manager, EtatRepository $repoEtat)
     {
             $etat = $repoEtat->find(6);
-            if($sortie->getEtat()->getId() == 5){
+
+            if($sortie->getEtat()->getId() == 4){
+                $this->addFlash('result', 'Vous ne pouvez pas annuler une sortie en cours !');
+                return $this->redirectToRoute('accueil');
+            }elseif ($sortie->getEtat()->getId() == 5){
                 $this->addFlash('result', 'Vous ne pouvez pas annuler une sortie passée !');
                 return $this->redirectToRoute('accueil');
             }
