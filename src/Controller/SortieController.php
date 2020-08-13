@@ -29,11 +29,14 @@ class SortieController extends AbstractController
      */
     public function accueil(SortieRepository $repo, Request $request)
     {
-
+        $campusUser = $this->getUser()->getCampus();
         $data = new SearchData();
+        $data->campus = $campusUser;
         $form = $this->createForm(SearchForm::class, $data);
         $form->handleRequest($request);
         $user = $this->getUser();
+
+
         $listeSorties = $repo->findSearch($data, $user);
 
        // $listeSorties = $repo->findBy([], ['dateHeureDebut' => 'DESC']);
