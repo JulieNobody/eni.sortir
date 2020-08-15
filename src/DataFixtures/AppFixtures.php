@@ -97,7 +97,7 @@ class AppFixtures extends Fixture
         $etat2 ->setLibelle('Ouverte');
         $etat3 ->setLibelle('Clôturée');
         $etat4 ->setLibelle('Activité en cours');
-        $etat5 ->setLibelle('passée');
+        $etat5 ->setLibelle('Passée');
         $etat6 ->setLibelle('Annulée');
 
         $manager->persist($etat1);
