@@ -137,6 +137,7 @@ class AppFixtures extends Fixture
         $etat4 = new Etat();
         $etat5 = new Etat();
         $etat6 = new Etat();
+        $etat7 = new Etat();
 
         $etat1 ->setLibelle('Créée');
         $etat2 ->setLibelle('Ouverte');
@@ -144,6 +145,7 @@ class AppFixtures extends Fixture
         $etat4 ->setLibelle('Activité en cours');
         $etat5 ->setLibelle('Passée');
         $etat6 ->setLibelle('Annulée');
+        $etat7 ->setLibelle('Archivée');
 
         $manager->persist($etat1);
         $manager->persist($etat2);
@@ -151,6 +153,7 @@ class AppFixtures extends Fixture
         $manager->persist($etat4);
         $manager->persist($etat5);
         $manager->persist($etat6);
+        $manager->persist($etat7);
         $manager->flush();
 
         // LES VILLES
