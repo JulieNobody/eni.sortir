@@ -82,43 +82,47 @@ class SortieController extends AbstractController
         //récupération de la sortie crée
         if($sortieForm->isSubmitted() && $sortieForm->isValid())
         {
-            /* à la création d'une sortie
-                   - organisateur : user
-                   - campus : campus du user
-                   - état : Créée
-            */
 
-            //organisateur
-            $sortie->setOrganisateur($this->getUser());
 
-            //campus
-            $sortie->setCampus($this->getUser()->getCampus());
+                /* à la création d'une sortie
+                       - organisateur : user
+                       - campus : campus du user
+                       - état : Créée
+                */
 
-            //etat
-            $etatCreee = $etatRepository->findOneBy(array('libelle' => 'Créée'));
-            $sortie->setEtat($etatCreee);
-/*
-            //durée
-            $heures = $request->request->get('heures');
-            $minutes = $request->get('minutes');
-            $duree = 0;
+                //organisateur
+                $sortie->setOrganisateur($this->getUser());
 
-            if ($heures > 1)
-            {
-                $duree = ($heures * 60);
+                //campus
+                $sortie->setCampus($this->getUser()->getCampus());
+
+                //etat
+                $etatCreee = $etatRepository->findOneBy(array('libelle' => 'Créée'));
+                $sortie->setEtat($etatCreee);
+    /*
+                //durée
+                $heures = $request->request->get('heures');
+                $minutes = $request->get('minutes');
+                $duree = 0;
+
+                if ($heures > 1)
+                {
+                    $duree = ($heures * 60);
+                }
+                $duree = $duree + $minutes;
+                $sortie->setDuree($duree);*/
+
+
+                //insertion en BDD
+                $manager->persist($sortie);
+                $manager->flush();
+
+                //s'affiche sur la page d'acceuil
+                $this->addFlash('success', "La sortie a été créée");
+
+                return $this->redirectToRoute('accueil');
             }
-            $duree = $duree + $minutes;
-            $sortie->setDuree($duree);*/
 
-            //insertion en BDD
-            $manager->persist($sortie);
-            $manager->flush();
-
-            //s'affiche sur la page d'acceuil
-            $this->addFlash('success', "La sortie a été créée");
-
-            return $this->redirectToRoute('accueil');
-        }
 
         return $this->render("sortie/creerSortie.html.twig",[
             'sortieForm'=> $sortieForm->createView()
