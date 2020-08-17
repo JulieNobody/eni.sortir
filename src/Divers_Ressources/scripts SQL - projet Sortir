@@ -44,6 +44,10 @@ DELIMITER $$
 			UPDATE sortie SET etat_id = 7
 				WHERE etat_id = 5
 				AND DATE_ADD(DATE_ADD(date_heure_debut, INTERVAL duree MINUTE), INTERVAL 1 MONTH) < now();
+        -- Annulée + date debut + durée + 1 mois passé -> ARCHIVEE
+            UPDATE sortie SET etat_id = 7
+                WHERE etat_id = 6
+                AND DATE_ADD(DATE_ADD(date_heure_debut, INTERVAL duree MINUTE), INTERVAL 1 MONTH) < now();
 	END $$
 
 -------------------- ETAPE 4 --------------------
