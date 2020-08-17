@@ -21,30 +21,30 @@
 
 <body>
 <header>
-    <div>
+
+    <div id="logoTitle">
         <a href="{{path('accueil') }}" title="Sortir | Accueil">
             <img src="{{ asset('img/logo.png') }}" alt="logo_sortir">
             <p>Sortir</p>
         </a>
     </div>
-
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        <nav >
-            <ul>
-                <li>
-                    {%if(app.user) %}
-                        <strong>{{ app.user.username }}</strong>, le
-                        {{ "now"|date("m/d/Y") }}
-                    {% endif %}
-                </li>
-                <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
-                <li><a href="{{path('user_detailProfil', { id: app.user.id } ) }}" title="Sortir | Mon profil">Mon profil</a></li>
-                <li><a href="{{path('app_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
-            </ul>
-        </nav>
-    {% else %}
-    {% endif %}
-
+    <div>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <nav >
+                <ul>
+                    <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
+                    <li><a href="{{path('user_detailProfil', { id: app.user.id } ) }}" title="Sortir | Mon profil">Mon profil</a></li>
+                    <li><a href="{{path('app_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
+                </ul>
+            </nav>
+        {% else %}
+        {% endif %}
+        {%if(app.user) %}
+            <div class="user_date">
+                <p>Wesh {{ app.user.username }} ! - {{ "now"|date("m/d/Y") }}</p>
+            </div>
+        {% endif %}
+    </div>
 </header>
 <main>
     <div>
@@ -63,7 +63,7 @@
 
 {% block javascripts %}{% endblock %}
 
-<footer>
+<footer class="made-with-love">
     <p>©JLLP - Application web d'organisation de sorties - {{ "now" | date('Y') }}</p>
 </footer>
 
