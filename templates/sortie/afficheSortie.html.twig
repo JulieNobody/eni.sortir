@@ -74,7 +74,7 @@
     {% endif %}
 
     {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
-        <a href="">Modifier</a>
+        <a href="{{path('sortie_modifierSortie', { id: sortie.id } ) }}">Modifier</a>
     {% endif %}
     <!-- si user = organisateur et sortie crée-->
     {% if sortie.organisateur is same as(app.user) and sortie.etat.id == 1%}
