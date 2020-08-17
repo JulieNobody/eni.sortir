@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Data\SearchData;
 use App\Entity\Sortie;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,13 +22,17 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findSearch(SearchData $search): array
+    public function findSearch(SearchData $search, User $user): array
     {
         $query = $this
             ->createQueryBuilder('p')
             ->select('c', 'p')
-            ->join('p.campus', 'c');
-           // ->join('p.participants', 'u');
+            ->leftJoin('p.campus', 'c')
+            ->leftJoin('p.participants', 'participants')
+            ->leftJoin('p.etat', 'e')
+            ->orderBy('e.id','ASC');
+
+
 
         if(!empty($search->q)){
             $query = $query
@@ -54,18 +60,19 @@ class SortieRepository extends ServiceEntityRepository
 
         if(!empty($search->isOrga)){
             $query = $query
-                ->andWhere('p.organisateur.id = :user')
-                ->setParameter('user', app.user.id);
+                ->andWhere('p.organisateur = :user')
+                ->setParameter('user', $user);
         }
 
         if(!empty($search->isInscrit)){
             $query = $query
-                ->andWhere('p.isOrga <= 1');
+                ->andWhere('participants IN (:user)')
+                ->setParameter('user', $user);
         }
-
         if(!empty($search->isNotInscrit)){
             $query = $query
-                ->andWhere('p.isOrga <= 1');
+                ->andWhere('participants not IN (:user) OR participants is null')
+                ->setParameter('user', $user);
         }
 
         if(!empty($search->sortiesPassees)){
@@ -103,4 +110,18 @@ class SortieRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    //Jointure pour récupérer participants dans sortie_user dans la base de données
+    public function findOneBySomeParticipants($id): paginator
+    {
+        $qb = $this->createQueryBuilder('s') //Parametre alias de sortie
+            ->join('s.participants', 'p') //
+            ->andWhere('s.id = :val')
+            ->setParameter('val', $id);
+        $rs = $qb->getQuery();
+        return new paginator($rs);
+    }
+
 }
+

@@ -8,6 +8,7 @@ use App\Entity\Sortie;
 use App\Entity\User;
 use App\Entity\Ville;
 use App\Form\LieuType;
+use App\Form\MotifSortieType;
 use App\Form\SearchForm;
 use App\Form\SortieType;
 use App\Form\UserType;
@@ -16,11 +17,13 @@ use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
+use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -36,11 +39,15 @@ class SortieController extends AbstractController
      */
     public function accueil(SortieRepository $repo, Request $request)
     {
-
+        $campusUser = $this->getUser()->getCampus();
         $data = new SearchData();
+        $data->campus = $campusUser;
         $form = $this->createForm(SearchForm::class, $data);
         $form->handleRequest($request);
-        $listeSorties = $repo->findSearch($data);
+        $user = $this->getUser();
+
+
+        $listeSorties = $repo->findSearch($data, $user);
 
        // $listeSorties = $repo->findBy([], ['dateHeureDebut' => 'DESC']);
 
@@ -83,27 +90,47 @@ class SortieController extends AbstractController
         //récupération de la sortie crée
         if($sortieForm->isSubmitted() && $sortieForm->isValid())
         {
-            /* à la création d'une sortie
-                   - organisateur : user
-                   - campus : campus du user
-                   - état : Créée
-            */
 
-            $sortie->setOrganisateur($this->getUser());
-            $sortie->setCampus($this->getUser()->getCampus());
 
-            $etatCreee = $etatRepository->findOneBy(array('libelle' => 'Créée'));
+                /* à la création d'une sortie
+                       - organisateur : user
+                       - campus : campus du user
+                       - état : Créée
+                */
 
-            $sortie->setEtat($etatCreee);
+                //organisateur
+                $sortie->setOrganisateur($this->getUser());
 
-            $manager->persist($sortie);
-            $manager->flush();
+                //campus
+                $sortie->setCampus($this->getUser()->getCampus());
 
-            //s'affiche sur la page d'acceuil
-            $this->addFlash('success', "La sortie a été créée");
+                //etat
+                $etatCreee = $etatRepository->findOneBy(array('libelle' => 'Créée'));
+                $sortie->setEtat($etatCreee);
+    /*
+                //durée
+                $heures = $request->request->get('heures');
+                $minutes = $request->get('minutes');
+                $duree = 0;
 
-            return $this->redirectToRoute('accueil');
-        }
+                if ($heures > 1)
+                {
+                    $duree = ($heures * 60);
+                }
+                $duree = $duree + $minutes;
+                $sortie->setDuree($duree);*/
+
+
+                //insertion en BDD
+                $manager->persist($sortie);
+                $manager->flush();
+
+                //s'affiche sur la page d'acceuil
+                $this->addFlash('success', "La sortie a été créée");
+
+                return $this->redirectToRoute('accueil');
+            }
+
 
         return $this->render("sortie/creerSortie.html.twig",[
             'sortieForm'=> $sortieForm->createView()
@@ -123,6 +150,136 @@ class SortieController extends AbstractController
         $villeForm->handleRequest($request);
         $lieuForm->handleRequest($request);
 
+
+
+    //Fonction permettant d'afficher une sortie
+    //Requirements permet de renseigner que un integer en id
+    /**
+     * @Route("afficheSortie/{id}", name="sortie_afficheSortie", requirements={"id":"\d+"})
+     * @return Response
+     */
+    public function sortie(Sortie $sortie)
+    {
+        return $this->render('sortie/afficheSortie.html.twig', [
+            "sortie" => $sortie
+        ]);
+    }
+
+    //Fonction permettant d'afficher la page d'annulation d'une sortie
+    //Requirements permet de renseigner que un integer en id
+    /**
+     * @Route("afficheAnnulationSortie/{id}", name="sortie_afficheAnnulationSortie", requirements={"id":"\d+"})
+     * @return Response
+     */
+    public function afficherAnnulationSortie(Sortie $sortie, Request $request, EntityManagerInterface $manager)
+    {
+
+        $sortieMotifForm = $this->createForm(MotifSortieType::class, $sortie);
+        $sortieMotifForm->handleRequest($request);
+
+        if($sortieMotifForm->isSubmitted() and $sortieMotifForm->isValid()){
+
+            $manager->persist($sortie);
+            $manager->flush();
+
+            return $this->redirectToRoute('sortie_annulation',[
+                'sortie'=> $sortie,
+                'id' => $sortie->getId()
+            ]);
+        }
+
+        return $this->render('sortie/annulationSortie.html.twig', [
+            "sortie" => $sortie,
+            'form' => $sortieMotifForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("inscription/{id}", name="sortie_inscription", requirements={"id":"\d+"})
+     */
+    public function inscription(Sortie $sortie, EntityManagerInterface $manager)
+    {
+        //--- insertion du user dans la table sortie ---
+
+        //récupération du user connecté
+        $user = $this->getUser();
+
+        $message = $sortie->addParticipant($user);
+
+        $manager->persist($sortie);
+        $manager->flush();
+
+        $this->addFlash('result', $message);
+
+        return $this->redirectToRoute('accueil');
+    }
+
+
+
+    /**
+     * @Route("desinscription/{id}", name="sortie_desinscription", requirements={"id":"\d+"})
+     */
+    public function desinscription(Sortie $sortie, EntityManagerInterface $manager)
+    {
+        //--- suppression du user de la table sortie ---
+
+        //récupération du user connecté
+        $user = $this->getUser();
+
+        $message = $sortie->removeParticipant($user);
+
+        $manager->persist($sortie);
+        $manager->flush();
+
+        $this->addFlash('result', $message);
+
+        return $this->redirectToRoute('accueil');
+    }
+
+    /**
+     * @param Sortie $sortie
+     * @param EntityManagerInterface $manager
+     * @Route("annulation/{id}", name="sortie_annulation", requirements={"id":"\d+"})
+     */
+    public function annulerSortie(Sortie $sortie, EntityManagerInterface $manager, EtatRepository $repoEtat)
+    {
+            $etat = $repoEtat->find(6);
+
+            if($sortie->getEtat()->getId() == 4){
+                $this->addFlash('result', 'Vous ne pouvez pas annuler une sortie en cours !');
+                return $this->redirectToRoute('accueil');
+            }elseif ($sortie->getEtat()->getId() == 5){
+                $this->addFlash('result', 'Vous ne pouvez pas annuler une sortie passée !');
+                return $this->redirectToRoute('accueil');
+            }
+            $message = $sortie->annulerSortie($this->getUser(), $etat);
+            $manager->persist($sortie);
+            $manager->flush();
+
+        $this->addFlash('result', $message);
+        return $this->redirectToRoute('accueil');
+    }
+
+    /**
+     * @param Sortie $sortie
+     * @param EntityManagerInterface $manager
+     * @Route("publication/{id}", name="sortie_publication", requirements={"id":"\d+"})
+     */
+    public function publierSortie(Sortie $sortie, EntityManagerInterface $manager, EtatRepository $repoEtat)
+    {
+        $etat = $repoEtat->find(2);
+
+        if($sortie->getEtat()->getId() != 1){
+            $this->addFlash('result', 'Vôtre sortie a déjà été publiée !');
+            return $this->redirectToRoute('accueil');
+        }
+        $message = $sortie->publierSortie($this->getUser(), $etat);
+        $manager->persist($sortie);
+        $manager->flush();
+
+        $this->addFlash('result', $message);
+        return $this->redirectToRoute('accueil');
+    }
 
 
         if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {

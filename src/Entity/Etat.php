@@ -37,6 +37,15 @@ class Etat
         return $this->id;
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+
     public function getLibelle(): ?string
     {
         return $this->libelle;
@@ -66,6 +75,9 @@ class Etat
     }
 
 
-
+    public function __toString()
+    {
+        return $this->libelle;
+    }
 
 }
