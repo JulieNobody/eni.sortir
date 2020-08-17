@@ -38,6 +38,9 @@
         <table>
             {#AFFICHER LES SORTIE AVEC UN ETAT CREE QUE POUR L ORGANISATEUR#}
         {% for sortie in listeSorties %}
+            {% if sortie.organisateur.id != app.user.id and sortie.etat.id == 1%}
+            {% elseif sortie.etat.id == 7 %}
+            {% else %}
             <tr>
                 <td class="col_contenu">{{ sortie.nom }}</td>
                 <td class="col_contenu">Le {{ sortie.dateHeureDebut | date('d/m/Y') }} à {{ sortie.dateHeureDebut | date('H') }}h{{ sortie.dateHeureDebut | date('i') }}</td>
@@ -61,7 +64,7 @@
                 <td class="col_contenu">
                     <a href="{{path('sortie_afficheSortie', { id: sortie.id } ) }}">Afficher</a>
                     {% if sortie.organisateur.id == app.user.id and sortie.etat.id == 1%}
-                        <a href="">Publier</a>
+                        <a href="{{path('sortie_publication', { id: sortie.id } ) }}">Publier</a>
                     {% endif %}
 
                     {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6%}
@@ -81,6 +84,7 @@
                     {% endif %}
                 </td>
             </tr>
+            {% endif %}
         {% else %}
             <p>Désolé, aucune sortie ne correspond à vôtre recherche</p>
         {% endfor %}
