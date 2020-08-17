@@ -20,3 +20,7 @@ h1 {
     overflow: scroll;
 
 }
+
+#geocoder {
+    padding-bottom:10px;
+}
