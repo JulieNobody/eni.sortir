@@ -3,18 +3,25 @@
 namespace App\Controller;
 
 use App\Data\SearchData;
+use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Entity\Ville;
+use App\Form\LieuType;
 use App\Form\SearchForm;
 use App\Form\SortieType;
 use App\Form\UserType;
+use App\Form\VilleType;
 use App\Repository\EtatRepository;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class SortieController
@@ -105,17 +112,52 @@ class SortieController extends AbstractController
     /**
      * @Route("creerLieu", name="sortie_creerLieu")
      */
-    public function creerLieu()
+    public function creerLieu(Request $request, EntityManagerInterface $manager, VilleRepository $villeRepository)
     {
-$mapList=["France", "Allemagne", "suisse"];
+        $lieu = new Lieu();
+        $ville = new  Ville();
+
+        $lieuForm = $this->createForm(LieuType::class, $lieu);
+        $villeForm = $this->createForm(VilleType::class, $ville);
+
+        $villeForm->handleRequest($request);
+        $lieuForm->handleRequest($request);
 
 
-    return $this->render("sortie/creerLieu1.html.twig", [
-        "mapList" => $mapList
-    ]);
+
+        if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
+
+            if (!$villeRepository->findOneBy(array('nom' => $ville->getNom(), 'codePostal' => $ville->getCodePostal()))){
+
+                $lieu->setVille($ville);
+                $manager->persist($ville);
+                $manager->persist($lieu);
+
+                $manager->flush();
+
+            }else{
+                $maVille = $villeRepository->findOneBy(array('nom' => $ville->getNom(),  'codePostal' => $ville->getCodePostal()));
+
+                $lieu->setVille($maVille);
+                $manager->persist($lieu);
+                $manager->flush();
+
+            }
+
+            return $this->redirectToRoute('sortie_creerLieu');
+
+        }
+
+
+        return $this->render("sortie/creerLieu.html.twig", [
+            "lieuForm" => $lieuForm->createView(),
+            "villeForm" => $villeForm->createView()
+        ]);
     }
 
-
-
-
 }
+
+
+
+
+
