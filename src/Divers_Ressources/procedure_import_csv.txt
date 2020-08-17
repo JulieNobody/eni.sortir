@@ -1,0 +1,36 @@
+#################### PROCEDURE IMPORT USER via CSV | PROJET SORTIR.COM ####################
+
+-------------------- ETAPES  -------------------- 
+-- se connecter à phpMyAdmin
+-- selectionner la table eni.sortirdb
+-- selectionner la table user
+-- cliquer sur "importer" (menu du haut)
+	-- selectionner le fichier csv à importer
+	-- jeu de caractère : utf-8
+	-- importation partielle, permettre l'interruption [...] : cocher
+	-- activer la vérification des clés étrangères : cocher
+	-- format : csv
+	-- mettre à jour les données lorsque des clés dupliqué [...] : ne pas cocher
+	-- colonnes séparées par : , (virgule)
+	-- colonnes entourées par : " (guillemet)
+	-- colonnes échappées avec : " (guillemet) 
+	-- lignes terminées par : " (guillemet)
+	-- nom des colonnes	: laisser vide
+	-- ne pas arrêter l'importation lors d'une erreur INSERT : ne pas cocher
+-- cliquer sur "executer"
+
+-------------------- MODELE DE FICHIER CSV --------------------
+"0","1","Bernard17","Mallet","Bernard","+9648560575318","bernard46@club-internet.fr","$2y$13$lcEEN1QHwD/lQBMEWMzBQ.8itARl.v60YhKGhM5Fg5C3YuU5XevHm","ROLE_USER","1","/img.pp.png"
+"0","3","Jean14","Martins","Jean","+2995390044972","jean14@laposte.net","$2y$13$lcEEN1QHwD/lQBMEWMzBQ.8itARl.v60YhKGhM5Fg5C3YuU5XevHm","ROLE_USER","1","/img.pp.png"
+
+
+-------------------- CARACTERISTIQUES DU FICHIER CSV --------------------
+-- ordre des colonnes :
+	id / campus_id / username / nom / prenom / telephone / email / password / role / actif / photo
+-- mot de passe : 
+	Pa$$w0rd
+-- l'id du user doit être à 0
+-- toutes les données doivent être entourées par des guillemets
+-- les colonnes doivent être séparées par des virgule
+-- la première ligne ne doit pas être le nom des colonnes (ou autre)
+-- veiller à utiliser des id campus, rôles et code actif qui existent

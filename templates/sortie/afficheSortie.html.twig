@@ -13,6 +13,7 @@
          <div>      <!--affichage des propriétés de la table sortie de la BDD-->
              <ul>
                 <li><p>Nom de la sortie : {{ sortie.nom }} </p></li>
+                <li><p>Organisateur de la sortie : {{ sortie.organisateur.username }} </p></li>
                 <li><p>Date et heure de la sortie : {{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</p></li>
                 <li><p>Nombre de place maximum : {{ sortie.nbInscriptionsMax }} </p></li>
                 <li><p>Date Limite d'inscription : {{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }} </p></li>
@@ -66,4 +67,35 @@
             {% if sortie.participants| length == 0 %}<p>Pas de participants !</p>{% endif %}
         </div>
 <br>
+
+    <!-- si user = organisateur -->
+    {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6 and sortie.etat.id != 7 %}
+        <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}">Annuler la sortie</a>
+    {% endif %}
+
+    {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
+        <a href="">Modifier</a>
+    {% endif %}
+    <!-- si user = organisateur et sortie crée-->
+    {% if sortie.organisateur is same as(app.user) and sortie.etat.id == 1%}
+
+        <a href="">Publier la sortie</a>
+
+    {% endif %}
+
+    <!-- si user =/= organisateur -->
+
+    <!-- si user inscrit -->
+    {% if app.user in sortie.participants and (sortie.etat.id == 2 or sortie.etat.id == 3) %}
+        <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}">se desincrire</a>
+    {% endif %}
+
+    <!-- si user pas inscrit -->
+    {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%}
+        <a href="{{path('sortie_inscription', { id: sortie.id } ) }}">s'inscrire à la sortie</a>
+    {% endif %}
+
+
+
+
 {% endblock %}
