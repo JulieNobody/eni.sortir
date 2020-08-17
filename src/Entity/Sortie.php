@@ -304,6 +304,16 @@ class Sortie
         }
     }
 
+    public function publierSortie(User $user,Etat $etat){
+       
+        if($user == $this->getOrganisateur()){
+            $this->etat = $etat;
+            return $message = 'Votre sortie '.$this->getNom().' a été publiée !';
+        }else {
+            return $message = 'Vous n\'avez pas les droits pour publier cette sortie';
+        }
+    }
+
     public function annulerSortie(User $user, Etat $etat){
         if($user == $this->getOrganisateur()){
             $this->etat = $etat;

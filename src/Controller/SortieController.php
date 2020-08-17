@@ -236,4 +236,29 @@ class SortieController extends AbstractController
         $this->addFlash('result', $message);
         return $this->redirectToRoute('accueil');
     }
+
+    /**
+     * @param Sortie $sortie
+     * @param EntityManagerInterface $manager
+     * @Route("publication/{id}", name="sortie_publication", requirements={"id":"\d+"})
+     */
+    public function publierSortie(Sortie $sortie, EntityManagerInterface $manager, EtatRepository $repoEtat)
+    {
+        $etat = $repoEtat->find(2);
+
+        if($sortie->getEtat()->getId() != 1){
+            $this->addFlash('result', 'Vôtre sortie a déjà été publiée !');
+            return $this->redirectToRoute('accueil');
+        }
+        $message = $sortie->publierSortie($this->getUser(), $etat);
+        $manager->persist($sortie);
+        $manager->flush();
+
+        $this->addFlash('result', $message);
+        return $this->redirectToRoute('accueil');
+    }
+
+
+
+
 }
