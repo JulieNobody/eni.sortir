@@ -34,6 +34,13 @@
                 <ul>
                     <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
                     <li><a href="{{path('user_detailProfil', { id: app.user.id } ) }}" title="Sortir | Mon profil">Mon profil</a></li>
+
+                    {% if (app.user.role == "ROLE_ADMIN")%}
+                        <li><a href="{{path('admin_menu') }}" title="Sortir | Admin">Admin</a></li>
+                    {% endif %}
+
+
+
                     <li><a href="{{path('app_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
                 </ul>
             </nav>
