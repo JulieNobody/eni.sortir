@@ -109,7 +109,7 @@
                         {% endif %}
 
                         {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
-                            <a href="">Modifier</a>
+                            <a href="{{path('sortie_modifierSortie', { id: sortie.id } ) }}">Modifier</a>
                         {% endif %}
 
                         {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%}
