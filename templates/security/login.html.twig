@@ -1,47 +1,81 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block stylesheets %}
+    <meta charset="UTF-8">
+    <title>Sortir | Connexion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="icon" href="{{ asset('img/favicon.png') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet/1/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/leaflet/1/leaflet.js"></script>
+    <script src="https://api.mqcdn.com/sdk/place-search-js/v1.0.0/place-search.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="js/Login.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/place-search-js/v1.0.0/place-search.css"/>
+{% endblock %}
 
+{% block header %}{% endblock %}
 {% block body %}
-<form method="post">
-    {% if error %}
-        {#<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
-        <div class="alert alert-danger">{{ 'Votre mot de passe est incorrect' }}</div>
-    {% endif %}
+<div id="loginFullPage">
+    <form method="post">
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        {% if error %}
+            {#<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
+            <div class="alert alert-danger">{{ 'Votre mot de passe est incorrect' }}</div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+
+        <div id="loginContainer">
+
+            <div id="logoLogin" >
+                <img src="{{ asset('img/logo.png') }}" alt="logo_sortir" >
+            </div>
+
+            <!--<label for="inputEmail">Pseudo ou Email</label>-->
+            <input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Pseudo / mail" required>
+
+            <!--<label for="inputPassword">Password</label>-->
+            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="checkbox mb-3">
+                <label id="_remember" for="_remember_me">Se souvenir de moi</label>
+                <input type="checkbox" name="_remember_me" id="_remember_me" onchange="abonnement()">
+
+            </div>
+            <div id="txtCookie">
+                <div id="logionCheckTxt">
+                    <p>
+                        En conchant cette case, vous acceptez l’utilisation d'un cookies.
+                        Ce cookie ne sert qu'a cette fonctionalité et ne contient pas d'information
+                        personnelles non cryptées.
+                    <a href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees" target="_blank"> En savoir plus</a>
+                    </p>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">
+                <svg width="277" height="62">
+                    <defs>
+                        <linearGradient id="grad1">
+                            <stop offset="0%" stop-color="#FFFFFF"/>
+                            <stop offset="100%" stop-color="#FFFFFF" />
+                        </linearGradient>
+                    </defs>
+                    <rect x="5" y="5" rx="25" fill="none" stroke="url(#grad1)" width="266" height="50"></rect>
+                </svg>
+                <span>Se connecter</span>
+            </button>
+
         </div>
-    {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
-
-    <label for="inputEmail">Pseudo ou Email</label>
-    <input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
-
-
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-
-
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> Se souvenir de moi
-        </label>
-        <p>En conchant cette case, vous acceptez l’utilisation d'un cookies.
-            Ce cookie ne sert qu'a cette fonctionalité et ne contient pas d'information
-             personnelles non cryptées.
-            <a href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees" target="_blank"> En savoir plus</a></p>
-    </div>
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        se connecter
-    </button>
-</form>
+    </form>
+</div>
 {% endblock %}
