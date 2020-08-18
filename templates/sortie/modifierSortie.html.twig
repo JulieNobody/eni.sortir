@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Sortie {{ sortie.nom }}{% endblock %}
+{% block body %}
+        <h1>{{ sortie.nom }}</h1>
+
+    <div id="register_form">
+
+        {{ form_start(sortieForm) }}
+        {{ form_end(sortieForm) }}
+        <button type="submit">Valider les modifications</button>
+    </div>
+
+
+
+{% endblock %}
