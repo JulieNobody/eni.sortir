@@ -42,10 +42,11 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("modifierProfil/{id}", name="user_modifierProfil", requirements={"id":"\d+"})
+     * @Route("modifierProfil", name="user_modifierProfil")
      */
-    public function modifierProfil(User $user, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
+    public function modifierProfil(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
     {
+        $user=$this->getUser();
         //récupération du pseudo du user
         $oldUsername = $user->getUsername();
 
