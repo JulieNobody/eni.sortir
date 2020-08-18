@@ -45,6 +45,7 @@ class Lieu
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ville", inversedBy="lieux")
+
      */
     private $ville;
 
@@ -132,8 +133,9 @@ class Lieu
     /**
      * @param mixed $ville
      */
-    public function setVille($ville): void
+    public function setVille($ville)
     {
+        $this->getId();
         $this->ville = $ville;
     }
 

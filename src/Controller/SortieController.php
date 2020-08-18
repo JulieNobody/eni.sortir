@@ -3,14 +3,19 @@
 namespace App\Controller;
 
 use App\Data\SearchData;
+use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Entity\Ville;
+use App\Form\LieuType;
 use App\Form\MotifSortieType;
 use App\Form\SearchForm;
 use App\Form\SortieType;
 use App\Form\UserType;
+use App\Form\VilleType;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +46,7 @@ class SortieController extends AbstractController
 
         $listeSorties = $repo->findSearch($data, $user);
 
-       // $listeSorties = $repo->findBy([], ['dateHeureDebut' => 'DESC']);
+        // $listeSorties = $repo->findBy([], ['dateHeureDebut' => 'DESC']);
 
         return $this->render("sortie/accueil.html.twig",[
             'listeSorties' => $listeSorties,
@@ -65,10 +70,8 @@ class SortieController extends AbstractController
         /*
         // Test de bouton pour valider lieu et afficher détail du lieu -> marche pas
         // https://symfony.com/doc/4.4/form/multiple_buttons.html
-
         //validation du lieu
         $validLieu = "lieu pas validé";
-
         //TODO : tester if(isset($_POST('nomDuBouton'))
         if ($sortieForm->get('validerLieu')->isClicked())
         {
@@ -84,44 +87,43 @@ class SortieController extends AbstractController
         {
 
 
-                /* à la création d'une sortie
-                       - organisateur : user
-                       - campus : campus du user
-                       - état : Créée
-                */
+            /* à la création d'une sortie
+                   - organisateur : user
+                   - campus : campus du user
+                   - état : Créée
+            */
 
-                //organisateur
-                $sortie->setOrganisateur($this->getUser());
+            //organisateur
+            $sortie->setOrganisateur($this->getUser());
 
-                //campus
-                $sortie->setCampus($this->getUser()->getCampus());
+            //campus
+            $sortie->setCampus($this->getUser()->getCampus());
 
-                //etat
-                $etatCreee = $etatRepository->findOneBy(array('libelle' => 'Créée'));
-                $sortie->setEtat($etatCreee);
-    /*
-                //durée
-                $heures = $request->request->get('heures');
-                $minutes = $request->get('minutes');
-                $duree = 0;
+            //etat
+            $etatCreee = $etatRepository->findOneBy(array('libelle' => 'Créée'));
+            $sortie->setEtat($etatCreee);
+            /*
+                        //durée
+                        $heures = $request->request->get('heures');
+                        $minutes = $request->get('minutes');
+                        $duree = 0;
+                        if ($heures > 1)
+                        {
+                            $duree = ($heures * 60);
+                        }
+                        $duree = $duree + $minutes;
+                        $sortie->setDuree($duree);*/
 
-                if ($heures > 1)
-                {
-                    $duree = ($heures * 60);
-                }
-                $duree = $duree + $minutes;
-                $sortie->setDuree($duree);*/
 
+            //insertion en BDD
+            $manager->persist($sortie);
+            $manager->flush();
 
-                //insertion en BDD
-                $manager->persist($sortie);
-                $manager->flush();
+            //s'affiche sur la page d'acceuil
+            $this->addFlash('success', "La sortie a été créée");
 
-                //s'affiche sur la page d'acceuil
-                $this->addFlash('success', "La sortie a été créée");
-
-                return $this->redirectToRoute('accueil');
-            }
+            return $this->redirectToRoute('accueil');
+        }
 
 
         return $this->render("sortie/creerSortie.html.twig",[
@@ -220,18 +222,18 @@ class SortieController extends AbstractController
      */
     public function annulerSortie(Sortie $sortie, EntityManagerInterface $manager, EtatRepository $repoEtat)
     {
-            $etat = $repoEtat->find(6);
+        $etat = $repoEtat->find(6);
 
-            if($sortie->getEtat()->getId() == 4){
-                $this->addFlash('result', 'Vous ne pouvez pas annuler une sortie en cours !');
-                return $this->redirectToRoute('accueil');
-            }elseif ($sortie->getEtat()->getId() == 5){
-                $this->addFlash('result', 'Vous ne pouvez pas annuler une sortie passée !');
-                return $this->redirectToRoute('accueil');
-            }
-            $message = $sortie->annulerSortie($this->getUser(), $etat);
-            $manager->persist($sortie);
-            $manager->flush();
+        if($sortie->getEtat()->getId() == 4){
+            $this->addFlash('result', 'Vous ne pouvez pas annuler une sortie en cours !');
+            return $this->redirectToRoute('accueil');
+        }elseif ($sortie->getEtat()->getId() == 5){
+            $this->addFlash('result', 'Vous ne pouvez pas annuler une sortie passée !');
+            return $this->redirectToRoute('accueil');
+        }
+        $message = $sortie->annulerSortie($this->getUser(), $etat);
+        $manager->persist($sortie);
+        $manager->flush();
 
         $this->addFlash('result', $message);
         return $this->redirectToRoute('accueil');
@@ -259,41 +261,50 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("modifierSortie/{id}", name="sortie_modifierSortie", requirements={"id":"\d+"})
+     * @Route("creerLieu", name="sortie_creerLieu")
      */
-    public function modifierSortie(Sortie $sortie, Request $request, EntityManagerInterface $manager, SortieRepository $repository)
+    public function creerLieu(Request $request, EntityManagerInterface $manager, VilleRepository $villeRepository)
     {
-        //FIXME : limiter accès à l'organisateur de la sortie
+        $lieu = new Lieu();
+        $ville = new  Ville();
 
-        //création instance du formulaire
-        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $lieuForm = $this->createForm(LieuType::class, $lieu);
+        $villeForm = $this->createForm(VilleType::class, $ville);
 
-        //association du formulaire avec la request
-        $sortieForm->handleRequest($request);
-        /*
-                if ($sortieForm->isSubmitted() && $sortieForm->isValid())
-                {
-                    $manager->persist($sortie);
-                    $manager->flush();
+        $villeForm->handleRequest($request);
+        $lieuForm->handleRequest($request);
 
-                    $this->addFlash('success', 'La sortie a bien été modifiée');
-                    return $this->render("sortie/afficheSortie.html.twig",['sortie'=>$sortie]);
-                }
-        */
 
-       return $this->render("sortie/modifierSortie.html.twig", ['sortieForm' => $sortieForm->createView()]);
+
+        if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
+
+            if (!$villeRepository->findOneBy(array('nom' => $ville->getNom()))){
+
+                $lieu->setVille($ville);
+                $manager->persist($ville);
+                $manager->persist($lieu);
+
+                $manager->flush();
+
+            }else{
+                $maVille = $villeRepository->findOneBy(array('nom' => $ville->getNom()));
+
+                $lieu->setVille($maVille);
+                $manager->persist($lieu);
+                $manager->flush();
+
+            }
+
+            return $this->redirectToRoute('sortie_creerLieu');
+
+        }
+
+
+        return $this->render("sortie/creerLieu.html.twig", [
+            "lieuForm" => $lieuForm->createView(),
+            "villeForm" => $villeForm->createView()
+        ]);
     }
-
-
-    /*
- * @Route("testSortie/{id}", name="sortie_testSortie", requirements={"id":"\d+"})
- */
-    public function testSortie()
-    {
-
-        return $this->render("/", []);
-    }
-
 
 
 }

@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block head %}
+    <script>
+        import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+        import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+    </script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
+{% endblock %}
+{% block title %}Sortir | à venir{% endblock %}
+{% block body %}
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+            type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+    <script src='https://unpkg.com/mapbox@1.0.0-beta9/dist/mapbox-sdk.min.js'></script>
+
+    <h1> choisi ton lieu!</h1>
+    <div style="padding-bottom: 5px">
+        <label>Nom du lieu</label>
+        <input type="text" id="nomLieu">
+    </div>
+    <div id="geocoder" class="geocoder"></div>
+    <div class="map" id="map" style="width: 65%; height: 300px;"></div>
+    <div id="output"></div>
+
+
+
+
+    {{ form_start(lieuForm) }}
+        {{ form_row(lieuForm.nom) }}
+        {{ form_row(lieuForm.rue) }}
+        {{ form_row(lieuForm.latitude) }}
+        {{ form_row(lieuForm.longitude) }}
+        {{ form_row(villeForm.nom) }}
+        {{ form_row(villeForm.codePostal) }}
+        {{ form_row(lieuForm.validerForm) }}
+        {{ form_end(lieuForm) }}
+
+
+
+
+
+
+
+
+    <script>
+        // TO MAKE THE MAP APPEAR YOU MUST
+        // ADD YOUR ACCESS TOKEN FROM
+        // https://account.mapbox.com
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlc3N5ODk4IiwiYSI6ImNrZHFnNmZreTEzeTIycXRhNXQyZ3k5NnEifQ.CphvE_eRmoN-lWCngjOvkw';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [2.350423, 48.852987],
+            zoom: 13
+        });
+
+        var geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl:mapboxgl
+        });
+
+
+
+        var button = document.getElementById("myButton");
+        map.addControl(geocoder);
+
+
+
+        map.on('load', function() {
+            // Listen for the `geocoder.input` event that is triggered when a user
+            // makes a selection
+
+
+            geocoder.on('result', function(ev) {
+
+                var styleSpec = ev.result;
+                document.getElementById('geocoder');
+                var json = JSON.stringify(styleSpec, null, 2);
+                var obj = JSON.parse(json);
+                console.log(obj);
+
+
+                 let adresse = JSON.parse(json).place_name_fr;
+               document.getElementById("output").innerHTML = adresse;
+
+                {#var ville = 11;
+                document.getElementById("lieu_ville").value = ville;#}
+
+                let nom = document.getElementById("nomLieu").value;
+                document.getElementById("lieu_nom").value = nom;
+
+                let rue = JSON.parse(json).text_fr;
+                document.getElementById("lieu_rue").value = rue;
+
+
+                let latitude = JSON.parse(json).center["1"];
+                document.getElementById("lieu_latitude").value = latitude;
+
+
+                let longitude = JSON.parse(json).center["0"];
+                document.getElementById("lieu_longitude").value = longitude;
+
+
+                let nomVille = JSON.parse(json).context[1]["text_fr"];
+                document.getElementById("ville_nom").value = nomVille;
+
+
+                let codePostal = JSON.parse(json).context[0]["text_fr"];
+                document.getElementById("ville_codePostal").value = codePostal;
+
+
+
+
+
+            });
+
+        });
+
+
+
+        {# document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+        let button = document.getElementsByTagName('button');
+        console.log(button.onsubmit.toString());#}
+
+    </script>
+
+{% endblock %}
+
+    {# L.geoJSON(geojsonFeatureCollection, {
+         onEachFeature: onEachFeature,
+         pointToLayer: function(feature,latlng){
+             let ratIcon;
+             return L.marker(latlng, {
+                 icon:
+                     ratIcon = L.icon({
+                         iconUrl: 'http://maptimeboston.github.io/leaflet-intro/rat.gif',
+                         iconSize: [40, 30]
+                     })
+
+             });
+         }
+     }).addTo(map);
+
+
+     function onEachFeature(feature, layer) {
+         if (feature.properties && feature.properties.popupContent) {
+             layer.bindPopup(feature.properties.popupContent);
+         }
+     }
+
+ #}

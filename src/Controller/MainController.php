@@ -31,7 +31,7 @@ class MainController extends AbstractController
        //commentaire test
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        return $this->render("aVenir.html.twig",[]);
+        return $this->render("creerLieu.html.twig",[]);
     }
 
 

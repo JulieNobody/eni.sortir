@@ -79,7 +79,7 @@
     <!-- si user = organisateur et sortie crée-->
     {% if sortie.organisateur is same as(app.user) and sortie.etat.id == 1%}
 
-        <a href="">Publier la sortie</a>
+        <a href="{{path('sortie_publication', { id: sortie.id } ) }}">Publier la sortie</a>
 
     {% endif %}
 

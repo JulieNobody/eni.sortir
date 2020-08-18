@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr">
+{% block html %}{% endblock %}
 <head>
+    {% block head %}{% endblock %}
     <meta charset="UTF-8">
     <title>{% block title %}Sortir{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="icon" href="{{ asset('img/favicon.png') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet/1/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/leaflet/1/leaflet.js"></script>
+    <script src="https://api.mqcdn.com/sdk/place-search-js/v1.0.0/place-search.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/place-search-js/v1.0.0/place-search.css"/>
+
+
     {% block stylesheets %}{% endblock %}
 </head>
 
 <body>
 <header>
-    <div>
+
+    <div id="logoTitle">
         <a href="{{path('accueil') }}" title="Sortir | Accueil">
             <img src="{{ asset('img/logo.png') }}" alt="logo_sortir">
             <p>Sortir</p>
         </a>
     </div>
-
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        <nav >
-            <ul>
-                <li>
-                    {%if(app.user) %}
-                        <strong>{{ app.user.username }}</strong>, le
-                        {{ "now"|date("m/d/Y") }}
-                    {% endif %}
-                </li>
-                <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
-                <li><a href="{{path('user_detailProfil', { id: app.user.id } ) }}" title="Sortir | Mon profil">Mon profil</a></li>
-                <li><a href="{{path('app_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
-            </ul>
-        </nav>
-    {% else %}
-    {% endif %}
-
+    <div>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <nav >
+                <ul>
+                    <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
+                    <li><a href="{{path('user_detailProfil', { id: app.user.id } ) }}" title="Sortir | Mon profil">Mon profil</a></li>
+                    <li><a href="{{path('app_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
+                </ul>
+            </nav>
+        {% else %}
+        {% endif %}
+        {%if(app.user) %}
+            <div class="user_date">
+                <p>Wesh {{ app.user.username }} ! - {{ "now"|date("m/d/Y") }}</p>
+            </div>
+        {% endif %}
+    </div>
 </header>
 <main>
     <div>
@@ -53,7 +63,7 @@
 
 {% block javascripts %}{% endblock %}
 
-<footer>
+<footer class="made-with-love">
     <p>©JLLP - Application web d'organisation de sorties - {{ "now" | date('Y') }}</p>
 </footer>
 
