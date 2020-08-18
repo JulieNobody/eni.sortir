@@ -306,5 +306,35 @@ class SortieController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("modifierSortie/{id}", name="sortie_modifierSortie", requirements={"id":"\d+"})
+     */
+    public function modifierSortie(Sortie $sortie, Request $request, EntityManagerInterface $manager, SortieRepository $repository)
+    {
+        //création instance du formulaire
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+
+        //association du formulaire avec la request
+        $sortieForm->handleRequest($request);
+
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid())
+        {
+
+            $manager->persist($sortie);
+            $manager->flush();
+
+            $this->addFlash('success', 'La sortie a bien été modifiée');
+
+            return $this->render("sortie/afficheSortie.html.twig",['sortie'=>$sortie]);
+
+        }
+
+        return $this->render("sortie/modifierSortie.html.twig", [
+            'sortieForm'    => $sortieForm->createView(),
+            'sortie'        => $sortie
+        ]);
+    }
+
+
 
 }
