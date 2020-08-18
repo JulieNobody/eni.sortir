@@ -1,10 +1,18 @@
-
+/*fond (bleu) : #3e5c76
+ couleur (rose) : #8f2d56 */
 /* demo styles */
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+
+html{
+    background: linear-gradient(to bottom right, #3e5c76, #24405a);
+    min-height: 100%;
+}
 body{
-    background: linear-gradient(to bottom right, #11c1c7, #11c7a7);
     font-family: 'Roboto', sans-serif;
+    max-width: 1400px;
+    margin: auto;
+    color: white;
 }
 section{
     margin: 50px;
@@ -26,6 +34,9 @@ header{
     font-size: 30px;
     text-transform: uppercase;
 }
+#logoTitle img {
+    max-width: 250px;
+}
 
 nav ul{
     list-style: none;
@@ -33,6 +44,7 @@ nav ul{
     text-align: right;
     vertical-align:middle;
 }
+
 nav li{
     display: inline-block;
     margin-left: 7px;
@@ -45,6 +57,7 @@ nav a{
     font-weight: 500;
     font-size: 20px;
 }
+
 nav a:hover{
     color: #ffffff;
 }
@@ -55,10 +68,29 @@ nav a:hover{
     font-size: 20px;
     color: #fff;
     margin-right: 10px;
+}
+/* ------------------- MESSAGES FLASH ------------------- */
+.messageFlash{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 20px;
+    text-align: center;
+    align-content: center;
+    background: rgb(255, 255, 255);
+    font-size: 20px;
+    font-weight: 500;
+    color: #8f2d56;
+    border-bottom: solid 5px #8f2d56;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
 
 }
-
-
 /* ------------------- TITRES ------------------- */
 
 h1{
@@ -70,6 +102,7 @@ h1{
     margin-top: 50px;
     margin-bottom: 50px;
 }
+
 h2{
     font-size: 25px;
     color: #fff;
@@ -84,29 +117,11 @@ h2{
 
 fieldset{
     border: solid 1px white;
-    margin-left: 150px;
-    margin-right: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    max-width: 900px;
 }
-
-#filtresContainer{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.filtreLabels {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    font-size: 30px;
-    font-weight: 600;
-    color: #fff;
-    text-transform: uppercase;
-}
-
 
 label{
     font-size: 16px;
@@ -117,14 +132,19 @@ label{
 
 select{
     border: none;
-    border-bottom: solid 2px royalblue;
+    border-bottom: solid 2px #8f2d56;
     background-color: transparent;
-    color: royalblue;
+    color: #ffffff;
+}
+
+select option {
+    background-color: #8f2d56;
+    color: white;
 }
 
 input{
     border: none;
-    border-bottom: solid 2px royalblue;
+    border-bottom: solid 2px #8f2d56;
     background-color: transparent;
     color: white;
 }
@@ -133,7 +153,73 @@ input::placeholder{
     color: white;
 }
 
+#filtresContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
 
+#filtresContainer>div{
+   margin: 15px;
+}
+
+.filtreLabels {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    flex: 1 1 20%;
+
+    font-size: 30px;
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.filtreCampus input{
+    background-color: red;
+}
+
+.check{
+    margin-bottom: 0px;
+    display: flex;
+    justify-content: space-between;
+}
+#checkInscriptions{
+    flex-basis:33%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    min-width: 180px;
+}
+#checkInscriptions label {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+#checkOrgaPassees{
+    flex-basis:33%;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    min-width: 180px;
+}
+
+#checkOrgaPassees label {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+#boutonFiltreContainer {
+
+}
+
+#boutonFiltre{
+
+}
 
 /* ------------------- LE TABLEAU ------------------- */
 
@@ -141,12 +227,13 @@ input::placeholder{
 table{
     width:100%;
     table-layout: fixed;
+    border-collapse: collapse;
 }
 .header_tab{
-    background-color: rgba(255,255,255,0.3);
+    background-color: rgb(143, 45, 86);
 }
 .contenu_tab{
-    height:300px;
+    height:400px;
     overflow-x:auto;
     margin-top: 0px;
     border: 1px solid rgba(255,255,255,0.3);
@@ -159,9 +246,18 @@ th{
     color: #fff;
     text-transform: uppercase;
 }
-tr{
+tr {
     text-align: center;
 }
+
+tr:nth-child(even) {
+    background-color: rgba(238, 238, 238, 0.15);
+}
+tr:nth-child(odd) {
+
+}
+
+
 td{
     padding: 15px;
     text-align: center;
@@ -169,7 +265,6 @@ td{
     font-weight: 300;
     font-size: 14px;
     color: #fff;
-    border-bottom: solid 1px rgba(255,255,255,0.1);
     text-transform: uppercase;
 }
 .sortieNom{
@@ -181,8 +276,29 @@ td a{
     text-decoration: none;
     color: #fff;
 }
-
-
+#boutonTabContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.boutonTab{
+    background: linear-gradient(to top right, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.85));
+    text-decoration: none;
+    color: #8f2d56;
+    padding: 7px;
+    font-weight: 500;
+    font-size: 14px;
+    border: none;
+    box-shadow: none;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    margin: 2px;
+    height: 15px;
+}
+.boutonCreationSortie{
+    display: flex;
+    justify-content: center;
+}
 /* ------------------- SCROLLBAR ------------------- */
 
 /* for custom scrollbar for webkit browser*/
@@ -191,38 +307,117 @@ td a{
     width: 6px;
 }
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgb(12, 39, 64);
 }
 ::-webkit-scrollbar-thumb {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 60px rgb(143, 45, 86);
 }
 
 
 /* ------------------- LES BOUTONS ------------------- */
 
 .boutonMain{
-    background: linear-gradient(to top right, rgba(255, 0, 216, 0.82), rgba(219, 1, 245, 0.89));
-    margin-top: 20px;
-    margin-left: 50px;
+    background: linear-gradient(to top right, rgb(143, 45, 86), rgb(113, 27, 63));
     text-decoration: none;
     color: #fff;
-    padding: 10px;
+    padding: 15px;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 22px;
     border: none;
     box-shadow: none;
     font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
 }
 
-#boutonFiltre{
-    float: right;
-}
+
 
 /* ------------------- DETAILS (sortie, user) ------------------- */
+#liste-afficheProfilContainer{
+    background-color: rgba(255, 255, 255, 1);
+    transform: rotate(-2deg);
+    box-shadow: 10px 5px 25px rgba(0, 0, 0, 0.72);
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 50px;
+    margin-top: 50px;
+    border-radius: 35px;
+    border: solid 7px #8f2d56;
+}
+
+#carteAfficheProfil{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#liste-afficheProfilContainer h1{
+    color: #222222;
+    margin: 0px;
+    font-size: 35px;
+}
+
+#photo-afficheProfil img{
+    width: 170px;
+    max-height: 400px;
+    flex-basis:20%;
+}
+
+#liste-afficheProfil{
+    list-style: none;
+    margin: auto;
+    padding: 45px;
+    color: #222222;
+    flex-basis:70%;
+}
+
+#liste-afficheProfil div{
+    display: inline-block;
+}
+
+#liste-afficheProfil li{
+    display: flex;
+    margin-top: 8px;
+    margin-top: 8px;
+    border-bottom: solid 1px dimgray;
+}
 
 
+.label-afficheProfil{
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: 500;
+    flex-basis:50%;
+}
 
+
+.champ-afficheProfil{
+    font-size: 22px;
+    flex-basis:50%;
+}
+
+#boutonModifierProfil {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+/* ------------------- MODIFIER PROFIL ------------------- */
+#carteAfficheProfil label {
+    color: #222222;
+    margin-bottom: 10px;
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+#carteAfficheProfil input{
+    border: none;
+    background-color: transparent;
+    color: #222222;
+    font-size: 22px;
+}
 
 /* ------------------- INFORMATIONS DU CREATEUR ------------------- */
 
