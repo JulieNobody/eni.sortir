@@ -40,6 +40,7 @@ class SortieType extends AbstractType
             ->add('lieu', EntityType::class,[
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
+                'attr' => array('onchange' => 'run()')
             ])
 
             //->add('validerLieu', SubmitType::class, ['label'=> 'Valider le lieu'])

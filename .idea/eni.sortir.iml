@@ -117,5 +117,6 @@
     <orderEntry type="library" name="mapbox-gl-geocoder" level="application" />
     <orderEntry type="library" name="es6-promise" level="application" />
     <orderEntry type="library" name="mapbox" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
 </module>

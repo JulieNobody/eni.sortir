@@ -16,6 +16,7 @@ use App\Form\VilleType;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
 use App\Repository\VilleRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -128,11 +129,46 @@ class SortieController extends AbstractController
 
         return $this->render("sortie/creerSortie.html.twig",[
             'sortieForm'=> $sortieForm->createView()
-        ]);}
+        ]);
+    }
+
+    //liste déroulante lieu
+
+
+
+            public function getLieu(Request $request, EntityManagerInterface $manager, $id)
+            {
+                $manager = $this->getDoctrine()->getManager();
+
+                $sql = 'SELECT * FROM lieu where id = :id;';
+
+                $statement = $manager->getConnection()->prepare($sql);
+                $statement->setParameter('id', $id);
+                $statement->execute(array($_GET['id']));
+
+                $row = $statement->fetchAll();
+                print_r($row);
+
+
+                return $this->render("sortie/creerSortie.html.twig", [
+                        'getLieu' => $this->getLieu(),
+
+
+                ]);
+
+            }
+
+
 
 
     //Fonction permettant d'afficher une sortie
     //Requirements permet de renseigner que un integer en id
+
+
+
+
+
+
     /**
      * @Route("afficheSortie/{id}", name="sortie_afficheSortie", requirements={"id":"\d+"})
      * @return Response
@@ -265,6 +301,7 @@ class SortieController extends AbstractController
      */
     public function creerLieu(Request $request, EntityManagerInterface $manager, VilleRepository $villeRepository)
     {
+        //Création de 2 formulaire pour insertion dans 2 tables
         $lieu = new Lieu();
         $ville = new  Ville();
 
@@ -275,9 +312,11 @@ class SortieController extends AbstractController
         $lieuForm->handleRequest($request);
 
 
-
+        //vérification
         if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
 
+            //Si le lieu n'existe pas, insertion BDD
+            //liaison des 2 BDD
             if (!$villeRepository->findOneBy(array('nom' => $ville->getNom()))){
 
                 $lieu->setVille($ville);
@@ -287,6 +326,9 @@ class SortieController extends AbstractController
                 $manager->flush();
 
             }else{
+
+                //Si lieu existe, chercher le nom de la ville
+                //récupération 'ville-id' dans 'lieu' et insertion BDD
                 $maVille = $villeRepository->findOneBy(array('nom' => $ville->getNom()));
 
                 $lieu->setVille($maVille);

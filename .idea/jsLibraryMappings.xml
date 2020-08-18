@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{es6-promise, esri-leaflet, esri-leaflet-geocoder, leaflet, mapbox, mapbox-gl, mapbox-gl-geocoder}" />
+    <file url="PROJECT" libraries="{es6-promise, esri-leaflet, esri-leaflet-geocoder, jquery, leaflet, mapbox, mapbox-gl, mapbox-gl-geocoder}" />
   </component>
 </project>

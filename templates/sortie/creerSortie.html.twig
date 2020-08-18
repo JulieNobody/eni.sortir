@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% block head %}<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>{% endblock %}
 {% block title %}Sortir | Accueil{% endblock %}
 {% block body %}
     <h1>Creer une sortie</h1>
@@ -21,13 +22,36 @@
 
 
 
+<script>
+
+ function run() {
+
+
+     var selectElmt = document.getElementById("sortie_lieu");
+     var id = selectElmt.options[selectElmt.selectedIndex].value;
+     document.getElementById('nomLieu').innerHTML = id;
+
+
+
+
+
+
+
+         console.log(id);
+
+ }
+
+
+
+ </script>
 
 
     <!-- DETAIL LIEU -->
 
     <!-- <button type="submit">Choisir ce lieu</button> -->
     <ul>
-        <li> rue :  </li>
+
+        <li id="nomLieu" aria-label="nom lieu">Nom Lieu =  </li>
         <li> latitude :         </li>
         <li> longitude :         </li>
     </ul>
