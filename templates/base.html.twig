@@ -25,7 +25,6 @@
     <div id="logoTitle">
         <a href="{{path('accueil') }}" title="Sortir | Accueil">
             <img src="{{ asset('img/logo.png') }}" alt="logo_sortir">
-            <p>Sortir</p>
         </a>
     </div>
     <div>
@@ -57,7 +56,7 @@
     <div>
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div {{ label }}">
+                <div class="messageFlash">
                     {{ message }}
                 </div>
             {% endfor %}

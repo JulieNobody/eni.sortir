@@ -2,28 +2,31 @@
 {% block title %}Sortir | Détail profil{% endblock %}
 
 {% block body %}
-    <h1>Détail profil :</h1>
-
-    <div>
-        <ul>
-            <li>Pseudo : {{ user.username }}</li>
-            <li>Nom : {{ user.nom }}</li>
-            <li>Prénom : {{ user.prenom }}</li>
-            <li>Campus : {{ user.campus.nom }}</li>
-            <li>Téléphone : {{ user.telephone }}</li>
-            <li>Email : {{ user.email }}</li>
-            <li>Photo : en cours</li>
-
-        </ul>
 
 
+    <div id="liste-afficheProfilContainer">
+        <h1>Détail profil</h1>
+            <div id="carteAfficheProfil">
+                <div id="photo-afficheProfil">
+                     <img src="{{ asset('img/pp/')~user.photo }}" alt="Photo" />
+                </div>
+                <ul id="liste-afficheProfil">
+                    <li><div class="label-afficheProfil">Pseudo  </div><div class="champ-afficheProfil">{{ user.username }}</div></li>
+                    <li><div class="label-afficheProfil">Nom  </div><div class="champ-afficheProfil">{{ user.nom }}</div></li>
+                    <li><div class="label-afficheProfil">Prénom  </div><div class="champ-afficheProfil">{{ user.prenom }}</div></li>
+                    <li><div class="label-afficheProfil">Campus  </div><div class="champ-afficheProfil">{{ user.campus.nom }}</div></li>
+                    <li><div class="label-afficheProfil">Téléphone </div><div class="champ-afficheProfil">{{ user.telephone }}</div></li>
+                    <li><div class="label-afficheProfil">Email  </div><div class="champ-afficheProfil">{{ user.email }}</div></li>
+                </ul>
+            </div>
+        {% if user is same as(app.user) %}
+            <div id="boutonModifierProfil">
+                <a href="{{path('user_modifierProfil', { id : user.id } ) }}"  class="boutonMain" title="Sortir | Mon profil">Modifier mon profil</a>
+            </div>
+        {% endif %}
     </div>
 
-    {% if user is same as(app.user) %}
 
-        <a href="{{path('user_modifierProfil') }}" title="Sortir | Mon profil">Modifier mon profil</a>
-
-    {% endif %}
 
 
 
