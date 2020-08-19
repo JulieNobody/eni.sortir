@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository", repositoryClass=UserRepository::class)
@@ -59,7 +60,7 @@ class User implements UserInterface
     private $actif;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $photo;
 
@@ -189,13 +190,7 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        //FIXME à suppr si ok
-        //return ["ROLE_USER"];
-
-        //$monRole = $this->role;
         $roles[] = $this->role;
-
-        //$roles[] = 'ROLE_USER';
 
         return array_unique($roles);
 
