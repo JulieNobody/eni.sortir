@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Choice;
 
 class SortieType extends AbstractType
 {
@@ -39,13 +40,13 @@ class SortieType extends AbstractType
             ->add('infosSortie', null, ['label'=> 'Détails de la sortie'])
             ->add('lieu', EntityType::class,[
                 'class' => Lieu::class,
-                'choice_label' => 'nom',
-                'attr' => array('onchange' => 'run()')
-            ])
+                'choice_label' => 'nom'
+            ]);
+}
 
             //->add('validerLieu', SubmitType::class, ['label'=> 'Valider le lieu'])
             //->add('validerForm', SubmitType::class, ['label'=> 'Valider le formulaire'])
-            ;
+
 
             //, null, ['required'=>false]
 
@@ -101,7 +102,7 @@ class SortieType extends AbstractType
 
 
 
-    }
+
 
     public function configureOptions(OptionsResolver $resolver)
     {

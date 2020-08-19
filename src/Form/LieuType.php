@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Lieu;
+use App\Entity\Ville;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -19,11 +21,10 @@ class LieuType extends AbstractType
     {
         $builder
 
-            ->add('nom', HiddenType::class)
+            ->add('nom',HiddenType::class )
             ->add('rue', HiddenType::class)
-            ->add('latitude',  HiddenType::class)
+            ->add('latitude', HiddenType::class)
             ->add('longitude', HiddenType::class)
-
 
             ->add('validerForm', SubmitType::class, ['label'=> 'ok']);
 

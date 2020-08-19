@@ -13,12 +13,15 @@ use App\Form\SearchForm;
 use App\Form\SortieType;
 use App\Form\UserType;
 use App\Form\VilleType;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
 use App\Repository\VilleRepository;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -127,42 +130,42 @@ class SortieController extends AbstractController
         }
 
 
+
         return $this->render("sortie/creerSortie.html.twig",[
-            'sortieForm'=> $sortieForm->createView()
+            'sortieForm'=> $sortieForm->createView(),
+
         ]);
     }
 
-    //liste déroulante lieu
 
 
 
-            public function getLieu(Request $request, EntityManagerInterface $manager, $id)
+    /**
+     * @Route("getLieu",methods={"POST"}, name="getLieu")
+     */
+            public function getLieu(Request $request, LieuRepository $lieuRepository)
             {
-                $manager = $this->getDoctrine()->getManager();
-
-                $sql = 'SELECT * FROM lieu where id = :id;';
-
-                $statement = $manager->getConnection()->prepare($sql);
-                $statement->setParameter('id', $id);
-                $statement->execute(array($_GET['id']));
-
-                $row = $statement->fetchAll();
-                print_r($row);
+                   $monId = $_POST['id'];
+                   $monLieu = $lieuRepository->findOneBy(array('id' => $monId));
 
 
-                return $this->render("sortie/creerSortie.html.twig", [
-                        'getLieu' => $this->getLieu(),
 
-
-                ]);
+                   $response = new Response("Rue : ".$monLieu->getRue().
+                                                    "<br>Ville : ".$monLieu->getVille().
+                                                    "<br>Latitude : ".$monLieu->getLatitude().
+                                                    "<br>Longitude : ".$monLieu->getLongitude()
+                   );
+                   return $response;
 
             }
 
 
 
 
+
     //Fonction permettant d'afficher une sortie
     //Requirements permet de renseigner que un integer en id
+    //"SELECT * FROM lieu WHERE id = :id";
 
 
 
@@ -337,7 +340,8 @@ class SortieController extends AbstractController
 
             }
 
-            return $this->redirectToRoute('sortie_creerLieu');
+
+            return $this->redirectToRoute('sortie_creerSortie');
 
         }
 
