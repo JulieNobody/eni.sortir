@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %}Menu Admin{% endblock %}
+{% block body %}
+
+
+
+    <h1>Ajouter un utilisateur</h1>
+    <div id="register_form">
+        {{ form_start(registerForm) }}
+
+            {{ form_row(registerForm.nom) }}
+            {{ form_row(registerForm.prenom) }}
+            {{ form_row(registerForm.telephone) }}
+            {{ form_row(registerForm.email) }}
+            {{ form_row(registerForm.role) }}
+            {{ form_row(registerForm.actif) }}
+            {{ form_row(registerForm.campus) }}
+
+            <button type="submit">Valider l'inscription</button>
+
+        {{ form_end(registerForm) }}
+
+        <p>A savoir</p>
+        <ul>
+            <li>Pseudo : le pseudo par défaut est Prénom-Nom-année, il est modifiable par l'utilisateur</li>
+            <li>Mot de passe : le mot de passe par défaut est "Pa$$w0rd" (avec un zero à la place du o),
+                il est demandé aux utilisateurs de changer le mot de passe à la première connexion</li>
+        </ul>
+    </div>
+
+
+
+
+
+
+
+{% endblock %}

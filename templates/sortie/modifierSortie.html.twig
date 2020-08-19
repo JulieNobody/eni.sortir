@@ -3,12 +3,32 @@
 {% block body %}
         <h1>{{ sortie.nom }}</h1>
 
-    <div id="register_form">
 
-        {{ form_start(sortieForm) }}
-        {{ form_end(sortieForm) }}
-        <button type="submit">Valider les modifications</button>
-    </div>
+    {% if sortie.organisateur is same as(app.user) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
+
+        <div id="register_form">
+
+            {{ form_start(sortieForm) }}
+
+            {{ form_row(sortieForm.nom) }}
+            {{ form_row(sortieForm.dateHeureDebut) }}
+            {{ form_row(sortieForm.duree) }}
+            {{ form_row(sortieForm.dateLimiteInscription) }}
+            {{ form_row(sortieForm.nbInscriptionsMax) }}
+            {{ form_row(sortieForm.infosSortie) }}
+            {{ form_row(sortieForm.lieu) }}
+
+            <button type="submit">Valider</button>
+            {{ form_end(sortieForm) }}
+        </div>
+
+    {% else %}
+
+        <p>Vous ne pouvez pas la modifier.</p>
+
+    {% endif %}
+
+
 
 
 

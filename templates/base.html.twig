@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" id="baseHTML">
 {% block html %}{% endblock %}
 <head>
     {% block head %}{% endblock %}
@@ -21,37 +21,45 @@
 </head>
 
 <body>
-<header>
 
-    <div id="logoTitle">
-        <a href="{{path('accueil') }}" title="Sortir | Accueil">
-            <img src="{{ asset('img/logo.png') }}" alt="logo_sortir">
-            <p>Sortir</p>
-        </a>
-    </div>
-    <div>
-        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <nav >
-                <ul>
-                    <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
-                    <li><a href="{{path('user_detailProfil', { id: app.user.id } ) }}" title="Sortir | Mon profil">Mon profil</a></li>
-                    <li><a href="{{path('app_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
-                </ul>
-            </nav>
-        {% else %}
-        {% endif %}
-        {%if(app.user) %}
-            <div class="user_date">
-                <p>Wesh {{ app.user.username }} ! - {{ "now"|date("m/d/Y") }}</p>
-            </div>
-        {% endif %}
-    </div>
+<header>
+    {% block header %}
+        <div id="logoTitle">
+            <a href="{{path('accueil') }}" title="Sortir | Accueil">
+                <img src="{{ asset('img/logo.png') }}" alt="logo_sortir">
+            </a>
+        </div>
+        <div>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <nav >
+                    <ul>
+                        <li><a href="{{path('accueil') }}" title="Sortir | Accueil">Accueil</a></li>
+                        <li><a href="{{path('user_detailProfil', { id: app.user.id } ) }}" title="Sortir | Mon profil">Mon profil</a></li>
+
+                        {% if (app.user.role == "ROLE_ADMIN")%}
+                            <li><a href="{{path('admin_menu') }}" title="Sortir | Admin">Admin</a></li>
+                        {% endif %}
+
+
+
+                        <li><a href="{{path('app_logout') }}" title="Sortir | Déconnexion">Déconnexion</a></li>
+                    </ul>
+                </nav>
+            {% else %}
+            {% endif %}
+            {%if(app.user) %}
+                <div class="user_date">
+                    <p>Wesh {{ app.user.username }} ! - {{ "now"|date("m/d/Y") }}</p>
+                </div>
+            {% endif %}
+        </div>
+    {% endblock %}
 </header>
 <main>
     <div>
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div {{ label }}">
+                <div class="messageFlash">
                     {{ message }}
                 </div>
             {% endfor %}

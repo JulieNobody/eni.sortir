@@ -5,15 +5,20 @@
     <h1>Ajouter un utilisateur :</h1>
     <div id="register_form">
         {{ form_start(registerForm) }}
-        {{ form_row(registerForm.username) }}
+
         {{ form_row(registerForm.nom) }}
         {{ form_row(registerForm.prenom) }}
         {{ form_row(registerForm.telephone) }}
         {{ form_row(registerForm.email) }}
-        {{ form_row(registerForm.password) }}
-        {{ form_row(registerForm.photo) }}
-        <button type="submit">S'inscrire</button>
+        {{ form_row(registerForm.role) }}
+        {{ form_row(registerForm.campus) }}
+
+
+        <button type="submit">Valider l'inscription</button>
         {{ form_end(registerForm) }}
+
+        <p>Le mot de passe par défaut est "Pa$$w0rd" (avec un zero à la place du o).
+            Il est demandé aux utilisateurs de changer le mot de passe à la première connexion </p>
     </div>
 
 {% endblock %}

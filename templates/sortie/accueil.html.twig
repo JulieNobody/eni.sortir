@@ -14,7 +14,7 @@
         {{ form_start(form) }}
         <div id="filtresContainer">
 
-            <div class="filtreLabels">
+            <div class="filtreLabels filtreCampus">
                 {{ form_label(form.campus)}}
                 {{ form_widget(form.campus)}}
             </div>
@@ -35,22 +35,31 @@
                {{ form_widget(form.max) }}
            </div>
 
-            <div >
+            <div id="checkInscriptions">
                 <div class="check">
-                    {{ form_row(form.isOrga) }}
+                    {{ form_label(form.isInscrit) }}
+                    {{ form_widget(form.isInscrit) }}
                 </div>
                 <div class="check">
-                    {{ form_row(form.isInscrit) }}
-                </div>
-                <div class="check">
-                    {{ form_row(form.isNotInscrit) }}
-                </div>
-                <div class="check">
-                    {{ form_row(form.sortiesPassees) }}
+                    {{ form_label(form.isNotInscrit) }}
+                    {{ form_widget(form.isNotInscrit) }}
                 </div>
             </div>
+            <div id="checkOrgaPassees">
+                <div class="check">
+                    {{ form_label(form.isOrga) }}
+                    {{ form_widget(form.isOrga) }}
+                </div>
+                <div class="check">
+                    {{ form_label(form.sortiesPassees) }}
+                    {{ form_widget(form.sortiesPassees) }}
+                </div>
+            </div>
+            <div id="boutonFiltreContainer">
+                <button id="boutonFiltre" class="boutonMain" type="submit" title="rechercher">Rechercher</button>
+            </div>
         </div>
-        <button id="boutonFiltre" class="boutonMain" type="submit" title="rechercher">Rechercher</button>
+
         {{ form_end(form) }}
 
     </fieldset>
@@ -98,37 +107,37 @@
 
 
 
-                    <td>
-                        <a href="{{path('sortie_afficheSortie', { id: sortie.id } ) }}">Afficher</a>
+                    <td id="boutonTabContainer">
+                        <a href="{{path('sortie_afficheSortie', { id: sortie.id } ) }}" class="boutonTab">Afficher</a>
                         {% if sortie.organisateur.id == app.user.id and sortie.etat.id == 1%}
-                            <a href="{{path('sortie_publication', { id: sortie.id } ) }}">Publier</a>
+                            <a href="{{path('sortie_publication', { id: sortie.id } ) }}" class="boutonTab">Publier</a>
                         {% endif %}
 
                         {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6 and sortie.etat.id != 7%}
-                            <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}">Annuler</a>
+                            <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}" class="boutonTab">Annuler</a>
                         {% endif %}
 
                         {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
-                            <a href="">Modifier</a>
+                            <a href="{{path('sortie_modifierSortie', { id: sortie.id } ) }}" class="boutonTab">Modifier</a>
                         {% endif %}
 
                         {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%}
-                            <a href="{{path('sortie_inscription', { id: sortie.id } ) }}">S'inscrire</a>
+                            <a href="{{path('sortie_inscription', { id: sortie.id } ) }}" class="boutonTab">S'inscrire</a>
                         {% endif %}
 
                         {% if app.user in sortie.participants and (sortie.etat.id == 2 or sortie.etat.id == 3) %}
-                            <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}">Se désister</a>
+                            <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}" class="boutonTab">Se désister</a>
                         {% endif %}
                     </td>
                 </tr>
                 {% endif %}
             {% else %}
-                <p>Désolé, aucune sortie ne correspond à vôtre recherche</p>
+                <p class="aucunResultat">Désolé, aucune sortie ne correspond à vôtre recherche</p>
             {% endfor %}
             </table>
         </div>
     </section>
-    <div>
+    <div class="boutonCreationSortie">
         <a href="{{path('sortie_creerSortie') }}" class="boutonMain" >Créer une sortie</a>
     </div>
 {% endblock %}

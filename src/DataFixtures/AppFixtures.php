@@ -203,7 +203,7 @@ class AppFixtures extends Fixture
 
             $user->setEmail($faker->freeEmail);
             $user->setTelephone($faker->e164PhoneNumber);
-            $user->setPhoto('/img.pp.png');
+            $user->setPhoto('pp.png');
             $user->setActif(true);
             $user->setRole('ROLE_USER');
 

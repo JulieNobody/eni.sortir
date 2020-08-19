@@ -53,15 +53,15 @@ class SearchForm extends AbstractType implements FormTypeInterface
                 'attr' => ['class' => 'js-datepicker'],
             ])
             ->add('isOrga', CheckboxType::class,[
-                'label' => 'Sorties dont je suis l\'organisateur/trice',
+                'label' => 'Je suis l\'organisateur/trice',
                 'required' => false,
             ])
             ->add('isInscrit', CheckboxType::class,[
-                'label' => 'Sorties auxquelles je suis inscrit/e',
+                'label' => 'Je suis inscrit/e',
                 'required' => false,
             ])
             ->add('isNotInscrit', CheckboxType::class,[
-                'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
+                'label' => 'Je ne suis pas inscrit/e',
                 'required' => false,
             ])
             ->add('sortiesPassees', CheckboxType::class,[
