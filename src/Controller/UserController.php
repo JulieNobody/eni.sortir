@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
-
+    //FIXME fonction à supprimer si admin ok
     /**
      * @Route("/register", name="user_register")
      */
