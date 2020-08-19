@@ -8,7 +8,11 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -43,6 +47,13 @@ class UserController extends AbstractController
 
     /**
      * @Route("modifierProfil/{id}", name="user_modifierProfil", requirements={"id":"\d+"})
+     * @param User $user
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param UserPasswordEncoderInterface $encoder
+     * @param UserRepository $repository
+     * @param $entityManager
+     * @return Response
      */
     public function modifierProfil(User $user, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
     {
@@ -55,50 +66,69 @@ class UserController extends AbstractController
         //association du formulaire avec la request
         $userForm->handleRequest($request);
 
-        if ($userForm->isSubmitted() && $userForm->isValid())
-        {
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
             $usernameIsUnique = $repository->findOneBy(["username" => $user->getUsername()]);
 
-            if($usernameIsUnique === null || $user->getUsername() === $oldUsername)
-            {
+            if ($usernameIsUnique === null || $user->getUsername() === $oldUsername) {
                 $hashed = $encoder->encodePassword($user, $user->getPassword());
                 $user->setPassword($hashed);
 
-                $manager->persist($user);
-                $manager->flush();
+
 
                 $this->addFlash('success', 'Le profil a bien été mis à jour');
 
 
-                //$this->redirectToRoute('accueil' );
+                //Récupération de la photo et valorisation de la variable $photoFile
+                $photoFile = $userForm->get('photo')->getData();
 
 
-                return $this->render("user/detailProfil.html.twig",['user'=>$user]);
+                // La photo doit etre traitée que lorsque le fichier est téléchargé
+                if ($photoFile) {
+
+                    $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+                    // Déplacer le fichier vers l'emplacement de stockage
+                    try {
+                        $photoFile->move(
+                            $this->getParameter('photo_directory'),
+                            $newFilename
+                        );
+
+                    } catch (FileException $e) {
+                        // Levée d'exception si il y a un probleme de téléchargement
+                    }
+
+                }
+
+                $manager->persist($user);
+                $manager->flush();
+
+                return $this->render("user/detailProfil.html.twig", ['user' => $user]);
                 //$this->redirectToRoute('user_detailProfil', array('id'=> $this->getUser()->getId() ) );
 
                 //$this->redirectToRoute('user_detailProfil', array('id' => 9));
 
-            }else{
+            } else {
                 $this->addFlash('error', 'Désolé, le pseudo est déja utilisé');
             }
 
-        }
+
+    }
 
         return $this->render("user/modifierProfil.html.twig", ['userForm' => $userForm->createView()]);
     }
 
-    /**
-     * @Route("detailProfil/{id}", name="user_detailProfil", requirements={"id":"\d+"})
-     * @ParamConverter()
-     */
-    public function detailProfil(User $user)
-    {
+        /**
+         * @Route("detailProfil/{id}", name="user_detailProfil", requirements={"id":"\d+"})
+         * @ParamConverter()
+         */
+        public
+        function detailProfil(User $user)
+        {
 
 
-        return $this->render("user/detailProfil.html.twig",['user'=>$user]);
-    }
-
-
-
-
+            return $this->render("user/detailProfil.html.twig", ['user' => $user]);
+        }
 }
