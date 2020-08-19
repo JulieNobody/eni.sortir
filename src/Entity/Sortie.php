@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -25,21 +27,57 @@ class Sortie
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThanOrEqual(
+     *     "now",
+     *     message = "La date de début de la sortie ne doit pas être passée."
+     *      )
      */
     private $dateHeureDebut;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive (message = "La durée doit être positive.")
      */
     private $duree;
 
+    /*
+     @Assert\LessThanOrEqual(
+          "now - 1 hour",
+           message = "La date limite d'inscription ne doit pas être passée."
+          )
+     */
+
+    /*
+    @Assert\Expression(
+    *     "this.getDateHeureDebut() = this.getDateLimiteInscription()",
+    *     message="Lorem blabla"
+    */
+
+    /*
+    * @Assert\Range(
+    *     min = "now - 1 hour",
+    *     max = "first day of January next year"
+    */
+
+    /*
+     @Assert\Callback({"App\Entity\Sortie", "validate"})
+     */
+
+
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Range(
+     *      min = "now",
+     *      maxPropertyPath="dateHeureDebut",
+     *      notInRangeMessage = "La date limite d'inscription doit être entre maintenant et le début de la sortie.",
+     * )
+     *
      */
     private $dateLimiteInscription;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive (message = "Le nombre de participants doit être positif.")
      */
     private $nbInscriptionsMax;
 
@@ -47,6 +85,11 @@ class Sortie
      * @ORM\Column(type="string", length=255)
      */
     private $infosSortie;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $motif;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="sorties")
@@ -163,6 +206,23 @@ class Sortie
     /**
      * @return mixed
      */
+    public function getMotif()
+    {
+        return $this->motif;
+    }
+
+    /**
+     * @param mixed $motif
+     */
+    public function setMotif($motif): void
+    {
+        $this->motif = $motif;
+    }
+
+
+    /**
+     * @return mixed
+     */
     public function getLieu()
     {
         return $this->lieu;
@@ -244,6 +304,16 @@ class Sortie
         }
     }
 
+    public function publierSortie(User $user,Etat $etat){
+       
+        if($user == $this->getOrganisateur()){
+            $this->etat = $etat;
+            return $message = 'Votre sortie '.$this->getNom().' a été publiée !';
+        }else {
+            return $message = 'Vous n\'avez pas les droits pour publier cette sortie';
+        }
+    }
+
     public function annulerSortie(User $user, Etat $etat){
         if($user == $this->getOrganisateur()){
             $this->etat = $etat;
@@ -286,4 +356,19 @@ class Sortie
     }
 
 
+    /**
+     * @Assert\Callback
+     */
+    /* public function validate(ExecutionContextInterface $context, $dateLimiteInscription)
+     {
+         $date = new \DateTime();
+         if ( $this->getDateLimiteInscription() < $date || $this->getDateLimiteInscription() > $this->getDateHeureDebut())
+         {
+             $context->buildViolation('la date de limite d\'inscription blabla')
+                 ->atPath('dateLimiteInscription')
+                 ->addViolation();
+         }
+
+     }
+ */
 }

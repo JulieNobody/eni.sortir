@@ -9,6 +9,7 @@ use App\Repository\LieuRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,15 +21,26 @@ class SortieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('dateHeureDebut')
-            ->add('duree')
-            ->add('dateLimiteInscription')
-            ->add('nbInscriptionsMax')
-            ->add('infosSortie')
+            ->add('nom', null, ['label'         => 'Nom de la sortie'])
+            ->add('dateHeureDebut', DateTimeType::class, [
+                    'placeholder'   => ['year' => 'Année', 'month' => 'Mois', 'day' => 'Jour',
+                    'hour' => 'Heure', 'minute' => 'Minute'],
+                    'label'         => 'Début de la sortie',
+                'date_format' => 'dd MM yyyy'
+            ])
+            ->add('duree', null, ['label'         => 'Durée'])
+            ->add('dateLimiteInscription', DateTimeType::class, [
+                    'placeholder' => ['year' => 'Année', 'month' => 'Mois', 'day' => 'Jour',
+                    'hour' => 'Heure', 'minute' => 'Minute'],
+                    'label' => 'Date limite d\'inscription',
+                'date_format' => 'dd MM yyyy'
+            ])
+            ->add('nbInscriptionsMax', null, ['label' => 'Maximum de participants'])
+            ->add('infosSortie', null, ['label'=> 'Détails de la sortie'])
             ->add('lieu', EntityType::class,[
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
+                'attr' => array('onchange' => 'run()')
             ])
 
             //->add('validerLieu', SubmitType::class, ['label'=> 'Valider le lieu'])

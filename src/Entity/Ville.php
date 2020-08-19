@@ -29,7 +29,7 @@ class Ville
     private $codePostal;
 
     /**
-     * @ORM\OnetoMany(targetEntity="App\Entity\Lieu", mappedBy="ville")
+     * @ORM\OnetoMany(targetEntity="App\Entity\Lieu", mappedBy="ville", cascade={"persist"})
      */
     private $lieux;
 
@@ -80,6 +80,11 @@ class Ville
     public function setLieux($lieux): void
     {
         $this->lieux = $lieux;
+    }
+
+    public function __toString()
+    {
+        return $this->getNom();
     }
 
 

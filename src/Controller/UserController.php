@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserAdminType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,10 +26,17 @@ class UserController extends AbstractController
     public function register(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
     {
         $user = new User();
-        $registerForm = $this->createForm(UserType::class, $user);
+        $registerForm = $this->createForm(UserAdminType::class, $user);
 
         $registerForm->handleRequest($request);
         if($registerForm->isSubmitted() && $registerForm->isValid()){
+
+            $test="Pa$\$w0rd";
+            dd($test);
+
+            //mot de passe : Pa$$w0rd
+            $password = $encoder->encodePassword($user, "Pa$\$w0rd");
+
             //hasher le mot de passe
             $hashed = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hashed);
@@ -54,9 +62,11 @@ class UserController extends AbstractController
      * @param UserRepository $repository
      * @param $entityManager
      * @return Response
+     * @Route("modifierProfil", name="user_modifierProfil")
      */
-    public function modifierProfil(User $user, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
+    public function modifierProfil(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
     {
+        $user=$this->getUser();
         //récupération du pseudo du user
         $oldUsername = $user->getUsername();
 

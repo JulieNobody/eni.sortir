@@ -190,7 +190,10 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return ["ROLE_USER"];
+        $roles[] = $this->role;
+
+        return array_unique($roles);
+
     }
 
     //Inutile pour nous

@@ -26,7 +26,7 @@ class SearchForm extends AbstractType implements FormTypeInterface
     {
         $builder
             ->add('q', TextType::class, [
-                'label' => 'Recherche par mot clé : ',
+                'label' => 'Mot clé',
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Rechercher'
@@ -34,36 +34,34 @@ class SearchForm extends AbstractType implements FormTypeInterface
             ])
 
             ->add('campus', EntityType::class, [
-                'label' => 'Site de : ',
+                'label' => 'Site',
                 'required' => true,
                 'class' => Campus::class
             ])
 
 
             ->add('min', DateType::class,[
-                'label' => 'Entre le : ',
+                'widget' => 'single_text',
+                'label' => 'Entre',
                 'required' => false,
-                'attr' => [
-                    'placeholder' => 'Entre le...'
-                ]
+                'attr' => ['class' => 'js-datepicker'],
             ])
             ->add('max', DateType::class,[
-                'label' => 'Et le : ',
+                'widget' => 'single_text',
+                'label' => 'Et',
                 'required' => false,
-                'attr' => [
-                    'placeholder' => 'Et le...'
-                ]
+                'attr' => ['class' => 'js-datepicker'],
             ])
             ->add('isOrga', CheckboxType::class,[
-                'label' => 'Sorties dont je suis l\'organisateur/trice',
+                'label' => 'Je suis l\'organisateur/trice',
                 'required' => false,
             ])
             ->add('isInscrit', CheckboxType::class,[
-                'label' => 'Sorties auxquelles je suis inscrit/e',
+                'label' => 'Je suis inscrit/e',
                 'required' => false,
             ])
             ->add('isNotInscrit', CheckboxType::class,[
-                'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
+                'label' => 'Je ne suis pas inscrit/e',
                 'required' => false,
             ])
             ->add('sortiesPassees', CheckboxType::class,[

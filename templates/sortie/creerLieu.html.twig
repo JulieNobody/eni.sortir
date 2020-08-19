@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir | à venir{% endblock %}
+
+
+{% block body %}
+    <script>
+        import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+        import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+    </script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    <link
+            rel="stylesheet"
+            href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+            type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+    <script src='https://unpkg.com/mapbox@1.0.0-beta9/dist/mapbox-sdk.min.js'></script>
+
+
+
+
+
+
+
+    <h1> choisi ton lieu!</h1>
+
+    <!--Input nom du lieu-->
+    <div style="padding-bottom: 5px">
+        <label>Nom du lieu</label>
+        <input type="text" id="nomLieu">
+    </div>
+
+    <!--Affichage de la map-->
+    <div id="geocoder" class="geocoder"></div>
+    <div class="map" id="map" style="width: 65%; height: 300px;"></div>
+
+    <!--Affichage de l'adresse cherchée-->
+    <div id="output"></div>
+
+
+
+
+        {{ form_start(lieuForm) }}
+        {{ form_row(lieuForm.nom) }}
+        {{ form_row(lieuForm.rue) }}
+        {{ form_row(lieuForm.latitude) }}
+        {{ form_row(lieuForm.longitude) }}
+        {{ form_row(villeForm.nom) }}
+        {{ form_row(villeForm.codePostal) }}
+        {{ form_row(lieuForm.validerForm) }}
+        {{ form_end(lieuForm) }}
+
+
+
+
+
+
+
+
+    <script>
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlc3N5ODk4IiwiYSI6ImNrZHFnNmZreTEzeTIycXRhNXQyZ3k5NnEifQ.CphvE_eRmoN-lWCngjOvkw';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [2.350423, 48.852987],
+            zoom: 13
+        });
+
+        var geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            mapboxgl:mapboxgl
+        });
+
+
+        <!--Activation du bouton validation-->
+        var button = document.getElementById("myButton");
+        map.addControl(geocoder);
+
+
+
+        map.on('load', function() {
+
+            geocoder.on('result', function(ev) {
+
+                <!--Avoir les coordonnées en json-->
+                var styleSpec = ev.result;
+                document.getElementById('geocoder');
+                var json = JSON.stringify(styleSpec, null, 2);
+                var obj = JSON.parse(json);
+                console.log(obj);
+
+
+                <!--Afficher l'adresse sur la page-->
+                 let adresse = JSON.parse(json).place_name_fr;
+               document.getElementById("output").innerHTML = adresse;
+
+
+                <!--Afficher les coordonnées sur un formulaire html pour les récupérer avec le submit-->
+                let nom = document.getElementById("nomLieu").value;
+                document.getElementById("lieu_nom").value = nom;
+
+                let rue = JSON.parse(json).text_fr;
+                document.getElementById("lieu_rue").value = rue;
+
+
+                let latitude = JSON.parse(json).center["1"];
+                document.getElementById("lieu_latitude").value = latitude;
+
+
+                let longitude = JSON.parse(json).center["0"];
+                document.getElementById("lieu_longitude").value = longitude;
+
+
+                let nomVille = JSON.parse(json).context[1]["text_fr"];
+                document.getElementById("ville_nom").value = nomVille;
+
+
+                let codePostal = JSON.parse(json).context[0]["text_fr"];
+                document.getElementById("ville_codePostal").value = codePostal;
+
+            });
+
+        });
+
+
+    </script>
+
+{% endblock %}
+

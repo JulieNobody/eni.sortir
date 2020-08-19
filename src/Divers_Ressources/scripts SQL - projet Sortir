@@ -1,0 +1,199 @@
+#################### SCRIPTS SQL | -- DEV -- | PROJET SORTIR.COM ####################
+
+-------------------- ETAPE 1 -------------------- 
+-- remettre à 0 la BDD
+--commandes a copier coller 1 par 1 dans le terminal PHP Storm
+
+php bin/console doctrine:database:drop --force
+php bin/console cache:clear
+php bin/console doctrine:database:create
+php bin/console doctrine:schema:update --force
+php bin/console doctrine:fixtures:load
+
+-------------------- ETAPE 2 --------------------
+--scipts à copier coller dans phpMyAdmin > eni.sortirdb > SQL
+
+-- vérifier activation event scheduler
+SHOW GLOBAL VARIABLES LIKE 'event_scheduler';
+
+-- si "OFF" -> 
+SET GLOBAL event_scheduler = 1 ;
+
+-------------------- ETAPE 3 --------------------
+-- création de la procédure stoquée
+
+-- procédure pour la MAJ des états des sorties à copier coller de "DELIMITER" à "END$$"
+DELIMITER $$
+	CREATE PROCEDURE maj_etat_sortie()      
+	BEGIN
+		-- date cloture passée, date début pas passée -> CLOTUREE
+			UPDATE sortie SET etat_id = 3
+				WHERE etat_id = 2
+				AND date_limite_inscription < now()
+				AND date_heure_debut > now();
+		-- date début passée, date debut + durée pas passée -> EN COURS
+			UPDATE sortie SET etat_id = 4
+				WHERE etat_id = 3
+				AND date_heure_debut < now()
+				AND DATE_ADD(date_heure_debut, INTERVAL duree MINUTE) > now();
+		-- date debut + durée pas passée -> PASSEE
+			UPDATE sortie SET etat_id = 5
+				WHERE etat_id = 4
+				AND DATE_ADD(date_heure_debut, INTERVAL duree MINUTE) < now();
+		-- date debut + durée + 1 mois passé -> ARCHIVEE
+			UPDATE sortie SET etat_id = 7
+				WHERE etat_id = 5
+				AND DATE_ADD(DATE_ADD(date_heure_debut, INTERVAL duree MINUTE), INTERVAL 1 MONTH) < now();
+        -- Annulée + date debut + durée + 1 mois passé -> ARCHIVEE
+            UPDATE sortie SET etat_id = 7
+                WHERE etat_id = 6
+                AND DATE_ADD(DATE_ADD(date_heure_debut, INTERVAL duree MINUTE), INTERVAL 1 MONTH) < now();
+	END $$
+
+-------------------- ETAPE 4 --------------------
+-- création de l'event scheduler
+CREATE EVENT event_maj_etat_sortie
+	ON SCHEDULE
+		EVERY 1 MINUTE
+	DO
+		CALL maj_etat_sortie();
+
+-------------------- ETAPE 5 --------------------
+-- vérification que l'event fonctionne : vérifier statut en fonction des dates
+SELECT s.nom, e.libelle, s.date_heure_debut, s.date_limite_inscription, s.duree  FROM sortie s
+LEFT JOIN etat e ON s.etat_id = e.id;
+
+
+
+#################### SCRIPTS SQL | -- PROD -- | PROJET SORTIR.COM ####################
+
+
+
+#################### DOCUMENTS DE TRAVAIL #################### 
+
+
+-------------------- SELECT -------------------- 
+-- id états
+    -- 1 : Créée
+    -- 2 : Ouverte
+    -- 3 : Clôturée
+    -- 4 : Activité en cours
+    -- 5 : Passée
+    -- 6 : Annulée
+    
+-- select des sorties cloturées
+SELECT * FROM sortie
+	WHERE etat_id ="3";
+
+SELECT * FROM sortie
+	WHERE date_heure_debut < now();
+    
+SELECT * FROM sortie
+	WHERE date_heure_debut < now()+ duree;
+    
+
+SELECT etat_id FROM sortie
+	WHERE date_heure_debut > now();
+    
+    
+-- vérification après les update
+SELECT s.nom, e.libelle, s.date_heure_debut, s.date_limite_inscription, s.duree  FROM sortie s
+LEFT JOIN etat e ON s.etat_id = e.id;
+
+-------------------- UPDATE --------------------
+-- mise de toutes les sorties à OUVERTE
+UPDATE sortie SET etat_id = 2;
+
+-- date cloture et date début pas passée -> OUVERTE
+UPDATE sortie SET etat_id = 2
+	WHERE date_limite_inscription > now();
+
+-- date cloture passée, date début pas passée -> CLOTUREE
+UPDATE sortie SET etat_id = 3
+    WHERE date_limite_inscription < now()
+	AND date_heure_debut > now();
+	
+    
+-- date début passée, date debut + durée pas passée -> EN COURS
+UPDATE sortie SET etat_id = 4
+WHERE date_heure_debut < now()
+AND DATE_ADD(date_heure_debut, INTERVAL duree MINUTE) > now();
+
+
+-- date debut + durée passée -> PASSEE
+UPDATE sortie SET etat_id = 5
+WHERE DATE_ADD(date_heure_debut, INTERVAL duree MINUTE) < now();
+
+
+-- date debut + durée + 1 mois passé -> ARCHIVEE
+UPDATE sortie SET etat_id = 7
+WHERE DATE_ADD(DATE_ADD(date_heure_debut, INTERVAL duree MINUTE), INTERVAL 1 MONTH) < now();
+
+
+
+-------------------- PROCEDURES STOCKEES -------------------- 
+
+
+DELIMITER $$
+CREATE PROCEDURE insert_ville_test_1()      
+BEGIN
+    INSERT INTO ville (nom, code_postal)
+    	VALUES ('VILLE_TEST', '44000');
+END $$
+
+
+
+
+
+-- procédure pour la MAJ des états des sorties
+DELIMITER $$
+CREATE PROCEDURE maj_etat_sortie()      
+BEGIN
+
+-- date cloture et date début pas passée -> OUVERTE
+UPDATE sortie SET etat_id = 2
+	WHERE date_limite_inscription > now();
+
+-- date cloture passée, date début pas passée -> CLOTUREE
+UPDATE sortie SET etat_id = 3
+    WHERE date_limite_inscription < now()
+	AND date_heure_debut > now();
+    
+-- date début passée, date debut + durée pas passée -> EN COURS
+UPDATE sortie SET etat_id = 4
+WHERE date_heure_debut < now()
+AND DATE_ADD(date_heure_debut, INTERVAL duree MINUTE) > now();
+
+-- date debut + durée pas passée -> PASSEE
+UPDATE sortie SET etat_id = 5
+WHERE DATE_ADD(date_heure_debut, INTERVAL duree MINUTE) < now();
+
+END $$
+
+-------------------- APPEL AUX PROCEDURES STOCKEES -------------------- 
+
+CALL insert_ville_test_1();
+
+CALL maj_etat_sortie();
+
+-------------------- EVENT --------------------
+
+CREATE EVENT event_maj_etat_sortie
+IF NOT EXISTS 
+ON SCHEDULE
+	EVERY 1 MINUTE
+ON COMPLETION PRESERVE
+DO
+	CALL maj_etat_sortie();
+
+
+-------------------- VERIF EVENT --------------------
+
+USE cours;
+SHOW EVENT;
+
+DROP EVENT [IF EXISTS] event_name
+
+
+
+

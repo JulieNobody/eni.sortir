@@ -28,10 +28,8 @@ class MainController extends AbstractController
      */
     public function aVenir()
     {
-       //commentaire test
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        return $this->render("aVenir.html.twig",[]);
+        return $this->render("main/aVenir.html.twig",[]);
     }
 
 
