@@ -5,7 +5,7 @@
 
 
     <div id="liste-afficheProfilContainer">
-        <h1>Détail profil</h1>
+        <h1>Profil</h1>
             <div id="carteAfficheProfil">
                 <div id="photo-afficheProfil">
                      <img src="{{ asset('img/pp/')~user.photo }}" alt="Photo" />
@@ -20,8 +20,8 @@
                 </ul>
             </div>
         {% if user is same as(app.user) %}
-            <div id="boutonModifierProfil">
-                <a href="{{path('user_modifierProfil', { id : user.id } ) }}"  class="boutonMain" title="Sortir | Mon profil">Modifier mon profil</a>
+            <div id="boutonModifierProfilContainer">
+                <a href="{{path('user_modifierProfil', { id : user.id } ) }}"  id="boutonModifierProfil" title="Sortir | Mon profil">Modifier mon profil</a>
             </div>
         {% endif %}
     </div>

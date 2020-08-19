@@ -19,16 +19,17 @@
     {% block stylesheets %}{% endblock %}
 </head>
 
-<body>
+<body >
 
 <header>
     {% block header %}
+    <div id="insideHeader">
         <div id="logoTitle">
             <a href="{{path('accueil') }}" title="Sortir | Accueil">
                 <img src="{{ asset('img/logo.png') }}" alt="logo_sortir">
             </a>
         </div>
-        <div>
+        <div id="nav_User">
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 <nav >
                     <ul>
@@ -48,34 +49,36 @@
             {% endif %}
             {%if(app.user) %}
                 <div class="user_date">
-                    <p>Wesh {{ app.user.username }} ! - {{ "now"|date("m/d/Y") }}</p>
+                    <p>{{ app.user.username }} - Le {{ "now"|date("m/d/Y") }}</p>
                 </div>
             {% endif %}
         </div>
+    </div>
     {% endblock %}
 </header>
-<main>
-    <div>
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="messageFlash">
-                    {{ message }}
-                </div>
+<div id="body">
+    <main>
+        <div>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="messageFlash">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-    </div>
+        </div>
 
-    {% block body %}{% endblock %}
+        {% block body %}{% endblock %}
 
-</main>
+    </main>
 
-{% block javascripts %}{% endblock %}
+    {% block javascripts %}{% endblock %}
 
-<footer class="made-with-love">
-    <p>©JLLP - Application web d'organisation de sorties - {{ "now" | date('Y') }}</p>
-</footer>
+    <footer class="made-with-love">
+        <p>©JLLP - Application web d'organisation de sorties - {{ "now" | date('Y') }}</p>
+    </footer>
 
-
+</div>
 </body>
 
 

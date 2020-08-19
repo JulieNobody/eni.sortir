@@ -11,7 +11,7 @@
                 <div id="photo-afficheProfil">
                     <img src="{{ asset('img/pp/')~app.user.photo }}" alt="Photo" />
                 </div>
-                <ul id="liste-afficheProfil">
+                <ul id="liste-afficheProfil" class="borderNone">
                     <li>
                         {{ form_label(userForm.username,'Pseudo', {'label_attr': {'class': 'label-afficheProfil'}}) }}
                         {{ form_widget(userForm.username, {'attr': {'class': 'champ-afficheProfil'}}) }}
@@ -40,13 +40,14 @@
                         {{ form_label(userForm.password.second,'Répéter mot de passe', {'label_attr': {'class': 'label-afficheProfil'}}) }}
                         {{ form_widget(userForm.password.second, {'attr': {'class': 'champ-afficheProfil'}}) }}
                     </li>
-                    <li>
-                        {{ form_row(userForm.photo) }}
+                    <li >
+                        {{ form_label(userForm.photo,'Photo', {'label_attr': {'class': 'label-afficheProfil'}}) }}
+                        {{ form_widget(userForm.photo, {'attr': {'class': 'champ-afficheProfil'}}) }}
                     </li>
                 </ul>
             </div>
-            <div id="boutonModifierProfil">
-                <button type="submit" class="boutonMain">Valider les modifications</button>
+            <div id="boutonModifierProfilContainer">
+                <button type="submit" id="boutonModifierProfil">Valider les modifications</button>
             </div>
         {{ form_end(userForm) }}
     </div>
