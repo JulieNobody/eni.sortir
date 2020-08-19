@@ -54,7 +54,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("modifierProfil/{id}", name="user_modifierProfil", requirements={"id":"\d+"})
+     * @Route("modifierProfil", name="user_modifierProfil")
      * @param User $user
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -62,7 +62,6 @@ class UserController extends AbstractController
      * @param UserRepository $repository
      * @param $entityManager
      * @return Response
-     * @Route("modifierProfil", name="user_modifierProfil")
      */
     public function modifierProfil(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, UserRepository $repository)
     {
@@ -105,9 +104,11 @@ class UserController extends AbstractController
                             $this->getParameter('photo_directory'),
                             $newFilename
                         );
+                        $user->setPhoto($newFilename);
 
                     } catch (FileException $e) {
                         // Levée d'exception si il y a un probleme de téléchargement
+                        //FIXME faire exception
                     }
 
                 }
