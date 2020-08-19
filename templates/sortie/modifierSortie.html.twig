@@ -1,29 +1,66 @@
 {% extends 'base.html.twig' %}
 {% block title %}Sortie {{ sortie.nom }}{% endblock %}
 {% block body %}
-        <h1>{{ sortie.nom }}</h1>
 
 
+    {#SI L'UTILISATEUR EST L'ORGANISATEUR#}
     {% if sortie.organisateur is same as(app.user) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
 
-        <div id="register_form">
+        {{ form_start(sortieForm) }}
 
-            {{ form_start(sortieForm) }}
+        <div class="erreurModifProfil">
+            {{ form_errors(sortieForm.nom) }}
+            {{ form_errors(sortieForm.dateHeureDebut) }}
+            {{ form_errors(sortieForm.duree) }}
+            {{ form_errors(sortieForm.dateLimiteInscription) }}
+            {{ form_errors(sortieForm.nbInscriptionsMax) }}
+            {{ form_errors(sortieForm.infosSortie) }}
+            {{ form_errors(sortieForm.lieu) }}
+        </div>
 
-            {{ form_row(sortieForm.nom) }}
-            {{ form_row(sortieForm.dateHeureDebut) }}
-            {{ form_row(sortieForm.duree) }}
-            {{ form_row(sortieForm.dateLimiteInscription) }}
-            {{ form_row(sortieForm.nbInscriptionsMax) }}
-            {{ form_row(sortieForm.infosSortie) }}
-            {{ form_row(sortieForm.lieu) }}
 
-            <button type="submit">Valider</button>
+        <div class="conteneur-AfficheSortie">
+            <h1>{{ sortie.nom }}</h1>
+            <ul>
+                <li>
+                    {{ form_label(sortieForm.nom,'Nom de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.nom, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.dateHeureDebut,'Début de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.dateHeureDebut, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.duree,'Durée', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.duree, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.dateLimiteInscription,'Date limite d\'inscription', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.dateLimiteInscription, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.nbInscriptionsMax,'Nombre de place', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.nbInscriptionsMax, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.infosSortie,'Description', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.infosSortie, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.lieu,'Lieu de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.lieu, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+            </ul>
+
+
+
+                <button type="submit">Valider</button>
             {{ form_end(sortieForm) }}
         </div>
 
+    {#SI L'UTILISATEUR N'EST PAS L'ORGANISATEUR#}
     {% else %}
-
+        <h1>{{ sortie.nom }}</h1>
         <p>Vous ne pouvez pas la modifier.</p>
 
     {% endif %}

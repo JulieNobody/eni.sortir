@@ -107,6 +107,28 @@ section{
 
 #logionCheckTxt{
     max-width: 600px;
+    font-size: 13px;
+    font-weight: 400;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+#loginContainer a:link {
+    color: white;
+}
+#loginContainer a:visited {
+    color: white;
+}
+
+.login-erreur {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    margin-top: 20px;
+    text-align: center;
+
 }
 
 .boutonLogin{
@@ -262,6 +284,9 @@ nav a:hover{
     border-bottom-left-radius: 20px;
 
 }
+
+
+
 /* ------------------- TITRES ------------------- */
 
 h1{
@@ -523,7 +548,7 @@ td a{
 }
 
 
-/* ------------------- DETAILS (sortie, user) ------------------- */
+/* ------------------- DETAILS USER ------------------- */
 #liste-afficheProfilContainer{
     background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.49), rgba(0, 0, 0, 0.85)),
     url("../img/Tropical-Branch.jpg");
@@ -663,6 +688,54 @@ td a{
     background-color: transparent;
     color: #ffffff;
     font-size: 22px;
+}
+
+.erreurModifProfil{
+    font-size: 17px;
+    font-weight: 500;
+    color: #ffffff;
+    list-style: none;
+}
+
+/* ------------------- DETAILS SORTIE ------------------- */
+
+.conteneur-AfficheSortie {
+    border: solid 3px white;
+    width: 800px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+.liste-AfficheSortie{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.label-AfficheSortie{
+    text-transform: uppercase;
+    font-size: 17px;
+    font-weight: 600;
+    display: inline-block;
+    flex-basis: 50%;
+}
+
+
+.champ-AfficheSortie{
+    font-size: 13px;
+    font-weight: 400;
+    display: inline-block;
+    flex-basis: 50%;
+}
+
+.description-AfficheSortie {
+    width: 600px;
+    padding: 10px 10px 10px 10px;
+    margin: auto;
+
 }
 
 

@@ -20,16 +20,6 @@
 <div id="loginFullPage">
     <form method="post">
 
-        {% if error %}
-            {#<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
-            <div class="alert alert-danger">{{ 'Votre identifiant ou votre mot de passe est incorrect' }}</div>
-        {% endif %}
-
-        {% if app.user %}
-            <div class="mb-3">
-                Vous êtes déjà connecté avec le profil de {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconecter</a>
-            </div>
-        {% endif %}
 
         <div id="loginContainer">
 
@@ -73,6 +63,19 @@
                 </svg>
                 <span>Se connecter</span>
             </button>
+
+            {% if error %}
+                {#<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
+                <div class="login-erreur">
+                    <p>{{ 'Votre identifiant ou votre mot de passe est incorrect' }}</p>
+                </div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="login-erreur">
+                    Vous êtes déjà connecté avec le profil de {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconecter</a>
+                </div>
+            {% endif %}
 
         </div>
 

@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block title %}Sortie {{ sortie.nom }}{% endblock %}
 {% block body %}
-        <h1>{{ sortie.nom }}</h1>
+    <div class="conteneur-AfficheSortie">
+        <h1 class="titre-afficheSortie">{{ sortie.nom }}</h1>
     {% if(sortie.etat.id == 6) %}
         <div id="zone_annulation">
             <h2 id="sortie_annulee">Sortie annulée !</h2>
@@ -9,37 +10,34 @@
         </div>
     {% endif %}
     <!-- Boucle dans la classe sorties -->
-    <hr>
-         <div>      <!--affichage des propriétés de la table sortie de la BDD-->
-             <ul>
-                <li><p>Nom de la sortie : {{ sortie.nom }} </p></li>
-                <li><p>Organisateur de la sortie : {{ sortie.organisateur.username }} </p></li>
-                <li><p>Date et heure de la sortie : {{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</p></li>
-                <li><p>Nombre de place maximum : {{ sortie.nbInscriptionsMax }} </p></li>
-                <li><p>Date Limite d'inscription : {{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }} </p></li>
-                <li><p> Durée de la sortie :
-                     {% if sortie.duree > 60 %}
+
+        <div>      <!--affichage des propriétés de la table sortie de la BDD-->
+             <ul class="liste-AfficheSortie">
+                <li><div class="label-AfficheSortie">Organisateur</div><div class="champ-AfficheSortie">{{ sortie.organisateur.username }}</div></li>
+                <li><div class="label-AfficheSortie">Début</div><div class="champ-AfficheSortie">{{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</div></li>
+                <li><div class="label-AfficheSortie">Nombre de place</div><div class="champ-AfficheSortie">{{ sortie.nbInscriptionsMax }}</div></li>
+                <li><div class="label-AfficheSortie">Date Limite d'inscription</div><div class="champ-AfficheSortie">{{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }}</div></li>
+                <li><div class="label-AfficheSortie">Durée</div>
+                        <div class="champ-AfficheSortie">{% if sortie.duree > 60 %}
                          {% set heures = sortie.duree//60 %}
                          {% set minutes = sortie.duree%60 %}
                          {{ heures }} heure(s) et {{ minutes }} minute(s)
                      {% else %}
                         {{ sortie.duree }} minute(s)
-                     {% endif %}
-                </p></li>
-                <li><p>Description et infos : {{ sortie.infosSortie }} </p></li>
+                     {% endif %}</div>
+                </li>
+                <li><div class="label-AfficheSortie">Campus</div><div class="champ-AfficheSortie">{{ sortie.campus.nom }}</div></li>
+                <li><div class="label-AfficheSortie">Lieu</div><div class="champ-AfficheSortie">{{ sortie.lieu.ville.nom }}</div></li>
+                <li><div class="label-AfficheSortie">Code Postal</div><div class="champ-AfficheSortie">{{ sortie.lieu.ville.codePostal }}</div></li>
+                <li><div class="label-AfficheSortie">Latitude</div><div class="champ-AfficheSortie">{{ sortie.lieu.latitude }}</div></li>
+                <li><div class="label-AfficheSortie">Longitude</div><div class="champ-AfficheSortie">{{ sortie.lieu.longitude }}</div></li>
              </ul>
+            <div class="description-AfficheSortie">
+                <div class="label-AfficheSortie">Description</div>
+                <div class="champ-AfficheSortie">{{ sortie.infosSortie }}</div>
+            </div>
          </div>
-    <hr>
-        <div>       <!--affichage des propriétés de la table campus de la BDD-->
-            <ul>
-                <li><p>Campus : {{ sortie.campus.nom }}</p></li>
-                <li><p>Lieu : {{ sortie.lieu.ville.nom }} </p></li>
-                <li><p>Code Postal : {{ sortie.lieu.ville.codePostal }}</p></li>
-                <li><p>Latitude : {{ sortie.lieu.latitude }}</p></li>
-                <li><p>Longitude : {{ sortie.lieu.longitude }}</p></li>
-            </ul>
-        </div>
-    <hr>
+
         <div>   <!--affichage du nombre de participants table sortie de la BDD avec une boucle-->
             <table>
                 <h4>Liste des particpants</h4>
@@ -57,7 +55,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        {{ participant.nom }}
+                                        {{ participant.prenom }} {{ participant.nom }}
                                     </td>
                                 </tr>
 
@@ -66,7 +64,8 @@
             </table>
             {% if sortie.participants| length == 0 %}<p>Pas de participants !</p>{% endif %}
         </div>
-<br>
+    </div>
+
 
     <!-- si user = organisateur -->
     {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6 and sortie.etat.id != 7 %}

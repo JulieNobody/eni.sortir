@@ -2,6 +2,17 @@
 {% block title %}Sortir | Modifier profil{% endblock %}
 
 {% block body %}
+    <div class="erreurModifProfil">
+        {{ form_errors(userForm.username, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.nom, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.prenom, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.telephone, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.email, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.password.first, {'attr': {'class': 'erreurModifProfil'}}) }}
+        {{ form_errors(userForm.password.second, {'attr': {'class': 'erreurModifProfil'}}) }}
+        {{ form_errors(userForm.photo, {'attr': {'class': 'messageFlash'}}) }}
+
+    </div>
 
     <div id="liste-afficheProfilContainer">
         <h1>Modifier profil</h1>

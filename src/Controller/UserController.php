@@ -19,40 +19,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
-    //FIXME fonction à supprimer si admin ok
-    /**
-     * @Route("/register", name="user_register")
-     */
-    public function register(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder)
-    {
-        $user = new User();
-        $registerForm = $this->createForm(UserAdminType::class, $user);
-
-        $registerForm->handleRequest($request);
-        if($registerForm->isSubmitted() && $registerForm->isValid()){
-
-            $test="Pa$\$w0rd";
-            dd($test);
-
-            //mot de passe : Pa$$w0rd
-            $password = $encoder->encodePassword($user, "Pa$\$w0rd");
-
-            //hasher le mot de passe
-            $hashed = $encoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($hashed);
-
-            $user->setRole('ROLE_USER');
-            $user->setActif(1);
-
-            $em-> persist($user);
-            $em->flush();
-        }
-
-        return $this->render('user/register.html.twig', [
-            "registerForm" => $registerForm->createView()
-        ]);
-    }
-
     /**
      * @Route("modifierProfil", name="user_modifierProfil")
      * @param User $user
@@ -117,9 +83,6 @@ class UserController extends AbstractController
                 $manager->flush();
 
                 return $this->render("user/detailProfil.html.twig", ['user' => $user]);
-                //$this->redirectToRoute('user_detailProfil', array('id'=> $this->getUser()->getId() ) );
-
-                //$this->redirectToRoute('user_detailProfil', array('id' => 9));
 
             } else {
                 $this->addFlash('error', 'Désolé, le pseudo est déja utilisé');
