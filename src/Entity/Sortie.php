@@ -323,6 +323,8 @@ class Sortie
         }
     }
 
+
+
     /**
      * @return mixed
      */

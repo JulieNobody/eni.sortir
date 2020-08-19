@@ -33,7 +33,7 @@ class Ville
      */
     private $lieux;
 
-    public function __construct(){
+    public function __construct(VilleRepository $villeRepository){
         $this->lieux = new ArrayCollection();
     }
 
@@ -84,7 +84,7 @@ class Ville
 
     public function __toString()
     {
-        return $this->getNom();
+        return $this->getNom()."<br>Code Postal : ".$this->getCodePostal();
     }
 
 
