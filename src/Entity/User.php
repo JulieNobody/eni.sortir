@@ -189,7 +189,16 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return ["ROLE_USER"];
+        //FIXME à suppr si ok
+        //return ["ROLE_USER"];
+
+        //$monRole = $this->role;
+        $roles[] = $this->role;
+
+        //$roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+
     }
 
     //Inutile pour nous

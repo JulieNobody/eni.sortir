@@ -3,28 +3,182 @@
 /* demo styles */
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
-
-html{
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+#baseHTML{
+    min-height: 100%;
     background: linear-gradient(to bottom right, #3e5c76, #24405a);
+}
+
+html {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 25s ease infinite;
     min-height: 100%;
 }
+
 body{
     font-family: 'Roboto', sans-serif;
     max-width: 1400px;
     margin: auto;
     color: white;
 }
+
 section{
     margin: 50px;
 }
 
+/* ------------------- LOGIN ------------------- */
+#loginFullPage{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#loginContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    border: solid 5px white;
+    padding: 50px;
+    width: 80%;
+    height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#logoLogin {
+    width: 70%;
+    margin-bottom: 50px;
+}
+
+#logoLogin img{
+    max-width: 100%;
+}
+
+#loginContainer label{
+    font-size: 16px;
+    color: #fff;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+#loginContainer input{
+    font-size: 22px;
+    font-weight: 400;
+    border: none;
+    border-bottom: solid 3px #ffffff;
+    background-color: transparent;
+    color: white;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+
+}
+.form-control{
+    width: auto;
+}
+
+#txtCookie{
+    display:none;
+}
+
+#logionCheckTxt{
+    max-width: 600px;
+}
+
+.boutonLogin{
+    text-decoration: none;
+    background: transparent;
+    border: solid 3px white;
+    padding: 15px;
+    font-weight: 500;
+    font-size: 22px;
+    box-shadow: none;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+}
+.boutonLogin:hover {
+   background-color: rgba(255, 255, 255, 0.61);
+}
+
+.btn {
+    margin-top: 30px;
+    position: relative;
+    display: inline-block;
+    width: 277px;
+    height: 50px;
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 60px;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: transparent;
+    cursor: pointer;
+    text-decoration:none;
+    font-family: 'Roboto', sans-serif;
+    font-weight:900;
+    font-size:17px;
+    letter-spacing: 0.045em;
+    box-shadow: none;
+    border: none;
+    outline:none;
+}
+
+.btn svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.btn svg rect {
+//stroke: #EC0033;
+    stroke-width: 4;
+    stroke-dasharray: 353, 0;
+    stroke-dashoffset: 0;
+    -webkit-transition: all 600ms ease;
+    transition: all 600ms ease;
+}
+
+.btn span{
+    background: white;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff8282', endColorstr='#e178ed',GradientType=1 );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn:hover svg rect {
+    stroke-width: 4;
+    stroke-dasharray: 196, 543;
+    stroke-dashoffset: 437;
+}
 /* ------------------- HEADER ------------------- */
 
 header{
     display: flex;
     justify-content: space-between;
 }
-
+#logoTitle{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 #logoTitle a {
     display: flex;
     align-items: center;
@@ -147,6 +301,7 @@ input{
     border-bottom: solid 2px #8f2d56;
     background-color: transparent;
     color: white;
+    outline:none;
 }
 
 input::placeholder{
@@ -218,7 +373,10 @@ input::placeholder{
 }
 
 #boutonFiltre{
-
+    outline:none;
+    padding: 8px;
+    font-weight: 400;
+    font-size: 20px;
 }
 
 /* ------------------- LE TABLEAU ------------------- */
@@ -327,6 +485,7 @@ td a{
     box-shadow: none;
     font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
+    outline:none;
 }
 
 
