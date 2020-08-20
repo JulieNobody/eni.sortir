@@ -104,7 +104,17 @@ class UserController extends AbstractController
                             $this->getParameter('photo_directory'),
                             $newFilename
                         );
-                        $user->setPhoto($newFilename);
+
+                        $oldFile = $user->getPhoto();
+                        //vérifie si le fichier est vide
+                        if(!empty($oldFile) && file_exists($this->getParameter('photo_directory') . '/'. $oldFile))
+
+                        {
+                            unlink($this->getParameter('photo_directory') . '/'. $oldFile);
+                        }
+
+                            //Insertion en base de données
+                            $user->setPhoto($newFilename);
 
                     } catch (FileException $e) {
                         // Levée d'exception si il y a un probleme de téléchargement
