@@ -889,17 +889,21 @@ fieldset{
 /* ------------------- CREER LIEU ------------------- */
 
 #CreerLieu {
-   padding-left: 100px;
+   padding-left: 50px;
 }
 .conteneur-CreerLieu {
     border: solid 3px white;
     max-width: 800px;
     margin: auto;
     font-family: 'Roboto', sans-serif;
-    padding: 50px 50px 50px 50px;
+    padding: 10px 50px 20px 50px;
 
 }
+#lieu {
+    border-bottom: solid 1.5px white;
+    width: 700px;
 
+}
 
 
 

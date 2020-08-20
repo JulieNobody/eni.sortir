@@ -24,9 +24,8 @@ class LieuType extends AbstractType
             ->add('nom',HiddenType::class )
             ->add('rue', HiddenType::class)
             ->add('latitude', HiddenType::class)
-            ->add('longitude', HiddenType::class)
+            ->add('longitude', HiddenType::class);
 
-            ->add('validerForm', SubmitType::class, ['label'=> 'ok']);
 
 
     }
