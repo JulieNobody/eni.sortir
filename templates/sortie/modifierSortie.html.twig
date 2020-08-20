@@ -78,6 +78,67 @@
 
 
 
+    <script>
+
+        $(document).ready(function(){
+            $("#sortie_lieu").on('change', function () {
+                var selectElmt = document.getElementById("sortie_lieu");
+                var id = selectElmt.options[selectElmt.selectedIndex].value;
+
+                console.log(id);
+                $.ajax({
+                    url : "{{ path('getLieu') }}",
+                    type : 'POST',
+                    data: {id: id}
+                }).done(function(data) {
+                    document.getElementById('nomLieu').innerHTML = data;
+
+                }).fail(function() {
+                    console.log('Failed');
+                });
+
+            })
+        });
+
+
+    </script>
+
+
+    <script>
+
+        $(document).ready(function(){
+            $("#sortie_ville").on('change', function () {
+                var selectElmt = document.getElementById("sortie_ville");
+                var idVille = selectElmt.options[selectElmt.selectedIndex].value;
+                console.log(idVille);
+                $.ajax({
+                    url : "{{ path('getVille') }}",
+                    type : 'POST',
+                    data: {idVille: idVille}
+                }).done(function(data) {
+
+                    $('#sortie_lieu').empty();
+
+                    for (var i = 0; i<data.length; i++){
+                        $('#sortie_lieu').append("<option value=\""+data[i]["id"]+"\">"+data[i]["nom"]+"</option>");
+                    }
+                    $("#sortie_lieu").change();
+                }).fail(function() {
+                    console.log('Failed');
+                });
+
+            })
+        });
+
+
+    </script>
+
+    <ul>
+        <span id="nomLieu"> </span>
+    </ul>
+
+
+
 
 
 {% endblock %}

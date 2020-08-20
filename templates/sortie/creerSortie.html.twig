@@ -51,10 +51,10 @@
 
         {{ form_row(sortieForm.lieu) }}
 
-      <script>
+        <script>
 
-                $(document).ready(function(){
-                $("#sortie_lieu").on('change', function run() {
+            $(document).ready(function(){
+                $("#sortie_lieu").on('change', function () {
                     var selectElmt = document.getElementById("sortie_lieu");
                     var id = selectElmt.options[selectElmt.selectedIndex].value;
 
@@ -71,7 +71,7 @@
                     });
 
                 })
-                });
+            });
 
 
         </script>
@@ -80,7 +80,7 @@
         <script>
 
             $(document).ready(function(){
-                $("#sortie_ville").on('change', function run() {
+                $("#sortie_ville").on('change', function () {
                     var selectElmt = document.getElementById("sortie_ville");
                     var idVille = selectElmt.options[selectElmt.selectedIndex].value;
                     console.log(idVille);
@@ -92,8 +92,8 @@
 
                         $('#sortie_lieu').empty();
 
-                    for (var i = 0; i<data.length; i++){
-                        $('#sortie_lieu').append("<option value=\""+data[i]["id"]+"\">"+data[i]["nom"]+"</option>");
+                        for (var i = 0; i<data.length; i++){
+                            $('#sortie_lieu').append("<option value=\""+data[i]["id"]+"\">"+data[i]["nom"]+"</option>");
                         }
                         $("#sortie_lieu").change();
                     }).fail(function() {
@@ -106,6 +106,9 @@
 
         </script>
 
+        <ul>
+            <span id="nomLieu"> </span>
+        </ul>
 
 
 
@@ -115,10 +118,6 @@
         {{ form_end(sortieForm) }}
     </div>
 
-
-    <ul>
-        <span id="nomLieu"> </span>
-    </ul>
 
 
     <a href="{{path('sortie_creerLieu') }}" title="Sortir | Créer un lieu">créer un lieu</a>

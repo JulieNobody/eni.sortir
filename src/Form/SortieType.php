@@ -44,7 +44,7 @@ class SortieType extends AbstractType
             ->add('nbInscriptionsMax', null, ['label' => 'Maximum de participants'])
             ->add('infosSortie', null, ['label'=> 'Détails de la sortie'])
             ->add('lieu', EntityType::class,[
-                'class' => Lieu::class,
+             'class' => Lieu::class,
                 'choice_label' => 'nom'
             ])
 
