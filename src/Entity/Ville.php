@@ -33,7 +33,7 @@ class Ville
      */
     private $lieux;
 
-    public function __construct(VilleRepository $villeRepository){
+    public function __construct(){
         $this->lieux = new ArrayCollection();
     }
 

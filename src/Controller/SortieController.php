@@ -159,8 +159,6 @@ class SortieController extends AbstractController
             ];
         }
 
-
-
         return $this->json($retour);
 
     }
@@ -178,16 +176,12 @@ class SortieController extends AbstractController
 
                    $monLieu = $lieuRepository->findOneBy(array('id' => $monId));
 
-
-                   $response = new Response("Rue : ".$monLieu->getRue().
+                  $response = new Response("Rue : ".$monLieu->getRue().
                                                     "<br>Ville : ".$monLieu->getVille().
                                                     "<br>Latitude : ".$monLieu->getLatitude().
                                                     "<br>Longitude : ".$monLieu->getLongitude()
                    );
                    return $response;
-
-
-                //return $this->json($monLieu);
 
             }
 

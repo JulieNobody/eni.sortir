@@ -870,8 +870,19 @@ fieldset{
     padding-bottom:10px;
 }
 
-/* ------------------- AFFICHER SORTIE ------------------- */
+/* ------------------- CREER LIEU ------------------- */
 
+#CreerLieu {
+   padding-left: 100px;
+}
+.conteneur-CreerLieu {
+    border: solid 3px white;
+    max-width: 800px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    padding: 50px 50px 50px 50px;
+
+}
 
 
 
