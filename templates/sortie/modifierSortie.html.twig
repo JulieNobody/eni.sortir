@@ -20,8 +20,9 @@
 
 
         <div class="conteneur-AfficheSortie">
-            <h1>{{ sortie.nom }}</h1>
-            <ul>
+            <div>
+            <h1 class="titre-afficheSortie">{{ sortie.nom }}</h1>
+            <ul class="bloc-AfficheSortie">
                 <li>
                     {{ form_label(sortieForm.nom,'Nom de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
                     {{ form_widget(sortieForm.nom, {'attr': {'class': 'champ-afficheSortie'}}) }}
@@ -51,12 +52,15 @@
                     {{ form_widget(sortieForm.lieu, {'attr': {'class': 'champ-afficheSortie'}}) }}
                 </li>
             </ul>
+            </div>
 
-
-
-                <button type="submit">Valider</button>
-            {{ form_end(sortieForm) }}
         </div>
+        <div class="boutonsAfficherSortie">
+            <div boutonCreationSortie>
+                    <button type="submit" class="boutonModifierProfil">Valider</button>
+            </div>
+        </div>
+            {{ form_end(sortieForm) }}
 
     {#SI L'UTILISATEUR N'EST PAS L'ORGANISATEUR#}
     {% else %}

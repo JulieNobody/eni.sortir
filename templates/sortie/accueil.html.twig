@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div id="boutonFiltreContainer">
-                <button  id="boutonModifierProfil" type="submit" title="rechercher">Rechercher</button>
+                <button  class="boutonModifierProfil" type="submit" title="rechercher">Rechercher</button>
             </div>
         </div>
 
@@ -64,18 +64,18 @@
 
     </fieldset>
 
-    <section>
+    <section id="tableauAccueil">
         <div class="header_tab">
             <table>
                 <tr>
-                    <th>Nom de la sortie</th>
-                    <th>Date de la sortie</th>
+                    <th>Nom</th>
+                    <th>Date</th>
                     <th>Clôture</th>
                     <th>Inscrits / Places</th>
                     <th>Etat</th>
                     <th>Inscrit</th>
                     <th>Organisateur</th>
-                    <th>Actions</th>
+                    <th></th>
                 </tr>
             </table>
         </div>
@@ -88,7 +88,7 @@
                 {% elseif sortie.etat.id == 7 %}
                 {% else %}
                 <tr>
-                    <td class="sortieNom"><a href="{{path('sortie_afficheSortie', { id: sortie.id } ) }}">{{ sortie.nom }}</a></td>
+                    <td><a href="{{path('sortie_afficheSortie', { id: sortie.id } ) }}" class="nomSortie">{{ sortie.nom }}</a></td>
                     <td>Le {{ sortie.dateHeureDebut | date('d/m/Y') }} à {{ sortie.dateHeureDebut | date('H') }}h{{ sortie.dateHeureDebut | date('i') }}</td>
                     <td>Le {{ sortie.dateLimiteInscription | date('d/m/Y') }} à {{ sortie.dateLimiteInscription | date('H') }}h{{ sortie.dateLimiteInscription | date('i') }}</td>
                     <td>
@@ -103,22 +103,14 @@
                             <input type="checkbox" id="tab_inscrit" name="tab_inscrit" disabled="disabled">
                         {% endif %}
                     </td>
-                    <td class="sortieNom"><a href="{{path('user_detailProfil', { id: sortie.organisateur.id } ) }}" title="Profil de {{ sortie.organisateur.username }}">{{ sortie.organisateur.username }}</a></td>
+                    <td><a href="{{path('user_detailProfil', { id: sortie.organisateur.id } ) }}" title="Profil de {{ sortie.organisateur.username }}" class="organisateur">{{ sortie.organisateur.username }}</a></td>
 
 
 
                     <td id="boutonTabContainer">
-                        <a href="{{path('sortie_afficheSortie', { id: sortie.id } ) }}" class="boutonTab" id="boutonTabAfficher" title="Afficher">&#128065;</a>
+                        <a href="{{path('sortie_afficheSortie', { id: sortie.id } ) }}" class="boutonTab" id="boutonTabAfficher" title="Afficher">Afficher</a>
                         {% if sortie.organisateur.id == app.user.id and sortie.etat.id == 1%}
                             <a href="{{path('sortie_publication', { id: sortie.id } ) }}" class="boutonTab" id="boutonTabPublier" title="Publier">Publier</a>
-                        {% endif %}
-
-                        {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6 and sortie.etat.id != 7%}
-                            <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}" class="boutonTab" id="boutonTabAnnuler" title="Annuler">Annuler</a>
-                        {% endif %}
-
-                        {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
-                            <a href="{{path('sortie_modifierSortie', { id: sortie.id } ) }}" class="boutonTab" id="boutonTabModifier" title="Modifier">Modifier</a>
                         {% endif %}
 
                         {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%}
@@ -128,6 +120,14 @@
                         {% if app.user in sortie.participants and (sortie.etat.id == 2 or sortie.etat.id == 3) %}
                             <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}" class="boutonTab" id="boutonTabDesister" title="Se désister">Se désister</a>
                         {% endif %}
+                        {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
+                            <a href="{{path('sortie_modifierSortie', { id: sortie.id } ) }}" class="boutonTab" id="boutonTabModifier" title="Modifier">Modifier</a>
+                        {% endif %}
+                        {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6 and sortie.etat.id != 7%}
+                            <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}" class="boutonTab" id="boutonTabAnnuler" title="Annuler">Annuler</a>
+                        {% endif %}
+
+
                     </td>
                 </tr>
                 {% endif %}
@@ -138,6 +138,6 @@
         </div>
     </section>
     <div class="boutonCreationSortie">
-        <a href="{{path('sortie_creerSortie') }}"  id="boutonModifierProfil" >Créer une sortie</a>
+        <a href="{{path('sortie_creerSortie') }}"  class="boutonModifierProfil" >Créer une sortie</a>
     </div>
 {% endblock %}

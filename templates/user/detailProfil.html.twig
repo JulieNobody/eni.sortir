@@ -21,7 +21,7 @@
             </div>
         {% if user is same as(app.user) %}
             <div id="boutonModifierProfilContainer">
-                <a href="{{path('user_modifierProfil', { id : user.id } ) }}"  id="boutonModifierProfil" title="Sortir | Mon profil">Modifier mon profil</a>
+                <a href="{{path('user_modifierProfil', { id : user.id } ) }}"  class="boutonModifierProfil" title="Sortir | Mon profil">Modifier mon profil</a>
             </div>
         {% endif %}
     </div>

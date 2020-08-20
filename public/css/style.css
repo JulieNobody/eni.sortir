@@ -17,6 +17,7 @@
 #baseHTML{
     min-height: 100%;
    background: linear-gradient(to bottom right, #3e5c76, #24405a);
+
 }
 
 html {
@@ -25,6 +26,7 @@ html {
     background-size: 400% 400%;
     animation: gradient 25s ease infinite;*/
     min-height: 100%;
+
 }
 body{
     margin: 0px;
@@ -37,6 +39,7 @@ body{
     max-width: 1400px;
     margin: auto;
     color: white;
+    overflow: hidden;
 }
 
 section{
@@ -321,26 +324,26 @@ fieldset{
     /*background-color: rgba(0, 0, 0, 0.2);*/
 }
 
-label{
+#filtresContainer label{
     font-size: 16px;
     color: #fff;
     font-weight: 600;
     margin-bottom: 10px;
 }
 
-select{
+#filtresContainer select{
     border: none;
     border-bottom: solid 2px #ffffff;
     background-color: transparent;
     color: #ffffff;
 }
 
-select option {
+#filtresContainer select option {
     background-color: #ffffff;
     color: #23a6d5;
 }
 
-input{
+#filtresContainer input{
     border: none;
     border-bottom: solid 2px #ffffff;
     background-color: transparent;
@@ -348,7 +351,7 @@ input{
     outline:none;
 }
 
-input::placeholder{
+#filtresContainer input::placeholder{
     color: white;
 }
 
@@ -426,7 +429,7 @@ input::placeholder{
 /* ------------------- LE TABLEAU ------------------- */
 
 
-table{
+#tableauAccueil table{
     width:100%;
     table-layout: fixed;
     border-collapse: collapse;
@@ -440,27 +443,27 @@ table{
     margin-top: 0px;
     border: 1px solid rgba(255,255,255,0.3);
 }
-th{
+#tableauAccueil th{
     padding: 20px 15px;
     text-align: center;
     font-weight: 500;
     font-size: 16px;
-    color: #23a6d5;
+    color: #000000;
     text-transform: uppercase;
 }
-tr {
+#tableauAccueil tr {
     text-align: center;
 }
 
-tr:nth-child(even) {
+#tableauAccueil tr:nth-child(even) {
     background-color: rgba(238, 238, 238, 0.15);
 }
-tr:nth-child(odd) {
+#tableauAccueil tr:nth-child(odd) {
    
 }
 
 
-td{
+#tableauAccueil td{
     padding: 15px;
     text-align: center;
     vertical-align:middle;
@@ -469,14 +472,20 @@ td{
     color: #fff;
     text-transform: uppercase;
 }
-.sortieNom{
+
+
+.nomSortie{
+    text-decoration: none;
+    color: #fff;
     font-weight: 500;
     font-size: 16px;
 }
 
-td a{
+.organisateur{
     text-decoration: none;
     color: #fff;
+    font-weight: 500;
+    font-size: 16px;
 }
 
 /* ------------------- LES BOUTONS DU TABLEAU ------------------- */
@@ -488,45 +497,45 @@ td a{
     justify-content: space-around;
 }
 .boutonTab{
-    background-color: #23a6d5;
+    color: #000000;
+    background-color: #ffffff;
     text-decoration: none;
-    color: #ffffff;
-    padding: 7px;
+    padding: 5px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 11px;
     border: none;
     box-shadow: none;
     font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
     margin: 2px;
     border-radius: 5px;
+    width: 80%;
+    height: 12px;
 }
 
-.boutonTab:hover{
-    background-color: #23d5ab;
-}
-
-#boutonTabAfficher{
-
-}
-#boutonTabPublier{
-
-}
-#boutonTabAnnuler{
-    background-color: #de1818;
+#boutonTabAfficher:hover{
+    background-color: #117aea;
     color: #ffffff;
 }
-
-#boutonTabModifier{
-
+#boutonTabPublier:hover{
+    background-color: #31ba8c;
+    color: #ffffff;
 }
-
-#boutonTabInscrire{
-
+#boutonTabAnnuler:hover{
+    background-color: #d52424;
+    color: #ffffff;
 }
-
-#boutonTabDesister{
-
+#boutonTabModifier:hover{
+    background-color: #e78b3d;
+    color: #ffffff;
+}
+#boutonTabInscrire:hover{
+    background-color: #2fbd1e;
+    color: #ffffff;
+}
+#boutonTabDesister:hover{
+    background-color: #c72466;
+    color: #ffffff;
 }
 
 .boutonCreationSortie{
@@ -629,7 +638,7 @@ td a{
     justify-content: flex-end;
 }
 
-#boutonModifierProfil{
+.boutonModifierProfil{
     background-color: transparent;
     text-decoration: none;
     color: #ffffff;
@@ -643,20 +652,20 @@ td a{
     outline:none;
     border: solid 2px white;
 }
-#boutonModifierProfil:hover {
+.boutonModifierProfil:hover {
 
     cursor: pointer;
 }
 
 
-#boutonModifierProfil {
+.boutonModifierProfil {
     text-decoration: none;
     position: relative;
     overflow: hidden;
 }
 
 
-#boutonModifierProfil:before {
+.boutonModifierProfil:before {
     content: "";
     position: absolute;
     top: 0;
@@ -672,7 +681,7 @@ td a{
     transition: all 650ms;
 }
 
-#boutonModifierProfil:hover:before {
+.boutonModifierProfil:hover:before {
     left: 100%;
 }
 /* ------------------- MODIFIER PROFIL ------------------- */
@@ -689,7 +698,11 @@ td a{
     color: #ffffff;
     font-size: 22px;
 }
+#carteAfficheProfil input:hover{
 
+    background-color: rgba(255, 255, 255, 0.20);
+
+}
 .erreurModifProfil{
     font-size: 17px;
     font-weight: 500;
@@ -701,47 +714,129 @@ td a{
 
 .conteneur-AfficheSortie {
     border: solid 3px white;
-    width: 800px;
+    max-width: 800px;
     margin: auto;
     font-family: 'Roboto', sans-serif;
     padding: 50px 50px 50px 50px;
 
 }
-
-/*.liste-AfficheSortie{
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    border: solid 2px blue;
-
+.titre-afficheSortie {
+    margin-top: 0px;
+    margin-bottom: 25px;
 }
-*/
-
 .bloc-AfficheSortie {
-    display: flex;
-    flex-direction: column;
-    width: 600px;
-    list-style: none;
-
+    padding-left: 0px;
 }
+
+.bloc-AfficheSortie li {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 800px;
+    list-style: none;
+    margin-bottom: 10px;
+    border-bottom: solid 1.5px white;
+}
+
 
 .label-AfficheSortie{
     text-transform: uppercase;
     font-size: 17px;
     font-weight: 600;
-    display: inline-block;
     flex-basis: 50%;
 }
 
 .champ-AfficheSortie{
     font-size: 13px;
     font-weight: 400;
-    display: inline-block;
     flex-basis: 50%;
+}
+
+#descriptionSortie {
+    flex-basis: 100%;
+    border: none;
+}
+
+.listParticipantContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.listParticipant{
+    max-width: 500px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x:auto;
+    margin-top: 0px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+.listParticipant th {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000000;
+    text-transform: uppercase;
+}
+.listParticipant tr{
+    text-align: center;
+}
+.listParticipant tr:first-child{
+    background-color: white;
+}
+
+.listParticipant tr:nth-child(even) {
+    background-color: rgba(238, 238, 238, 0.15);
+}
+
+.listParticipant td {
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 14px;
+    color: #fff;
+    text-transform: uppercase;
+}
+.listParticipant a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
 }
 
 
 
+.boutonsAfficherSortie {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
+}
+
+/* ------------------- MODIFIER SORTIE ------------------- */
+.bloc-AfficheSortie label {
+    text-transform: uppercase;
+    font-size: 17px;
+    font-weight: 600;
+    flex-basis: 50%;
+}
+.bloc-AfficheSortie input {
+    font-size: 13px;
+    font-weight: 400;
+    flex-basis: 49%;
+    border: none;
+    background-color: transparent;
+    color: #ffffff;
+}
 /* ------------------- INFORMATIONS DU CREATEUR ------------------- */
 
 .made-with-love {
@@ -775,10 +870,11 @@ td a{
     padding-bottom:10px;
 }
 
-/* ------------------- CREERSORTIE-LIEU -------------------
-.table { border-collapse: collapse; }
-.table th, td {
-    border-bottom: 1px solid #ddd;
-    width: 250px;
-    text-align: left;
-}*/
+/* ------------------- AFFICHER SORTIE ------------------- */
+
+
+
+
+
+
+
