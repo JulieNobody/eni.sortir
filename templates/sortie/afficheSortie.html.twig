@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block title %}Sortie {{ sortie.nom }}{% endblock %}
 {% block body %}
-        <h1>{{ sortie.nom }}</h1>
+
+    <div class="conteneur-AfficheSortie">
+        <h1 class="titre-afficheSortie">{{ sortie.nom }}</h1>
+
     {% if(sortie.etat.id == 6) %}
         <div id="zone_annulation">
             <h2 id="sortie_annulee">Sortie annulée !</h2>
@@ -9,92 +12,105 @@
         </div>
     {% endif %}
     <!-- Boucle dans la classe sorties -->
-    <hr>
-         <div>      <!--affichage des propriétés de la table sortie de la BDD-->
-             <ul>
-                <li><p>Nom de la sortie : {{ sortie.nom }} </p></li>
-                <li><p>Organisateur de la sortie : {{ sortie.organisateur.username }} </p></li>
-                <li><p>Date et heure de la sortie : {{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</p></li>
-                <li><p>Nombre de place maximum : {{ sortie.nbInscriptionsMax }} </p></li>
-                <li><p>Date Limite d'inscription : {{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }} </p></li>
-                <li><p> Durée de la sortie :
-                     {% if sortie.duree > 60 %}
+
+        <div>      <!--affichage des propriétés de la table sortie de la BDD-->
+             <ul class="bloc-AfficheSortie">
+                <li><div class="label-AfficheSortie">Organisateur</div><div class="champ-AfficheSortie">{{ sortie.organisateur.username }}</div></li>
+                <li><div class="label-AfficheSortie">Début</div><div class="champ-AfficheSortie">{{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</div></li>
+                <li><div class="label-AfficheSortie">Nombre de place</div><div class="champ-AfficheSortie">{{ sortie.nbInscriptionsMax }}</div></li>
+                <li><div class="label-AfficheSortie">Date Limite d'inscription</div><div class="champ-AfficheSortie">{{ sortie.dateLimiteInscription | date ('Y-m-d H: i: s') }}</div></li>
+                <li><div class="label-AfficheSortie">Durée</div>
+                        <div class="champ-AfficheSortie">{% if sortie.duree > 60 %}
                          {% set heures = sortie.duree//60 %}
                          {% set minutes = sortie.duree%60 %}
                          {{ heures }} heure(s) et {{ minutes }} minute(s)
                      {% else %}
                         {{ sortie.duree }} minute(s)
-                     {% endif %}
-                </p></li>
-                <li><p>Description et infos : {{ sortie.infosSortie }} </p></li>
+                     {% endif %}</div>
+                </li>
+                <li><div class="label-AfficheSortie">Campus</div><div class="champ-AfficheSortie">{{ sortie.campus.nom }}</div></li>
+                <li><div class="label-AfficheSortie">Lieu</div><div class="champ-AfficheSortie">{{ sortie.lieu.nom }}</div></li>
+                <li><div class="label-AfficheSortie">Adresse</div><div class="champ-AfficheSortie">{{ sortie.lieu.rue }}</div></li>
+                <li><div class="label-AfficheSortie">Ville</div><div class="champ-AfficheSortie">{{ sortie.lieu.ville.nom }}</div></li>
+                <li><div class="label-AfficheSortie">Code Postal</div><div class="champ-AfficheSortie">{{ sortie.lieu.ville.codePostal }}</div></li>
+                <li><div class="label-AfficheSortie">Latitude</div><div class="champ-AfficheSortie">{{ sortie.lieu.latitude }}</div></li>
+                <li><div class="label-AfficheSortie">Longitude</div><div class="champ-AfficheSortie">{{ sortie.lieu.longitude }}</div></li>
              </ul>
-         </div>
-    <hr>
-        <div>       <!--affichage des propriétés de la table campus de la BDD-->
-            <ul>
-                <li><p>Campus : {{ sortie.campus.nom }}</p></li>
-                <li><p>Lieu : {{ sortie.lieu.ville.nom }} </p></li>
-                <li><p>Code Postal : {{ sortie.lieu.ville.codePostal }}</p></li>
-                <li><p>Latitude : {{ sortie.lieu.latitude }}</p></li>
-                <li><p>Longitude : {{ sortie.lieu.longitude }}</p></li>
+        </div>
+        <div>
+            <ul  class="bloc-AfficheSortie">
+                <li><div class="label-AfficheSortie">Description</div></li>
+                <li id="descriptionSortie"><div class="champ-AfficheSortieDes" >{{ sortie.infosSortie }}</div></li>
             </ul>
         </div>
-    <hr>
-        <div>   <!--affichage du nombre de participants table sortie de la BDD avec une boucle-->
-            <table>
-                <h4>Liste des particpants</h4>
-                    <tr><td>Pseudo</td><td>Nom</td></tr>
 
-                        {% for participant in sortie.participants %}
-                            <div class ="listParticipant">
-                                <tr>
-                                    <td>
-                                        <a
-                                            href="{{path('user_detailProfil', { id: participant.id } ) }}"
-                                            title="Profil de {{ participant.username }}"
-                                        >
-                                                {{ participant.username }}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        {{ participant.nom }}
-                                    </td>
-                                </tr>
 
-                            </div>
-                     {% endfor %}
-            </table>
-            {% if sortie.participants| length == 0 %}<p>Pas de participants !</p>{% endif %}
+        <div class="listParticipantContainer">   <!--affichage du nombre de participants table sortie de la BDD avec une boucle-->
+        <h3>Liste des particpants</h3>
+            {% if sortie.participants| length == 0 %}
+                <p>Pas de participants !</p>
+            {% else %}
+                <table class ="listParticipant">
+
+                    <tr><th>Pseudo</th><th>Nom</th></tr>
+
+                            {% for participant in sortie.participants %}
+                                    <tr class="ligneListParticipant">
+                                        <td>
+                                            <a
+                                                href="{{path('user_detailProfil', { id: participant.id } ) }}"
+                                                title="Profil de {{ participant.username }}"
+                                            >
+                                                    {{ participant.username }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{ participant.prenom }} {{ participant.nom }}
+                                        </td>
+                                    </tr>
+                         {% endfor %}
+                </table>
+            {% endif %}
         </div>
-<br>
+    </div>
 
-    <!-- si user = organisateur -->
-    {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6 and sortie.etat.id != 7 %}
-        <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}">Annuler la sortie</a>
-    {% endif %}
+    <div class="boutonsAfficherSortie">
+        <!-- si user inscrit -->
+        {% if app.user in sortie.participants and (sortie.etat.id == 2 or sortie.etat.id == 3) %}
+            <div class="boutonCreationSortie">
+                <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}" class="boutonModifierProfil">se desincrire</a>
+            </div>
+        {% endif %}
 
-    {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
-        <a href="{{path('sortie_modifierSortie', { id: sortie.id } ) }}">Modifier</a>
-    {% endif %}
-    <!-- si user = organisateur et sortie crée-->
-    {% if sortie.organisateur is same as(app.user) and sortie.etat.id == 1%}
+        <!-- si user pas inscrit -->
+        {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%}
+            <div class="boutonCreationSortie">
+                <a href="{{path('sortie_inscription', { id: sortie.id } ) }}" class="boutonModifierProfil">s'inscrire à la sortie</a>
+            </div>
+        {% endif %}
 
-        <a href="{{path('sortie_publication', { id: sortie.id } ) }}">Publier la sortie</a>
+        <!-- si user = organisateur et sortie crée-->
+        {% if sortie.organisateur is same as(app.user) and sortie.etat.id == 1%}
+            <div class="boutonCreationSortie">
+                <a href="{{path('sortie_publication', { id: sortie.id } ) }}" class="boutonModifierProfil">Publier la sortie</a>
+            </div>
+        {% endif %}
+        <!-- si user = organisateur -->
 
-    {% endif %}
+        {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
+            <div class="boutonCreationSortie">
+                <a href="{{path('sortie_modifierSortie', { id: sortie.id } ) }}" class="boutonModifierProfil">Modifier</a>
+            </div>
+        {% endif %}
+        {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6 and sortie.etat.id != 7 %}
+            <div class="boutonCreationSortie">
+                <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}" class="boutonModifierProfil">Annuler la sortie</a>
+            </div>
+        {% endif %}
 
-    <!-- si user =/= organisateur -->
+        <!-- si user =/= organisateur -->
 
-    <!-- si user inscrit -->
-    {% if app.user in sortie.participants and (sortie.etat.id == 2 or sortie.etat.id == 3) %}
-        <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}">se desincrire</a>
-    {% endif %}
-
-    <!-- si user pas inscrit -->
-    {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%}
-        <a href="{{path('sortie_inscription', { id: sortie.id } ) }}">s'inscrire à la sortie</a>
-    {% endif %}
-
+    </div>
 
 
 

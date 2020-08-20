@@ -2,6 +2,17 @@
 {% block title %}Sortir | Modifier profil{% endblock %}
 
 {% block body %}
+    <div class="erreurModifProfil">
+        {{ form_errors(userForm.username, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.nom, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.prenom, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.telephone, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.email, {'attr': {'class': 'messageFlash'}}) }}
+        {{ form_errors(userForm.password.first, {'attr': {'class': 'erreurModifProfil'}}) }}
+        {{ form_errors(userForm.password.second, {'attr': {'class': 'erreurModifProfil'}}) }}
+        {{ form_errors(userForm.photo, {'attr': {'class': 'messageFlash'}}) }}
+
+    </div>
 
     <div id="liste-afficheProfilContainer">
         <h1>Modifier profil</h1>
@@ -11,7 +22,7 @@
                 <div id="photo-afficheProfil">
                     <img src="{{ asset('img/pp/')~app.user.photo }}" alt="Photo" />
                 </div>
-                <ul id="liste-afficheProfil">
+                <ul id="liste-afficheProfil" class="borderNone">
                     <li>
                         {{ form_label(userForm.username,'Pseudo', {'label_attr': {'class': 'label-afficheProfil'}}) }}
                         {{ form_widget(userForm.username, {'attr': {'class': 'champ-afficheProfil'}}) }}
@@ -40,13 +51,14 @@
                         {{ form_label(userForm.password.second,'Répéter mot de passe', {'label_attr': {'class': 'label-afficheProfil'}}) }}
                         {{ form_widget(userForm.password.second, {'attr': {'class': 'champ-afficheProfil'}}) }}
                     </li>
-                    <li>
-                        {{ form_row(userForm.photo) }}
+                    <li >
+                        {{ form_label(userForm.photo,'Photo', {'label_attr': {'class': 'label-afficheProfil'}}) }}
+                        {{ form_widget(userForm.photo, {'attr': {'class': 'champ-afficheProfil'}}) }}
                     </li>
                 </ul>
             </div>
-            <div id="boutonModifierProfil">
-                <button type="submit" class="boutonMain">Valider les modifications</button>
+            <div id="boutonModifierProfilContainer">
+                <button type="submit" class="boutonModifierProfil">Valider les modifications</button>
             </div>
         {{ form_end(userForm) }}
     </div>

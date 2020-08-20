@@ -1,32 +1,137 @@
 {% extends 'base.html.twig' %}
 {% block title %}Sortie {{ sortie.nom }}{% endblock %}
 {% block body %}
-        <h1>{{ sortie.nom }}</h1>
+    <script>
+        $(document).ready(function() {
+            // you may need to change this code if you are not using Bootstrap Datepicker
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#sortie_lieu").on('change', function () {
+                var selectElmt = document.getElementById("sortie_lieu");
+                var id = selectElmt.options[selectElmt.selectedIndex].value;
 
+                console.log(id);
+                $.ajax({
+                    url : "{{ path('getLieu') }}",
+                    type : 'POST',
+                    data: {id: id}
+                }).done(function(data) {
+                    document.getElementById('nomLieu').innerHTML = data;
 
+                }).fail(function() {
+                    console.log('Failed');
+                });
+            })
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#sortie_ville").on('change', function () {
+                var selectElmt = document.getElementById("sortie_ville");
+                var idVille = selectElmt.options[selectElmt.selectedIndex].value;
+                console.log(idVille);
+                $.ajax({
+                    url : "{{ path('getVille') }}",
+                    type : 'POST',
+                    data: {idVille: idVille}
+                }).done(function(data) {
+
+                    $('#sortie_lieu').empty();
+
+                    for (var i = 0; i<data.length; i++){
+                        $('#sortie_lieu').append("<option value=\""+data[i]["id"]+"\">"+data[i]["nom"]+"</option>");
+                    }
+                    $("#sortie_lieu").change();
+                }).fail(function() {
+                    console.log('Failed');
+                });
+            })
+        });
+    </script>
+
+    {#SI L'UTILISATEUR EST L'ORGANISATEUR#}
     {% if sortie.organisateur is same as(app.user) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
 
-        <div id="register_form">
+        {{ form_start(sortieForm) }}
 
-            {{ form_start(sortieForm) }}
-
-            {{ form_row(sortieForm.nom) }}
-            {{ form_row(sortieForm.dateHeureDebut) }}
-            {{ form_row(sortieForm.duree) }}
-            {{ form_row(sortieForm.dateLimiteInscription) }}
-            {{ form_row(sortieForm.nbInscriptionsMax) }}
-            {{ form_row(sortieForm.infosSortie) }}
-            {{ form_row(sortieForm.lieu) }}
-
-            <button type="submit">Valider</button>
-            {{ form_end(sortieForm) }}
+        <div class="erreurModifProfil">
+            {{ form_errors(sortieForm.nom) }}
+            {{ form_errors(sortieForm.dateHeureDebut) }}
+            {{ form_errors(sortieForm.duree) }}
+            {{ form_errors(sortieForm.dateLimiteInscription) }}
+            {{ form_errors(sortieForm.nbInscriptionsMax) }}
+            {{ form_errors(sortieForm.infosSortie) }}
+            {{ form_errors(sortieForm.lieu) }}
         </div>
 
-    {% else %}
 
+        <div class="conteneur-AfficheSortie">
+
+            <h1 class="titre-afficheSortie">{{ sortie.nom }}</h1>
+            <ul class="bloc-AfficheSortie">
+                <li>
+                    {{ form_label(sortieForm.nom,'Nom de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.nom, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.dateHeureDebut,'Début de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.dateHeureDebut, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.duree,'Durée', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.duree, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.dateLimiteInscription,'Date limite d\'inscription', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.dateLimiteInscription, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.nbInscriptionsMax,'Nombre de place', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.nbInscriptionsMax, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.infosSortie,'Description', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.infosSortie, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.ville,'Ville', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.ville, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
+                    {{ form_label(sortieForm.lieu,'Lieu de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.lieu, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+            </ul>
+
+            <ul id="nomLieu">
+
+            </ul>
+        </div>
+
+        <div class="boutonsAfficherSortie">
+            <div class="boutonCreationSortie">
+                <a href="{{path('sortie_creerLieu') }}" title="Sortir | Créer un lieu" class="boutonModifierProfil">créer un lieu</a>
+            </div>
+
+            <div class="boutonCreationSortie">
+                <button type="submit" class="boutonModifierProfil">Valider</button>
+            </div>
+        </div>
+            {{ form_end(sortieForm) }}
+
+    {#SI L'UTILISATEUR N'EST PAS L'ORGANISATEUR#}
+    {% else %}
+        <h1>{{ sortie.nom }}</h1>
         <p>Vous ne pouvez pas la modifier.</p>
 
     {% endif %}
+
+
 
 
 
