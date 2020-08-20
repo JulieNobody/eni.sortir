@@ -433,15 +433,20 @@ fieldset{
     width:100%;
     table-layout: fixed;
     border-collapse: collapse;
+
 }
 .header_tab{
     background-color: rgb(255, 255, 255);
+    min-width: 900px;
 }
 .contenu_tab{
     height:400px;
     overflow-x:auto;
     margin-top: 0px;
     border: 1px solid rgba(255,255,255,0.3);
+    min-width: 900px;
+
+    overflow-y:auto;
 }
 #tableauAccueil th{
     padding: 20px 15px;
@@ -471,6 +476,7 @@ fieldset{
     font-size: 14px;
     color: #fff;
     text-transform: uppercase;
+    overflow: hidden;
 }
 
 
@@ -836,6 +842,16 @@ fieldset{
     border: none;
     background-color: transparent;
     color: #ffffff;
+}
+.bloc-AfficheSortie select{
+    border: none;
+    background-color: transparent;
+    color: #ffffff;
+}
+
+.bloc-AfficheSortie select option {
+    background-color: #ffffff;
+    color: #23a6d5;
 }
 /* ------------------- INFORMATIONS DU CREATEUR ------------------- */
 
