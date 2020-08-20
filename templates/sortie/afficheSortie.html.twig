@@ -29,7 +29,9 @@
                      {% endif %}</div>
                 </li>
                 <li><div class="label-AfficheSortie">Campus</div><div class="champ-AfficheSortie">{{ sortie.campus.nom }}</div></li>
-                <li><div class="label-AfficheSortie">Lieu</div><div class="champ-AfficheSortie">{{ sortie.lieu.ville.nom }}</div></li>
+                <li><div class="label-AfficheSortie">Lieu</div><div class="champ-AfficheSortie">{{ sortie.lieu.nom }}</div></li>
+                <li><div class="label-AfficheSortie">Adresse</div><div class="champ-AfficheSortie">{{ sortie.lieu.rue }}</div></li>
+                <li><div class="label-AfficheSortie">Ville</div><div class="champ-AfficheSortie">{{ sortie.lieu.ville.nom }}</div></li>
                 <li><div class="label-AfficheSortie">Code Postal</div><div class="champ-AfficheSortie">{{ sortie.lieu.ville.codePostal }}</div></li>
                 <li><div class="label-AfficheSortie">Latitude</div><div class="champ-AfficheSortie">{{ sortie.lieu.latitude }}</div></li>
                 <li><div class="label-AfficheSortie">Longitude</div><div class="champ-AfficheSortie">{{ sortie.lieu.longitude }}</div></li>
