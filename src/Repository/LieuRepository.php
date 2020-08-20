@@ -19,6 +19,26 @@ class LieuRepository extends ServiceEntityRepository
         parent::__construct($registry, Lieu::class);
     }
 
+
+
+//SELECT * FROM lieu l
+//LEFT JOIN ville v ON l.ville_id = v.id
+//WHERE v.nom = 'NANTES';
+
+
+
+    public function findLieuTriVille($idVille)
+    {
+        $qb = $this->createQueryBuilder('b')
+            ->andWhere('b.ville = :var')
+            ->setParameter('var', $idVille)
+        ;
+
+        $query = $qb->getQuery();
+        return $query->getResult();
+
+    }
+
     // /**
     //  * @return Lieu[] Returns an array of Lieu objects
     //  */

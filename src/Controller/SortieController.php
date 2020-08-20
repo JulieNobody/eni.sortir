@@ -65,7 +65,7 @@ class SortieController extends AbstractController
     public function creerSortie(Request $request, EntityManagerInterface $manager, EtatRepository $etatRepository)
     {
 
-        $sortie = new Sortie();
+         $sortie = new Sortie();
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
 
@@ -139,6 +139,35 @@ class SortieController extends AbstractController
 
 
 
+    /**
+     * @Route("getVille",methods={"POST", "GET"}, name="getVille")
+     */
+    public function getVilleController(Request $request, LieuRepository $lieuRepository)
+    {
+        $idVille = $_POST['idVille'];
+        //dd($idVille);
+        $listeLieux = $lieuRepository->findLieuTriVille($idVille);
+
+        //dd($listeLieux);
+        //$toto = 5;
+
+        $retour = [];
+        foreach ($listeLieux as $item){
+            $retour[] = [
+                'id' => $item->getId(),
+                'nom' => $item->getNom()
+            ];
+        }
+
+
+
+        return $this->json($retour);
+
+    }
+
+
+
+
 
     /**
      * @Route("getLieu",methods={"POST"}, name="getLieu")
@@ -146,8 +175,8 @@ class SortieController extends AbstractController
             public function getLieu(Request $request, LieuRepository $lieuRepository)
             {
                    $monId = $_POST['id'];
-                   $monLieu = $lieuRepository->findOneBy(array('id' => $monId));
 
+                   $monLieu = $lieuRepository->findOneBy(array('id' => $monId));
 
 
                    $response = new Response("Rue : ".$monLieu->getRue().
@@ -156,6 +185,9 @@ class SortieController extends AbstractController
                                                     "<br>Longitude : ".$monLieu->getLongitude()
                    );
                    return $response;
+
+
+                //return $this->json($monLieu);
 
             }
 

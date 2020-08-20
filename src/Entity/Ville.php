@@ -87,5 +87,16 @@ class Ville
         return $this->getNom()."<br>Code Postal : ".$this->getCodePostal();
     }
 
+    public function getNomEtCp(): ?string
+    {
+        $NomEtCp = $this->nom." - ".$this->codePostal;
+        return $NomEtCp;
+    }
+
+
+
+
+
+
 
 }
