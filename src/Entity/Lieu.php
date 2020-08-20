@@ -109,7 +109,7 @@ class Lieu
     /**
      * @return ArrayCollection
      */
-    public function getSorties(): ArrayCollection
+    public function getSorties()
     {
         return $this->sorties;
     }
@@ -117,7 +117,7 @@ class Lieu
     /**
      * @param ArrayCollection $sorties
      */
-    public function setSorties(ArrayCollection $sorties): void
+    public function setSorties($sorties): void
     {
         $this->sorties = $sorties;
     }

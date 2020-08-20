@@ -4,6 +4,7 @@
 
 
 {% block body %}
+    <h1>Creer une sortie</h1>
 
     {{ form_start(sortieForm) }}
 
@@ -49,17 +50,15 @@
         </ul>
 
         {{ form_row(sortieForm.lieu) }}
-        <label>Ville</label>
-        <select class="villeSelect" id="villeSelect">
 
-        </select>
+      <script>
 
-       <script>
-
-            $(document).ready(function(){
+                $(document).ready(function(){
                 $("#sortie_lieu").on('change', function run() {
                     var selectElmt = document.getElementById("sortie_lieu");
                     var id = selectElmt.options[selectElmt.selectedIndex].value;
+
+                    console.log(id);
                     $.ajax({
                         url : "{{ path('getLieu') }}",
                         type : 'POST',
@@ -72,9 +71,41 @@
                     });
 
                 })
-            });
+                });
+
 
         </script>
+
+
+        <script>
+
+            $(document).ready(function(){
+                $("#sortie_ville").on('change', function run() {
+                    var selectElmt = document.getElementById("sortie_ville");
+                    var idVille = selectElmt.options[selectElmt.selectedIndex].value;
+                    console.log(idVille);
+                    $.ajax({
+                        url : "{{ path('getVille') }}",
+                        type : 'POST',
+                        data: {idVille: idVille}
+                    }).done(function(data) {
+
+                        $('#sortie_lieu').empty();
+
+                    for (var i = 0; i<data.length; i++){
+                        $('#sortie_lieu').append("<option value=\""+data[i]["id"]+"\">"+data[i]["nom"]+"</option>");
+                        }
+                        $("#sortie_lieu").change();
+                    }).fail(function() {
+                        console.log('Failed');
+                    });
+
+                })
+            });
+
+
+        </script>
+
 
 
 
@@ -88,6 +119,7 @@
     <ul>
         <span id="nomLieu"> </span>
     </ul>
+
 
     <a href="{{path('sortie_creerLieu') }}" title="Sortir | Créer un lieu">créer un lieu</a>
 {% endblock %}

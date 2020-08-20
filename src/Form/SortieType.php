@@ -5,9 +5,14 @@ namespace App\Form;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Repository\CampusRepository;
+use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
+use App\Repository\UserRepository;
+use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,10 +20,12 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 
 class SortieType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -39,7 +46,17 @@ class SortieType extends AbstractType
             ->add('lieu', EntityType::class,[
                 'class' => Lieu::class,
                 'choice_label' => 'nom'
-            ]);
+            ])
+
+            ->add('ville', EntityType::class,[
+                'class' => Ville::class,
+                'choice_label' => function ($VilleEtCp) {
+                    return $VilleEtCp->getNomEtCp();},
+                'mapped'=> false,
+                    ])
+
+        ;
+
 }
 
             //->add('validerLieu', SubmitType::class, ['label'=> 'Valider le lieu'])
