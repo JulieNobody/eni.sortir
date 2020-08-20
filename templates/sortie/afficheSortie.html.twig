@@ -44,7 +44,7 @@
 
 
         <div class="listParticipantContainer">   <!--affichage du nombre de participants table sortie de la BDD avec une boucle-->
-        <h4>Liste des particpants</h4>
+        <h3>Liste des particpants</h3>
             {% if sortie.participants| length == 0 %}
                 <p>Pas de participants !</p>
             {% else %}
@@ -53,7 +53,7 @@
                     <tr><th>Pseudo</th><th>Nom</th></tr>
 
                             {% for participant in sortie.participants %}
-                                    <tr>
+                                    <tr class="ligneListParticipant">
                                         <td>
                                             <a
                                                 href="{{path('user_detailProfil', { id: participant.id } ) }}"

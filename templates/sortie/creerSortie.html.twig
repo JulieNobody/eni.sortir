@@ -4,9 +4,53 @@
 
 
 {% block body %}
-    <h1>Creer une sortie</h1>
 
     {{ form_start(sortieForm) }}
+      <script>
+                $(document).ready(function(){
+                $("#sortie_lieu").on('change', function run() {
+                    var selectElmt = document.getElementById("sortie_lieu");
+                    var id = selectElmt.options[selectElmt.selectedIndex].value;
+
+                    console.log(id);
+                    $.ajax({
+                        url : "{{ path('getLieu') }}",
+                        type : 'POST',
+                        data: {id: id}
+                    }).done(function(data) {
+                        document.getElementById('nomLieu').innerHTML = data;
+
+                    }).fail(function() {
+                        console.log('Failed');
+                    });
+                })
+                });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $("#sortie_ville").on('change', function run() {
+                    var selectElmt = document.getElementById("sortie_ville");
+                    var idVille = selectElmt.options[selectElmt.selectedIndex].value;
+                    console.log(idVille);
+                    $.ajax({
+                        url : "{{ path('getVille') }}",
+                        type : 'POST',
+                        data: {idVille: idVille}
+                    }).done(function(data) {
+
+                        $('#sortie_lieu').empty();
+
+                    for (var i = 0; i<data.length; i++){
+                        $('#sortie_lieu').append("<option value=\""+data[i]["id"]+"\">"+data[i]["nom"]+"</option>");
+                        }
+                        $("#sortie_lieu").change();
+                    }).fail(function() {
+                        console.log('Failed');
+                    });
+
+                })
+            });
+        </script>
 
     <div class="erreurModifProfil">
         {{ form_errors(sortieForm.nom) }}
@@ -20,9 +64,9 @@
 
     <div class="conteneur-AfficheSortie">
 
-        <h1>Creer une sortie</h1>
+        <h1 class="titre-afficheSortie">Creer une sortie</h1>
 
-        <ul>
+        <ul class="bloc-AfficheSortie">
             <li>
                 {{ form_label(sortieForm.nom,'Nom de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
                 {{ form_widget(sortieForm.nom, {'attr': {'class': 'champ-afficheSortie'}}) }}
@@ -47,79 +91,32 @@
                 {{ form_label(sortieForm.infosSortie,'Description', {'label_attr': {'class': 'label-afficheSortie'}}) }}
                 {{ form_widget(sortieForm.infosSortie, {'attr': {'class': 'champ-afficheSortie'}}) }}
             </li>
+            <li>
+                {{ form_label(sortieForm.ville,'Ville', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                {{ form_widget(sortieForm.ville, {'attr': {'class': 'champ-afficheSortie'}}) }}
+            </li>
+            <li>
+                {{ form_label(sortieForm.lieu,'Lieu', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                {{ form_widget(sortieForm.lieu, {'attr': {'class': 'champ-afficheSortie'}}) }}
+            </li>
         </ul>
 
-        {{ form_row(sortieForm.lieu) }}
+        <ul id="nomLieu">
 
-      <script>
+        </ul>
 
-                $(document).ready(function(){
-                $("#sortie_lieu").on('change', function run() {
-                    var selectElmt = document.getElementById("sortie_lieu");
-                    var id = selectElmt.options[selectElmt.selectedIndex].value;
+    </div>
+        <div class="boutonsAfficherSortie">
+            <div class="boutonCreationSortie">
+                <a href="{{path('sortie_creerLieu') }}" title="Sortir | Créer un lieu" class="boutonModifierProfil">créer un lieu</a>
+            </div>
 
-                    console.log(id);
-                    $.ajax({
-                        url : "{{ path('getLieu') }}",
-                        type : 'POST',
-                        data: {id: id}
-                    }).done(function(data) {
-                        document.getElementById('nomLieu').innerHTML = data;
-
-                    }).fail(function() {
-                        console.log('Failed');
-                    });
-
-                })
-                });
-
-
-        </script>
-
-
-        <script>
-
-            $(document).ready(function(){
-                $("#sortie_ville").on('change', function run() {
-                    var selectElmt = document.getElementById("sortie_ville");
-                    var idVille = selectElmt.options[selectElmt.selectedIndex].value;
-                    console.log(idVille);
-                    $.ajax({
-                        url : "{{ path('getVille') }}",
-                        type : 'POST',
-                        data: {idVille: idVille}
-                    }).done(function(data) {
-
-                        $('#sortie_lieu').empty();
-
-                    for (var i = 0; i<data.length; i++){
-                        $('#sortie_lieu').append("<option value=\""+data[i]["id"]+"\">"+data[i]["nom"]+"</option>");
-                        }
-                        $("#sortie_lieu").change();
-                    }).fail(function() {
-                        console.log('Failed');
-                    });
-
-                })
-            });
-
-
-        </script>
-
-
-
-
-        <button type="submit">Valider</button>
-
+            <div class="boutonCreationSortie">
+                <button type="submit" class="boutonModifierProfil">Valider</button>
+            </div>
+        </div>
 
         {{ form_end(sortieForm) }}
-    </div>
 
 
-    <ul>
-        <span id="nomLieu"> </span>
-    </ul>
-
-
-    <a href="{{path('sortie_creerLieu') }}" title="Sortir | Créer un lieu">créer un lieu</a>
 {% endblock %}
