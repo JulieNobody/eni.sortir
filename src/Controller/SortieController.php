@@ -159,8 +159,6 @@ class SortieController extends AbstractController
             ];
         }
 
-
-
         return $this->json($retour);
 
     }
@@ -186,9 +184,6 @@ class SortieController extends AbstractController
                                                     "<li>Longitude : ".$monLieu->getLongitude()."</li>"
                    );
                    return $response;
-
-
-                //return $this->json($monLieu);
 
             }
 

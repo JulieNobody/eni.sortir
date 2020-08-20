@@ -28,20 +28,41 @@
 
 
 
-    <h1> choisi ton lieu!</h1>
+
 
     <!--Input nom du lieu-->
-    <div style="padding-bottom: 5px">
-        <label>Nom du lieu</label>
-        <input type="text" id="nomLieu">
+
+
+    <div class="conteneur-CreerLieu" id="ConteneurLieu">
+
+        <div id="CreerLieu">
+            <h1 style="margin-bottom: 100px"> choisi ton lieu</h1>
+
+        <!--Affichage input-->
+        <div  id="lieu" >
+            <div class="label-AfficheSortie" style="margin-bottom: 10px">
+                <label>Nom du lieu</label>
+                <input class="champ-AfficheSortie" type="text" id="nomLieu" style="margin-left: 5px">
+            </div>
+        </div>
+
+            <!--Affichage de la map-->
+            <div style="margin-top: 20px" id="geocoder" class="geocoder"></div>
+            <div class="map" id="map" style="width: 700px; height: 300px;"></div>
+            <div style="padding-top: 20px" >
+                <div class="label-AfficheSortie" id="input"></div>
+                <div style="padding-top: 10px" id="output"></div>
+            </div>
+              <div style="text-align: center">
+                    <!--Affichage du lieu + bouton-->
+                    <button style="margin-top: 50px" type="submit" class="boutonModifierProfil">Valider</button>
+              </div>
+
+        </div>
+
     </div>
-
-    <!--Affichage de la map-->
-    <div id="geocoder" class="geocoder"></div>
-    <div class="map" id="map" style="width: 65%; height: 300px;"></div>
-
     <!--Affichage de l'adresse cherchée-->
-    <div id="output"></div>
+
 
 
 
@@ -53,7 +74,6 @@
         {{ form_row(lieuForm.longitude) }}
         {{ form_row(villeForm.nom) }}
         {{ form_row(villeForm.codePostal) }}
-        {{ form_row(lieuForm.validerForm) }}
         {{ form_end(lieuForm) }}
 
 
@@ -101,6 +121,7 @@
                 <!--Afficher l'adresse sur la page-->
                  let adresse = JSON.parse(json).place_name_fr;
                document.getElementById("output").innerHTML = adresse;
+               document.getElementById("input").innerHTML = "Ok pour cette adresse ? ";
 
 
                 <!--Afficher les coordonnées sur un formulaire html pour les récupérer avec le submit-->
