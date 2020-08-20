@@ -12,7 +12,7 @@
     <!-- Boucle dans la classe sorties -->
 
         <div>      <!--affichage des propriétés de la table sortie de la BDD-->
-             <ul class="liste-AfficheSortie">
+             <ul class="bloc-AfficheSortie">
                 <li><div class="label-AfficheSortie">Organisateur</div><div class="champ-AfficheSortie">{{ sortie.organisateur.username }}</div></li>
                 <li><div class="label-AfficheSortie">Début</div><div class="champ-AfficheSortie">{{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</div></li>
                 <li><div class="label-AfficheSortie">Nombre de place</div><div class="champ-AfficheSortie">{{ sortie.nbInscriptionsMax }}</div></li>
@@ -32,11 +32,14 @@
                 <li><div class="label-AfficheSortie">Latitude</div><div class="champ-AfficheSortie">{{ sortie.lieu.latitude }}</div></li>
                 <li><div class="label-AfficheSortie">Longitude</div><div class="champ-AfficheSortie">{{ sortie.lieu.longitude }}</div></li>
              </ul>
-            <div class="description-AfficheSortie">
-                <div class="label-AfficheSortie">Description</div>
-                <div class="champ-AfficheSortie">{{ sortie.infosSortie }}</div>
-            </div>
-         </div>
+        </div>
+        <div>
+            <ul  class="bloc-AfficheSortie">
+                <li><div class="label-AfficheSortie">Description</div></li>
+                <li><div class="champ-AfficheSortie">{{ sortie.infosSortie }}</div></li>
+            </ul>
+        </div>
+
 
         <div>   <!--affichage du nombre de participants table sortie de la BDD avec une boucle-->
             <table>
@@ -69,29 +72,36 @@
 
     <!-- si user = organisateur -->
     {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6 and sortie.etat.id != 7 %}
-        <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}">Annuler la sortie</a>
+        <div class="boutonCreationSortie">
+            <a href="{{path('sortie_afficheAnnulationSortie', { id: sortie.id } ) }}" id="boutonModifierProfil">Annuler la sortie</a>
+        </div>
     {% endif %}
 
     {% if (sortie.organisateur.id == app.user.id) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
-        <a href="{{path('sortie_modifierSortie', { id: sortie.id } ) }}">Modifier</a>
+        <div class="boutonCreationSortie">
+            <a href="{{path('sortie_modifierSortie', { id: sortie.id } ) }}" id="boutonModifierProfil">Modifier</a>
+        </div>
     {% endif %}
     <!-- si user = organisateur et sortie crée-->
     {% if sortie.organisateur is same as(app.user) and sortie.etat.id == 1%}
-
-        <a href="{{path('sortie_publication', { id: sortie.id } ) }}">Publier la sortie</a>
-
+        <div class="boutonCreationSortie">
+            <a href="{{path('sortie_publication', { id: sortie.id } ) }}" id="boutonModifierProfil">Publier la sortie</a>
+        </div>
     {% endif %}
 
     <!-- si user =/= organisateur -->
 
     <!-- si user inscrit -->
     {% if app.user in sortie.participants and (sortie.etat.id == 2 or sortie.etat.id == 3) %}
-        <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}">se desincrire</a>
+        <div class="boutonCreationSortie">
+            <a href="{{path('sortie_desinscription', { id: sortie.id } ) }}" id="boutonModifierProfil">se desincrire</a>
+        </div>
     {% endif %}
 
     <!-- si user pas inscrit -->
     {% if app.user not in sortie.participants and sortie.etat.id == 2 and sortie.participants | length < sortie.nbInscriptionsMax%}
-        <a href="{{path('sortie_inscription', { id: sortie.id } ) }}">s'inscrire à la sortie</a>
+        <div class="boutonCreationSortie">
+            <a href="{{path('sortie_inscription', { id: sortie.id } ) }}" id="boutonModifierProfil">s'inscrire à la sortie</a>
     {% endif %}
 
 
