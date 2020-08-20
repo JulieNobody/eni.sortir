@@ -4,22 +4,50 @@
 
 
 {% block body %}
-
-
     <h1>Creer une sortie</h1>
 
+    {{ form_start(sortieForm) }}
 
-    <div id="sortie_form">
-        {{ form_start(sortieForm) }}
+    <div class="erreurModifProfil">
+        {{ form_errors(sortieForm.nom) }}
+        {{ form_errors(sortieForm.dateHeureDebut) }}
+        {{ form_errors(sortieForm.duree) }}
+        {{ form_errors(sortieForm.dateLimiteInscription) }}
+        {{ form_errors(sortieForm.nbInscriptionsMax) }}
+        {{ form_errors(sortieForm.infosSortie) }}
+        {{ form_errors(sortieForm.lieu) }}
+    </div>
 
-        {{ form_row(sortieForm.nom) }}
-        {{ form_row(sortieForm.dateHeureDebut) }}
-        {{ form_row(sortieForm.duree) }}
-        {{ form_row(sortieForm.dateLimiteInscription) }}
-        {{ form_row(sortieForm.nbInscriptionsMax) }}
-        {{ form_row(sortieForm.infosSortie) }}
-        {{ form_row(sortieForm.ville) }}
+    <div class="conteneur-AfficheSortie">
 
+        <h1>Creer une sortie</h1>
+
+        <ul>
+            <li>
+                {{ form_label(sortieForm.nom,'Nom de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                {{ form_widget(sortieForm.nom, {'attr': {'class': 'champ-afficheSortie'}}) }}
+            </li>
+            <li>
+                {{ form_label(sortieForm.dateHeureDebut,'Début de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                {{ form_widget(sortieForm.dateHeureDebut, {'attr': {'class': 'champ-afficheSortie'}}) }}
+            </li>
+            <li>
+                {{ form_label(sortieForm.duree,'Durée', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                {{ form_widget(sortieForm.duree, {'attr': {'class': 'champ-afficheSortie'}}) }}
+            </li>
+            <li>
+                {{ form_label(sortieForm.dateLimiteInscription,'Date limite d\'inscription', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                {{ form_widget(sortieForm.dateLimiteInscription, {'attr': {'class': 'champ-afficheSortie'}}) }}
+            </li>
+            <li>
+                {{ form_label(sortieForm.nbInscriptionsMax,'Nombre de place', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                {{ form_widget(sortieForm.nbInscriptionsMax, {'attr': {'class': 'champ-afficheSortie'}}) }}
+            </li>
+            <li>
+                {{ form_label(sortieForm.infosSortie,'Description', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                {{ form_widget(sortieForm.infosSortie, {'attr': {'class': 'champ-afficheSortie'}}) }}
+            </li>
+        </ul>
 
         {{ form_row(sortieForm.lieu) }}
 

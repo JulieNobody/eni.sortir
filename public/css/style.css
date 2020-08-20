@@ -16,21 +16,30 @@
 }
 #baseHTML{
     min-height: 100%;
-    background: linear-gradient(to bottom right, #3e5c76, #24405a);
+   background: linear-gradient(to bottom right, #3e5c76, #24405a);
+
 }
 
 html {
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background: linear-gradient(to bottom right, #3e5c76, #24405a);
+    /*background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
     background-size: 400% 400%;
-    animation: gradient 25s ease infinite;
+    animation: gradient 25s ease infinite;*/
     min-height: 100%;
+
+}
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Roboto', sans-serif;
+
 }
 
-body{
-    font-family: 'Roboto', sans-serif;
+#body{
     max-width: 1400px;
     margin: auto;
     color: white;
+    overflow: hidden;
 }
 
 section{
@@ -101,6 +110,28 @@ section{
 
 #logionCheckTxt{
     max-width: 600px;
+    font-size: 13px;
+    font-weight: 400;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+#loginContainer a:link {
+    color: white;
+}
+#loginContainer a:visited {
+    color: white;
+}
+
+.login-erreur {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    margin-top: 20px;
+    text-align: center;
+
 }
 
 .boutonLogin{
@@ -172,24 +203,31 @@ section{
 /* ------------------- HEADER ------------------- */
 
 header{
+
+    /*background-color: #ffffff;*/
+    width: 100%;
+}
+
+#insideHeader{
     display: flex;
     justify-content: space-between;
 }
 #logoTitle{
     margin-top: 20px;
     margin-bottom: 20px;
+    margin-left: 40px;
 }
-#logoTitle a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: rgba(255, 255, 255, 1);
-    font-weight: 700;
-    font-size: 30px;
-    text-transform: uppercase;
-}
+
 #logoTitle img {
-    max-width: 250px;
+    max-width: 200px;
+}
+
+#nav_User{
+    margin-right: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: column;
 }
 
 nav ul{
@@ -197,6 +235,8 @@ nav ul{
     text-transform: uppercase;
     text-align: right;
     vertical-align:middle;
+    margin-top: 20px;
+    margin-right: 0px;
 }
 
 nav li{
@@ -221,6 +261,8 @@ nav a:hover{
     font-weight: 500;
     font-size: 20px;
     color: #fff;
+    margin-top: -20px;
+    margin-bottom: 0px;
     margin-right: 10px;
 }
 /* ------------------- MESSAGES FLASH ------------------- */
@@ -239,12 +281,15 @@ nav a:hover{
     background: rgb(255, 255, 255);
     font-size: 20px;
     font-weight: 500;
-    color: #8f2d56;
-    border-bottom: solid 5px #8f2d56;
+    color: #23a6d5;
+    border-bottom: solid 5px #23a6d5;
     border-top-right-radius: 20px;
     border-bottom-left-radius: 20px;
 
 }
+
+
+
 /* ------------------- TITRES ------------------- */
 
 h1{
@@ -270,41 +315,43 @@ h2{
 /* ------------------- FILTRES ------------------- */
 
 fieldset{
-    border: solid 1px white;
+    border: solid 3px white;
+    margin-top: 50px;
     margin-left: auto;
     margin-right: auto;
     padding: 15px;
     max-width: 900px;
+    /*background-color: rgba(0, 0, 0, 0.2);*/
 }
 
-label{
+#filtresContainer label{
     font-size: 16px;
     color: #fff;
     font-weight: 600;
     margin-bottom: 10px;
 }
 
-select{
+#filtresContainer select{
     border: none;
-    border-bottom: solid 2px #8f2d56;
+    border-bottom: solid 2px #ffffff;
     background-color: transparent;
     color: #ffffff;
 }
 
-select option {
-    background-color: #8f2d56;
-    color: white;
+#filtresContainer select option {
+    background-color: #ffffff;
+    color: #23a6d5;
 }
 
-input{
+#filtresContainer input{
     border: none;
-    border-bottom: solid 2px #8f2d56;
+    border-bottom: solid 2px #ffffff;
     background-color: transparent;
     color: white;
     outline:none;
 }
 
-input::placeholder{
+#filtresContainer input::placeholder{
     color: white;
 }
 
@@ -382,13 +429,13 @@ input::placeholder{
 /* ------------------- LE TABLEAU ------------------- */
 
 
-table{
+#tableauAccueil table{
     width:100%;
     table-layout: fixed;
     border-collapse: collapse;
 }
 .header_tab{
-    background-color: rgb(143, 45, 86);
+    background-color: rgb(255, 255, 255);
 }
 .contenu_tab{
     height:400px;
@@ -396,27 +443,27 @@ table{
     margin-top: 0px;
     border: 1px solid rgba(255,255,255,0.3);
 }
-th{
+#tableauAccueil th{
     padding: 20px 15px;
     text-align: center;
     font-weight: 500;
     font-size: 16px;
-    color: #fff;
+    color: #000000;
     text-transform: uppercase;
 }
-tr {
+#tableauAccueil tr {
     text-align: center;
 }
 
-tr:nth-child(even) {
+#tableauAccueil tr:nth-child(even) {
     background-color: rgba(238, 238, 238, 0.15);
 }
-tr:nth-child(odd) {
-
+#tableauAccueil tr:nth-child(odd) {
+   
 }
 
 
-td{
+#tableauAccueil td{
     padding: 15px;
     text-align: center;
     vertical-align:middle;
@@ -425,34 +472,72 @@ td{
     color: #fff;
     text-transform: uppercase;
 }
-.sortieNom{
+
+
+.nomSortie{
+    text-decoration: none;
+    color: #fff;
     font-weight: 500;
     font-size: 16px;
 }
 
-td a{
+.organisateur{
     text-decoration: none;
     color: #fff;
+    font-weight: 500;
+    font-size: 16px;
 }
+
+/* ------------------- LES BOUTONS DU TABLEAU ------------------- */
+
+
 #boutonTabContainer{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
 .boutonTab{
-    background: linear-gradient(to top right, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.85));
+    color: #000000;
+    background-color: #ffffff;
     text-decoration: none;
-    color: #8f2d56;
-    padding: 7px;
-    font-weight: 500;
-    font-size: 14px;
+    padding: 5px;
+    font-weight: 600;
+    font-size: 11px;
     border: none;
     box-shadow: none;
     font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
     margin: 2px;
-    height: 15px;
+    border-radius: 5px;
+    width: 80%;
+    height: 12px;
 }
+
+#boutonTabAfficher:hover{
+    background-color: #117aea;
+    color: #ffffff;
+}
+#boutonTabPublier:hover{
+    background-color: #31ba8c;
+    color: #ffffff;
+}
+#boutonTabAnnuler:hover{
+    background-color: #d52424;
+    color: #ffffff;
+}
+#boutonTabModifier:hover{
+    background-color: #e78b3d;
+    color: #ffffff;
+}
+#boutonTabInscrire:hover{
+    background-color: #2fbd1e;
+    color: #ffffff;
+}
+#boutonTabDesister:hover{
+    background-color: #c72466;
+    color: #ffffff;
+}
+
 .boutonCreationSortie{
     display: flex;
     justify-content: center;
@@ -465,43 +550,27 @@ td a{
     width: 6px;
 }
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgb(12, 39, 64);
+    -webkit-box-shadow: inset 0 0 6px rgb(8, 31, 52);
 }
 ::-webkit-scrollbar-thumb {
-    -webkit-box-shadow: inset 0 0 60px rgb(143, 45, 86);
+    -webkit-box-shadow: inset 0 0 60px rgb(255, 255, 255);
 }
 
 
-/* ------------------- LES BOUTONS ------------------- */
-
-.boutonMain{
-    background: linear-gradient(to top right, rgb(143, 45, 86), rgb(113, 27, 63));
-    text-decoration: none;
-    color: #fff;
-    padding: 15px;
-    font-weight: 500;
-    font-size: 22px;
-    border: none;
-    box-shadow: none;
-    font-family: 'Roboto', sans-serif;
-    text-transform: uppercase;
-    outline:none;
-}
-
-
-
-/* ------------------- DETAILS (sortie, user) ------------------- */
+/* ------------------- DETAILS USER ------------------- */
 #liste-afficheProfilContainer{
-    background-color: rgba(255, 255, 255, 1);
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.49), rgba(0, 0, 0, 0.85)),
+    url("../img/Tropical-Branch.jpg");
+    background-size: cover;
     transform: rotate(-2deg);
     box-shadow: 10px 5px 25px rgba(0, 0, 0, 0.72);
-    width: 900px;
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
     padding: 50px;
     margin-top: 50px;
     border-radius: 35px;
-    border: solid 7px #8f2d56;
+    border: solid 7px #ffffff;
 }
 
 #carteAfficheProfil{
@@ -511,13 +580,18 @@ td a{
 }
 
 #liste-afficheProfilContainer h1{
-    color: #222222;
+    color: #ffffff;
     margin: 0px;
     font-size: 35px;
+    margin-bottom: 0px;
 }
-
+#photo-afficheProfil{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 #photo-afficheProfil img{
-    width: 170px;
+    width: 180px;
     max-height: 400px;
     flex-basis:20%;
 }
@@ -525,8 +599,9 @@ td a{
 #liste-afficheProfil{
     list-style: none;
     margin: auto;
-    padding: 45px;
-    color: #222222;
+    margin-bottom: 10px;
+    padding: 10px;
+    color: #ffffff;
     flex-basis:70%;
 }
 
@@ -536,14 +611,15 @@ td a{
 
 #liste-afficheProfil li{
     display: flex;
-    margin-top: 8px;
-    margin-top: 8px;
-    border-bottom: solid 1px dimgray;
+    margin-top: 10px;
+    border-bottom: solid 1.5px #ffffff;
+}
+.borderNone li:last-child{
+    border:none !important;
 }
 
-
 .label-afficheProfil{
-    font-size: 25px;
+    font-size: 20px;
     text-transform: uppercase;
     font-weight: 500;
     flex-basis:50%;
@@ -555,29 +631,212 @@ td a{
     flex-basis:50%;
 }
 
-#boutonModifierProfil {
+#boutonModifierProfilContainer {
     margin-left: auto;
-    margin-right: auto;
+    margin-right: 30px;
     display: flex;
     justify-content: flex-end;
 }
 
+.boutonModifierProfil{
+    background-color: transparent;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    box-shadow: none;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    outline:none;
+    border: solid 2px white;
+}
+.boutonModifierProfil:hover {
 
+    cursor: pointer;
+}
+
+
+.boutonModifierProfil {
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.boutonModifierProfil:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+            120deg,
+            transparent,
+            rgba(255, 255, 255, 0.28),
+            transparent
+    );
+    transition: all 650ms;
+}
+
+.boutonModifierProfil:hover:before {
+    left: 100%;
+}
 /* ------------------- MODIFIER PROFIL ------------------- */
 #carteAfficheProfil label {
-    color: #222222;
-    margin-bottom: 10px;
-    font-size: 25px;
+    color: #ffffff;
+    font-size: 20px;
     text-transform: uppercase;
     font-weight: 500;
+    margin-bottom: 0px;
 }
 #carteAfficheProfil input{
     border: none;
     background-color: transparent;
-    color: #222222;
+    color: #ffffff;
     font-size: 22px;
 }
+#carteAfficheProfil input:hover{
 
+    background-color: rgba(255, 255, 255, 0.20);
+
+}
+.erreurModifProfil{
+    font-size: 17px;
+    font-weight: 500;
+    color: #ffffff;
+    list-style: none;
+}
+
+/* ------------------- DETAILS SORTIE ------------------- */
+
+.conteneur-AfficheSortie {
+    border: solid 3px white;
+    max-width: 800px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    padding: 50px 50px 50px 50px;
+
+}
+.titre-afficheSortie {
+    margin-top: 0px;
+    margin-bottom: 25px;
+}
+.bloc-AfficheSortie {
+    padding-left: 0px;
+}
+
+.bloc-AfficheSortie li {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 800px;
+    list-style: none;
+    margin-bottom: 10px;
+    border-bottom: solid 1.5px white;
+}
+
+
+.label-AfficheSortie{
+    text-transform: uppercase;
+    font-size: 17px;
+    font-weight: 600;
+    flex-basis: 50%;
+}
+
+.champ-AfficheSortie{
+    font-size: 13px;
+    font-weight: 400;
+    flex-basis: 50%;
+}
+
+#descriptionSortie {
+    flex-basis: 100%;
+    border: none;
+}
+
+.listParticipantContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.listParticipant{
+    max-width: 500px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x:auto;
+    margin-top: 0px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+.listParticipant th {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000000;
+    text-transform: uppercase;
+}
+.listParticipant tr{
+    text-align: center;
+}
+.listParticipant tr:first-child{
+    background-color: white;
+}
+
+.listParticipant tr:nth-child(even) {
+    background-color: rgba(238, 238, 238, 0.15);
+}
+
+.listParticipant td {
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 14px;
+    color: #fff;
+    text-transform: uppercase;
+}
+.listParticipant a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+}
+
+
+
+.boutonsAfficherSortie {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
+}
+
+/* ------------------- MODIFIER SORTIE ------------------- */
+.bloc-AfficheSortie label {
+    text-transform: uppercase;
+    font-size: 17px;
+    font-weight: 600;
+    flex-basis: 50%;
+}
+.bloc-AfficheSortie input {
+    font-size: 13px;
+    font-weight: 400;
+    flex-basis: 49%;
+    border: none;
+    background-color: transparent;
+    color: #ffffff;
+}
 /* ------------------- INFORMATIONS DU CREATEUR ------------------- */
 
 .made-with-love {
@@ -611,10 +870,11 @@ td a{
     padding-bottom:10px;
 }
 
-/* ------------------- CREERSORTIE-LIEU ------------------- */
-.table { border-collapse: collapse; }
-.table th, td {
-    border-bottom: 1px solid #ddd;
-    width: 250px;
-    text-align: left;
-}
+/* ------------------- AFFICHER SORTIE ------------------- */
+
+
+
+
+
+
+
