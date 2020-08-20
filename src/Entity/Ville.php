@@ -84,7 +84,7 @@ class Ville
 
     public function __toString()
     {
-        return $this->getNom()."<br>Code Postal : ".$this->getCodePostal();
+        return $this->getNom()." ".$this->getCodePostal();
     }
 
     public function getNomEtCp(): ?string

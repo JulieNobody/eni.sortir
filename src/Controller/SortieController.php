@@ -176,10 +176,12 @@ class SortieController extends AbstractController
 
                    $monLieu = $lieuRepository->findOneBy(array('id' => $monId));
 
-                  $response = new Response("Rue : ".$monLieu->getRue().
-                                                    "<br>Ville : ".$monLieu->getVille().
-                                                    "<br>Latitude : ".$monLieu->getLatitude().
-                                                    "<br>Longitude : ".$monLieu->getLongitude()
+
+                   $response = new Response("<li class='lieuAdresse'>Adresse : </li>".
+                                                    "<li class='lieuRue'>".$monLieu->getRue()."</li>".
+                                                    "<li class='lieuVille'>".$monLieu->getVille()."</li>".
+                                                    "<li>Latitude : ".$monLieu->getLatitude()."</li>".
+                                                    "<li>Longitude : ".$monLieu->getLongitude()."</li>"
                    );
                    return $response;
 

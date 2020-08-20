@@ -16,7 +16,7 @@
 }
 #baseHTML{
     min-height: 100%;
-   background: linear-gradient(to bottom right, #3e5c76, #24405a);
+   /*background: linear-gradient(to bottom right, #3e5c76, #24405a);*/
 
 }
 
@@ -440,7 +440,7 @@ fieldset{
     min-width: 900px;
 }
 .contenu_tab{
-    height:400px;
+    max-height:400px;
     overflow-x:auto;
     margin-top: 0px;
     border: 1px solid rgba(255,255,255,0.3);
@@ -461,12 +461,14 @@ fieldset{
 }
 
 #tableauAccueil tr:nth-child(even) {
-    background-color: rgba(238, 238, 238, 0.15);
+    background-color: rgba(255, 255, 255, 0.06);
 }
 #tableauAccueil tr:nth-child(odd) {
-   
+    background-color: rgba(255, 255, 255, 0.15);
 }
-
+.contenu_tab tr:hover{
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
 
 #tableauAccueil td{
     padding: 15px;
@@ -714,6 +716,36 @@ fieldset{
     font-weight: 500;
     color: #ffffff;
     list-style: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.erreurModifProfil ul{
+    list-style-type: none;
+}
+.erreurModifProfil li{
+    margin : 0px;
+}
+/* ------------------- CREER SORTIE ------------------- */
+#nomLieu {
+    list-style-type: none;
+    border-left: solid 2px white;
+}
+.lieuAdresse {
+    font-size: 17px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.lieuRue {
+
+}
+.lieuVille {
+    font-size: 17px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 /* ------------------- DETAILS SORTIE ------------------- */
@@ -797,6 +829,9 @@ fieldset{
 .listParticipant tr:nth-child(even) {
     background-color: rgba(238, 238, 238, 0.15);
 }
+.ligneListParticipant:hover{
+    background-color: rgba(0, 0, 0, 0.15) !important;
+}
 
 .listParticipant td {
     padding: 10px;
@@ -825,7 +860,7 @@ fieldset{
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
-    max-width: 700px;
+    max-width: 500px;
 }
 
 /* ------------------- MODIFIER SORTIE ------------------- */
@@ -889,17 +924,21 @@ fieldset{
 /* ------------------- CREER LIEU ------------------- */
 
 #CreerLieu {
-   padding-left: 100px;
+   padding-left: 50px;
 }
 .conteneur-CreerLieu {
     border: solid 3px white;
     max-width: 800px;
     margin: auto;
     font-family: 'Roboto', sans-serif;
-    padding: 50px 50px 50px 50px;
+    padding: 10px 50px 20px 50px;
 
 }
+#lieu {
+    border-bottom: solid 1.5px white;
+    width: 700px;
 
+}
 
 
 
