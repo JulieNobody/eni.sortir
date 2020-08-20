@@ -940,7 +940,24 @@ fieldset{
 
 }
 
+#motifAnnulation label {
+}
 
+#motifAnnulation input{
+    width: 100%;
+    min-height: 60px;
+    text-align: start;
+    outline:none;
+}
 
-
+#zone_annulation{
+    background-color: rgba(255, 0, 0, 0.69);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+#zone_annulation p {
+    text-align: center;
+}
 
