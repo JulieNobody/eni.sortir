@@ -261,6 +261,8 @@ class Sortie
             return $message = 'La sortie '.$this->getNom().' a déjà eu lieu. Vous ne pouvez pas vous inscrire à une sortie passée !';
         }else if($this->etat->getId() == 6){
             return $message = 'La sortie '.$this->getNom().' a été annulée et n\'est plus ouverte aux inscriptions !';
+        }else if($this->etat->getId() == 7){
+            return $message = 'La sortie '.$this->getNom().' a été archivée. Vous ne pouvez pas vous y inscrire !';
         }else {
             $this->participants[] = $user;
             return $message = 'Vôtre demande d\'inscription à la sortie '.$this->getNom().' a bien été prise en compte. Amusez-vous bien !';
@@ -277,6 +279,8 @@ class Sortie
             return $message = 'La sortie '.$this->getNom().' a déjà eu lieu. Vous ne pouvez pas vous désinscrire d\'une sortie passée !';
         }else if($this->etat ->getId() == 6){
             return $message = 'La sortie '.$this->getNom().' a été annulée et n\'est plus sujette aux inscriptions/désinscriptions !';
+        }else if($this->etat ->getId() == 7){
+            return $message = 'La sortie '.$this->getNom().' a été archivée et n\'est plus sujette aux inscriptions/désinscriptions !';
         }else {
             return $message = 'La désinscription est impossible à réaliser sur cette sortie !';
         }

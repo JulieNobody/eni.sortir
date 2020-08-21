@@ -4,10 +4,10 @@
 
 
 {% block body %}
-    <script>
-        import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+    {#<script>
+        import  MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
         import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-    </script>
+    </script>#}
     <meta http-equiv="X-UA-Compatible" content="IE=8" >
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
@@ -24,11 +24,19 @@
 
 
 
+
+
+
+
+
+
     <!--Input nom du lieu-->
+
+
     <div class="conteneur-CreerLieu" id="ConteneurLieu">
 
-        <div id="CreerLieu">
-            <h1 style="margin-bottom: 100px"> choisi ton lieu</h1>
+        <div class="bloc-AfficheSortie" id="CreerLieu">
+            <h1 style="margin-bottom: 100px"> choisis ton lieu</h1>
 
         <!--Affichage input-->
         <div  id="lieu" >
@@ -45,24 +53,46 @@
                 <div class="label-AfficheSortie" id="input"></div>
                 <div style="padding-top: 10px" id="output"></div>
             </div>
+
+            {{ form_start(lieuForm) }}
+            {{ form_row(lieuForm.nom) }}
+            {{ form_row(lieuForm.rue) }}
+            {{ form_row(lieuForm.latitude) }}
+            {{ form_row(lieuForm.longitude) }}
+            {{ form_row(villeForm.nom) }}
+            {{ form_row(villeForm.codePostal) }}
+
+
+
+
               <div style="text-align: center">
                     <!--Affichage du lieu + bouton-->
                     <button style="margin-top: 50px" type="submit" class="boutonModifierProfil">Valider</button>
               </div>
+            {{ form_end(lieuForm) }}
         </div>
-    </div>
 
+    </div>
     <!--Affichage de l'adresse cherchée-->
-        {{ form_start(lieuForm) }}
-        {{ form_row(lieuForm.nom) }}
-        {{ form_row(lieuForm.rue) }}
-        {{ form_row(lieuForm.latitude) }}
-        {{ form_row(lieuForm.longitude) }}
-        {{ form_row(villeForm.nom) }}
-        {{ form_row(villeForm.codePostal) }}
-        {{ form_end(lieuForm) }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script>
+
         mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlc3N5ODk4IiwiYSI6ImNrZHFnNmZreTEzeTIycXRhNXQyZ3k5NnEifQ.CphvE_eRmoN-lWCngjOvkw';
         var map = new mapboxgl.Map({
             container: 'map',
@@ -76,12 +106,17 @@
             mapboxgl:mapboxgl
         });
 
+
         <!--Activation du bouton validation-->
         var button = document.getElementById("myButton");
         map.addControl(geocoder);
 
+
+
         map.on('load', function() {
+
             geocoder.on('result', function(ev) {
+
                 <!--Avoir les coordonnées en json-->
                 var styleSpec = ev.result;
                 document.getElementById('geocoder');
@@ -90,10 +125,38 @@
                 console.log(json);
                 console.log(obj);
 
-                <!--Afficher l'adresse sur la page-->
-                 let adresse = JSON.parse(json).place_name_fr;
-               document.getElementById("output").innerHTML = adresse;
-               document.getElementById("input").innerHTML = "Ok pour cette adresse ? ";
+
+
+                var browser = '';
+                var browserVersion = 0;
+
+                if(/Chrome[\/\s](\d+\.\d+)/.test(navigator.userAgent)){
+                    let adresse = JSON.parse(json).place_name;
+                    document.getElementById("output").innerHTML = adresse;
+                } else {
+                    <!--Afficher l'adresse sur la page-->
+                    let adresse = JSON.parse(json).place_name_fr;
+                    document.getElementById("output").innerHTML = adresse;
+                }
+
+                if(/Chrome[\/\s](\d+\.\d+)/.test(navigator.userAgent)){
+                    let nomVille = JSON.parse(json).context[1]["text"];
+                    document.getElementById("ville_nom").value = nomVille;
+                } else {
+                    let nomVille = JSON.parse(json).context[1]["text_fr"];
+                    document.getElementById("ville_nom").value = nomVille;
+                }
+
+                if(/Chrome[\/\s](\d+\.\d+)/.test(navigator.userAgent)){
+                    let codePostal = JSON.parse(json).context[0]["text"];
+                    document.getElementById("ville_codePostal").value = codePostal;
+                } else {
+                    let codePostal = JSON.parse(json).context[0]["text_fr"];
+                    document.getElementById("ville_codePostal").value = codePostal;
+                }
+
+
+
 
                 <!--Afficher les coordonnées sur un formulaire html pour les récupérer avec le submit-->
                 let nom = document.getElementById("nomLieu").value;
@@ -102,19 +165,19 @@
                 let rue = JSON.parse(json).text;
                 document.getElementById("lieu_rue").value = rue;
 
+
                 let latitude = JSON.parse(json).center["1"];
                 document.getElementById("lieu_latitude").value = latitude;
+
 
                 let longitude = JSON.parse(json).center["0"];
                 document.getElementById("lieu_longitude").value = longitude;
 
-                let nomVille = JSON.parse(json).context[1]["text_fr"];
-                document.getElementById("ville_nom").value = nomVille;
-
-                let codePostal = JSON.parse(json).context[0]["text_fr"];
-                document.getElementById("ville_codePostal").value = codePostal;
             });
+
         });
+
+
     </script>
 
 {% endblock %}

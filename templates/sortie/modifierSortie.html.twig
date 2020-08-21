@@ -9,6 +9,50 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function(){
+            $("#sortie_lieu").on('change', function () {
+                var selectElmt = document.getElementById("sortie_lieu");
+                var id = selectElmt.options[selectElmt.selectedIndex].value;
+
+                console.log(id);
+                $.ajax({
+                    url : "{{ path('getLieu') }}",
+                    type : 'POST',
+                    data: {id: id}
+                }).done(function(data) {
+                    document.getElementById('nomLieu').innerHTML = data;
+
+                }).fail(function() {
+                    console.log('Failed');
+                });
+            })
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#sortie_ville").on('change', function () {
+                var selectElmt = document.getElementById("sortie_ville");
+                var idVille = selectElmt.options[selectElmt.selectedIndex].value;
+                console.log(idVille);
+                $.ajax({
+                    url : "{{ path('getVille') }}",
+                    type : 'POST',
+                    data: {idVille: idVille}
+                }).done(function(data) {
+
+                    $('#sortie_lieu').empty();
+
+                    for (var i = 0; i<data.length; i++){
+                        $('#sortie_lieu').append("<option value=\""+data[i]["id"]+"\">"+data[i]["nom"]+"</option>");
+                    }
+                    $("#sortie_lieu").change();
+                }).fail(function() {
+                    console.log('Failed');
+                });
+            })
+        });
+    </script>
 
     {#SI L'UTILISATEUR EST L'ORGANISATEUR#}
     {% if sortie.organisateur is same as(app.user) and (sortie.etat.id == 1 or sortie.etat.id == 2 or sortie.etat.id == 3)%}
@@ -27,7 +71,7 @@
 
 
         <div class="conteneur-AfficheSortie">
-            <div>
+
             <h1 class="titre-afficheSortie">{{ sortie.nom }}</h1>
             <ul class="bloc-AfficheSortie">
                 <li>
@@ -55,16 +99,27 @@
                     {{ form_widget(sortieForm.infosSortie, {'attr': {'class': 'champ-afficheSortie'}}) }}
                 </li>
                 <li>
+                    {{ form_label(sortieForm.ville,'Ville', {'label_attr': {'class': 'label-afficheSortie'}}) }}
+                    {{ form_widget(sortieForm.ville, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                </li>
+                <li>
                     {{ form_label(sortieForm.lieu,'Lieu de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
                     {{ form_widget(sortieForm.lieu, {'attr': {'class': 'champ-afficheSortie'}}) }}
                 </li>
             </ul>
+
+            <ul id="nomLieu">
+
+            </ul>
+        </div>
+
+        <div class="boutonsAfficherSortie">
+            <div class="boutonCreationSortie">
+                <a href="{{path('sortie_creerLieu') }}" title="Sortir | Créer un lieu" class="boutonModifierProfil">créer un lieu</a>
             </div>
 
-        </div>
-        <div class="boutonsAfficherSortie">
-            <div boutonCreationSortie>
-                    <button type="submit" class="boutonModifierProfil">Valider</button>
+            <div class="boutonCreationSortie">
+                <button type="submit" class="boutonModifierProfil">Valider</button>
             </div>
         </div>
             {{ form_end(sortieForm) }}
@@ -77,65 +132,6 @@
     {% endif %}
 
 
-
-    <script>
-
-        $(document).ready(function(){
-            $("#sortie_lieu").on('change', function () {
-                var selectElmt = document.getElementById("sortie_lieu");
-                var id = selectElmt.options[selectElmt.selectedIndex].value;
-
-                console.log(id);
-                $.ajax({
-                    url : "{{ path('getLieu') }}",
-                    type : 'POST',
-                    data: {id: id}
-                }).done(function(data) {
-                    document.getElementById('nomLieu').innerHTML = data;
-
-                }).fail(function() {
-                    console.log('Failed');
-                });
-
-            })
-        });
-
-
-    </script>
-
-
-    <script>
-
-        $(document).ready(function(){
-            $("#sortie_ville").on('change', function () {
-                var selectElmt = document.getElementById("sortie_ville");
-                var idVille = selectElmt.options[selectElmt.selectedIndex].value;
-                console.log(idVille);
-                $.ajax({
-                    url : "{{ path('getVille') }}",
-                    type : 'POST',
-                    data: {idVille: idVille}
-                }).done(function(data) {
-
-                    $('#sortie_lieu').empty();
-
-                    for (var i = 0; i<data.length; i++){
-                        $('#sortie_lieu').append("<option value=\""+data[i]["id"]+"\">"+data[i]["nom"]+"</option>");
-                    }
-                    $("#sortie_lieu").change();
-                }).fail(function() {
-                    console.log('Failed');
-                });
-
-            })
-        });
-
-
-    </script>
-
-    <ul>
-        <span id="nomLieu"> </span>
-    </ul>
 
 
 

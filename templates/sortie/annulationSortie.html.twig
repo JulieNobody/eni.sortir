@@ -1,25 +1,40 @@
 {% extends 'base.html.twig' %}
 {% block title %}Sotie ENI{% endblock %}
 {% block body %}
-    <h2>Annuler sortie</h2>
+    <div class="conteneur-AfficheSortie">
+        <h1 class="titre-afficheSortie">Annuler sortie</h1>
 
-    <!-- Boucle dans la classe sorties -->
-    <hr>
-    <div>      <!--affichage des propriétés de la table sortie de la BDD-->
-        <ul>
-            <li><p>Nom de la sortie : {{ sortie.nom }} </p></li>
-            <li><p>Date et heure de la sortie : {{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</p></li>
-            <li><p>Campus : {{ sortie.campus.nom }}</p></li>
-            <li><p>Lieu : {{ sortie.lieu.ville.nom }} </p></li>
-            <li><p>Code Postal : {{ sortie.lieu.ville.codePostal }}</p></li>
-        </ul>
+        <!-- Boucle dans la classe sorties -->
+
+        <div>      <!--affichage des propriétés de la table sortie de la BDD-->
+            <ul class="bloc-AfficheSortie">
+                <li><div class="label-AfficheSortie">Nom de la sortie : </div><div class="champ-AfficheSortie">{{ sortie.nom }} </div></li>
+                <li><div class="label-AfficheSortie">Date et heure de la sortie : </div><div class="champ-AfficheSortie">{{ sortie.dateHeureDebut | date ('Y-m-d H: i: s') }}</div></li>
+                <li><div class="label-AfficheSortie">Campus : </div><div class="champ-AfficheSortie">{{ sortie.campus.nom }}</div></li>
+                <li><div class="label-AfficheSortie">Lieu : </div><div class="champ-AfficheSortie">{{ sortie.lieu.ville.nom }} </div></li>
+                <li><div class="label-AfficheSortie">Code Postal : </div><div class="champ-AfficheSortie">{{ sortie.lieu.ville.codePostal }}</div></li>
+            </ul>
+        </div>
+        {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6%}
+            {{ form_start(form) }}
+            <div id="motifAnnulation">
+                <div class="label-AfficheSortie">{{ form_label(form.motif) }}</div>
+                <div class="champ-AfficheSortie">{{ form_widget(form.motif) }}</div>
+            </div>
+            <div class="boutonsAfficherSortie">
+                <div class="boutonCreationSortie">
+                    <button class="boutonModifierProfil" type="submit" title="Confirmer">Confirmer</button>
+                </div>
+
+                <div class="boutonCreationSortie">
+                    <a href="{{path('accueil') }}" class="boutonModifierProfil">Retour</a>
+                </div>
+            </div>
+
+
+
+            {{ form_end(form) }}
+
+        {% endif %}
     </div>
-    {% if sortie.organisateur.id == app.user.id and sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id != 6%}
-        {{ form_start(form) }}
-        {{ form_row(form.motif) }}
-        <button class="bouton" type="submit" title="Confirmer">Confirmer l'annulation de la sortie</button>
-        <a href="{{path('accueil') }}">Ne pas annuler la sortie et revenir à l'accueil</a>
-        {{ form_end(form) }}
-
-    {% endif %}
 {% endblock %}

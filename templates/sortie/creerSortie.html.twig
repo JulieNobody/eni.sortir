@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
-{% block head %}<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>{% endblock %}
 {% block title %}Sortir | Accueil{% endblock %}
-
 
 {% block body %}
 
     {{ form_start(sortieForm) }}
+    <script>
+        $(document).ready(function() {
+            // you may need to change this code if you are not using Bootstrap Datepicker
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+        });
+    </script>
       <script>
                 $(document).ready(function(){
                 $("#sortie_lieu").on('change', function run() {
@@ -73,7 +79,7 @@
             </li>
             <li>
                 {{ form_label(sortieForm.dateHeureDebut,'Début de la sortie', {'label_attr': {'class': 'label-afficheSortie'}}) }}
-                {{ form_widget(sortieForm.dateHeureDebut, {'attr': {'class': 'champ-afficheSortie'}}) }}
+                {{ form_widget(sortieForm.dateHeureDebut, {'attr': {'class': 'champ-afficheSortie '}}) }}
             </li>
             <li>
                 {{ form_label(sortieForm.duree,'Durée', {'label_attr': {'class': 'label-afficheSortie'}}) }}

@@ -9,6 +9,7 @@
             <div id="carteAfficheProfil">
                 <div id="photo-afficheProfil">
                      <img src="{{ asset('img/pp/')~user.photo }}" alt="Photo" />
+
                 </div>
                 <ul id="liste-afficheProfil">
                     <li><div class="label-afficheProfil">Pseudo  </div><div class="champ-afficheProfil">{{ user.username }}</div></li>
@@ -25,9 +26,6 @@
             </div>
         {% endif %}
     </div>
-
-
-
 
 
 {% endblock %}
