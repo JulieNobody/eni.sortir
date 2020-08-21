@@ -20,14 +20,10 @@ class LieuType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
             ->add('nom',HiddenType::class )
             ->add('rue', HiddenType::class)
             ->add('latitude', HiddenType::class)
             ->add('longitude', HiddenType::class);
-
-
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

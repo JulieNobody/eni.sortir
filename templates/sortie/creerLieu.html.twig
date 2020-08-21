@@ -24,15 +24,7 @@
 
 
 
-
-
-
-
-
-
     <!--Input nom du lieu-->
-
-
     <div class="conteneur-CreerLieu" id="ConteneurLieu">
 
         <div id="CreerLieu">
@@ -57,16 +49,10 @@
                     <!--Affichage du lieu + bouton-->
                     <button style="margin-top: 50px" type="submit" class="boutonModifierProfil">Valider</button>
               </div>
-
         </div>
-
     </div>
+
     <!--Affichage de l'adresse cherchée-->
-
-
-
-
-
         {{ form_start(lieuForm) }}
         {{ form_row(lieuForm.nom) }}
         {{ form_row(lieuForm.rue) }}
@@ -76,15 +62,7 @@
         {{ form_row(villeForm.codePostal) }}
         {{ form_end(lieuForm) }}
 
-
-
-
-
-
-
-
     <script>
-
         mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlc3N5ODk4IiwiYSI6ImNrZHFnNmZreTEzeTIycXRhNXQyZ3k5NnEifQ.CphvE_eRmoN-lWCngjOvkw';
         var map = new mapboxgl.Map({
             container: 'map',
@@ -98,17 +76,12 @@
             mapboxgl:mapboxgl
         });
 
-
         <!--Activation du bouton validation-->
         var button = document.getElementById("myButton");
         map.addControl(geocoder);
 
-
-
         map.on('load', function() {
-
             geocoder.on('result', function(ev) {
-
                 <!--Avoir les coordonnées en json-->
                 var styleSpec = ev.result;
                 document.getElementById('geocoder');
@@ -117,12 +90,10 @@
                 console.log(json);
                 console.log(obj);
 
-
                 <!--Afficher l'adresse sur la page-->
                  let adresse = JSON.parse(json).place_name_fr;
                document.getElementById("output").innerHTML = adresse;
                document.getElementById("input").innerHTML = "Ok pour cette adresse ? ";
-
 
                 <!--Afficher les coordonnées sur un formulaire html pour les récupérer avec le submit-->
                 let nom = document.getElementById("nomLieu").value;
@@ -131,27 +102,19 @@
                 let rue = JSON.parse(json).text;
                 document.getElementById("lieu_rue").value = rue;
 
-
                 let latitude = JSON.parse(json).center["1"];
                 document.getElementById("lieu_latitude").value = latitude;
-
 
                 let longitude = JSON.parse(json).center["0"];
                 document.getElementById("lieu_longitude").value = longitude;
 
-
                 let nomVille = JSON.parse(json).context[1]["text_fr"];
                 document.getElementById("ville_nom").value = nomVille;
 
-
                 let codePostal = JSON.parse(json).context[0]["text_fr"];
                 document.getElementById("ville_codePostal").value = codePostal;
-
             });
-
         });
-
-
     </script>
 
 {% endblock %}

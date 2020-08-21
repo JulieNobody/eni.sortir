@@ -40,28 +40,6 @@ class Sortie
      */
     private $duree;
 
-    /*
-     @Assert\LessThanOrEqual(
-          "now - 1 hour",
-           message = "La date limite d'inscription ne doit pas être passée."
-          )
-     */
-
-    /*
-    @Assert\Expression(
-    *     "this.getDateHeureDebut() = this.getDateLimiteInscription()",
-    *     message="Lorem blabla"
-    */
-
-    /*
-    * @Assert\Range(
-    *     min = "now - 1 hour",
-    *     max = "first day of January next year"
-    */
-
-    /*
-     @Assert\Callback({"App\Entity\Sortie", "validate"})
-     */
 
 
     /**
