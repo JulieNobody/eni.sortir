@@ -30,10 +30,7 @@ class SortieRepository extends ServiceEntityRepository
             ->leftJoin('p.campus', 'c')
             ->leftJoin('p.participants', 'participants')
             ->leftJoin('p.etat', 'e')
-            ->orderBy('e.id','ASC')
-            ->orderBy('p.dateHeureDebut','ASC');
-
-
+            ->orderBy('e.id, p.dateHeureDebut','ASC');
 
 
         if(!empty($search->q)){
@@ -73,7 +70,7 @@ class SortieRepository extends ServiceEntityRepository
         }
         if(!empty($search->isNotInscrit)){
             $query = $query
-                ->andWhere('participants NOT IN (:user)')
+                ->andWhere('participants not in (:user) OR participants is null')
                 ->setParameter('user', $user);
         }
 
