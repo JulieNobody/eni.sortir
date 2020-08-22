@@ -48,14 +48,11 @@ class UserController extends AbstractController
                 $hashed = $encoder->encodePassword($user, $user->getPassword());
                 $user->setPassword($hashed);
 
-
-
                 $this->addFlash('success', 'Le profil a bien été mis à jour');
 
 
                 //Récupération de la photo et valorisation de la variable $photoFile
                 $photoFile = $userForm->get('photo')->getData();
-
 
                 // La photo doit etre traitée que lorsque le fichier est téléchargé
                 if ($photoFile) {
@@ -86,7 +83,6 @@ class UserController extends AbstractController
                         // Levée d'exception si il y a un probleme de téléchargement
                         //FIXME faire exception
                     }
-
                 }
 
                 $manager->persist($user);
